@@ -1,0 +1,29 @@
+.container{
+    display: flex; 
+    flex-direction: column;
+    text-align: center;
+}
+.image{    
+    justify-self: center;
+    align-content: center;
+    width: 100%;
+}
+.img-student{
+    max-width: 100%;
+}
+.bttn-login-homepage{
+    background-color: #031030;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 10vh;
+    width: 60%;
+}
+
+.bttn-login-homepage:hover{
+    background-color: #031030a3;
+}
+
+.content{
+    text-align: center;
+    font-size: 16px;
+}
