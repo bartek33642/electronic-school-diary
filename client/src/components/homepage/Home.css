@@ -1,8 +1,112 @@
+@import '../../App.css';
+
+.home-container{
+    display: flex; 
+    flex-direction: column;
+}
+
+.first-element, .second-element{
+    height: 100vh;
+}
+
+.first-element{
+    display: flex;
+    flex-direction: row;
+    background-image: url('../../images/bg.png');
+    background-repeat: repeat;
+}
+
+.p-home-first{
+    font-size: 18px; 
+}
+
+.h2-home-first, .p-home-first{
+    text-align: center;
+}
+
+.right-first-content{
+    background-color: #ffffff4f;
+    border-radius: 15px;
+}
+
+.left-first-content, .right-first-content{
+    padding: auto;    
+    margin: auto;
+}
+
+#imageFirst{
+    max-width: 80%;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    padding-left: 2%;
+}
+#btnLogin{
+    margin-top: 5%;
+    margin-left: 5%; 
+    border-radius: 20px;
+    font-size: 18px;
+    width: 90%;
+    background: none;
+    border-color: #fff;
+
+}
+#btnLogin:hover{
+   color: #fff5ac;
+}
+
+
+
+
+@media (max-width: 340px) {
+    .first-element{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        justify-self: center;
+        padding: 0;
+    }
+
+    .right-first-content{
+        padding-left: 0;
+        padding-top: 10%; 
+        margin-bottom: 15%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    #imageFirst{
+        max-width: 80%;
+        display: flex;
+        justify-self: center;
+        align-self: center;
+        padding-left: 10%;
+    }
+
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
 .container{
     display: flex; 
     flex-direction: column;
     text-align: center;
 }
+
 .image{    
     justify-self: center;
     align-content: center;
@@ -26,4 +130,4 @@
 .content{
     text-align: center;
     font-size: 16px;
-}
+} */

@@ -8,7 +8,7 @@ This project was created for an engineering thesis. The project is an applicatio
 ##### Server
 ```
 cd electronic-school-diary/server
-node server.js
+npm start
 ```
 
 ##### Client

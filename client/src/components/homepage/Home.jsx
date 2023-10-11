@@ -1,24 +1,29 @@
 import React from "react";
-import myImage from '../../images/students.png';
 import '../homepage/Home.css';
 import { Footer } from "../footer/Footer";
-
+import firstImage from "../../images/phone.png"
 
 export function Home(){
-    return(
-        <div className="container">
-             <h3>Elektroniczny dziennik</h3> 
-            <div className="image">
-                <img src={myImage} alt="boy-student" className="img-student"/> 
-            </div>
-            <div className="content">
-                <p>Witamy na stronie głównej aplikacji Elektroniczny dziennik dla szkół</p>
-                <p>Zacznij korzystać z aplikacji. Zaloguj się</p>
-                <a href="/login"><button className="bttn-login-homepage">
-                    Zaloguj się
-                </button></a>
-            </div>
-            <Footer/>
+
+    return (
+      <div className="home-container">
+        <div className="first-element">
+          <div className="left-first-content">
+            <img src={firstImage} alt="lesson" id="imageFirst" />
+          </div>
+          <div className="right-first-content">
+            <h2 className="h2-home-first">E-DZIENNIK</h2>
+            <p className="p-home-first">
+              Aplikacja webowa elektroniczny dziennik dla szkoły<br />
+              <a href="/login"><button id="btnLogin">Zaloguj się</button></a>
+
+
+            </p>
+          </div>
         </div>
+        
+      
+        <Footer />
+      </div>
     );
 }

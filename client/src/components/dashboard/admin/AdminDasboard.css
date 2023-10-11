@@ -1,7 +1,53 @@
+@import '../../../App.css';
+
 .dashboard{
   display: flex;
   flex-direction: row;
+
+
 }
 .dasboard-content{
   padding-left: 5%;
+  width: 100vw;
+  height: 100vh;
+  
+}
+
+.admin-boxes{
+  display: flex;
+  flex-direction: row; 
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+.admin-box{
+  width: 260px;  
+  border-radius: 30px;
+  text-align: center;
+  height: 140px;
+  margin: 20px;
+
+}
+
+.admin-box1{
+  background-color: #8ab8a8;
+}
+
+.admin-box2{
+  background-color: #629ab4;
+}
+
+.admin-box3{
+  background-color: #6b9997;
+}
+
+.p-admin-box-header{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.p-admin-box-data{
+  font-size: 24px;
+  font-weight: bold;
 }

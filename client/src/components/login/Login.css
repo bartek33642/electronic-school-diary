@@ -1,0 +1,88 @@
+@import '../../App.css';
+
+
+.login-form{
+    margin: auto;
+    padding: auto;
+    height: 100vh;
+    width: 100vw;
+    background-image: url(../../images/bg1.png);
+}
+
+.login-content{
+    display: flex;
+    flex-direction: row;
+    font-size: 18px;
+    padding: 4%;
+    border-radius: 30px;
+    background-color: #fff;
+}
+
+#login, #password{
+    width: 50%;
+    border-radius: 15px;
+    margin-bottom: 4%;
+    height: 20px;
+}
+#showPassword{
+    margin-bottom: 1%;
+
+}
+.loginBttn{
+    width: 55%;
+    border-radius: 15px;
+    margin-bottom: 1%;
+    height: 30px;
+    font-size: 18px;
+    background-color: var(--primaryBG);
+    color: var(--fourth)
+}
+
+.right-login-content, .left-login-content, .h3-login{
+    background-color: #fff;
+}
+
+
+.right-login-content{
+    width: 40%;
+    /* padding-left: 40px; */
+    margin:auto;
+    padding: auto;
+}
+
+.p-login{
+    background-color: #fff;
+    color: #1d1d1d;
+}
+#forgotPassword{
+    background-color: #fff;
+    text-decoration: wavy underline;
+    color: #1d1d1d;
+
+}
+
+.image-login{ 
+    background-color: #fff;
+    max-width: 90%;
+}
+
+.loginA{
+    text-decoration: none;
+    color: #1d1d1d;
+}
+
+@media (max-width: 768px) {
+    .login-content{
+        margin: auto;
+        padding: auto;
+        display: flex;
+        flex-direction: column;
+        font-size: 18px;
+        border-radius: 30px;
+        background-color: #fff;
+        text-align: center;
+        align-items: center;
+        
+    }
+    
+}

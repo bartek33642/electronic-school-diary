@@ -1,0 +1,81 @@
+@import '../../../App.css';
+
+.Fi{
+    background: none;
+    width: 50px;
+    position: relative;
+    font-size: 18px;
+    text-align: center;
+}
+.welcomeText{
+    background-color: var(--blue);
+    color: #9c9b9b;
+}
+ul, li{
+    list-style: none;
+    background-color: var(--blue);
+    color: #fff;
+    font-size: 18px;
+    
+}
+.navbar{
+    height: max-content;
+    width: fit-content;
+}
+
+ul, .welcomeText{
+    height: max-content;
+    width: max-content;
+    border-radius: 0 50px 50px 0;
+    padding-top: 2px;
+    padding-bottom: 6px; 
+}
+li{
+    margin-top: 10%;
+    margin-right: 60px;
+    padding: 2% 0 2% 0;
+
+}
+
+li:active{
+    background-color: rgb(44, 55, 95);
+    border-radius: 0 50px 50px 0;
+}
+
+.nav-item{
+    position: relative;
+    margin-left: 10px;
+}
+
+.twoMenuBtns{
+    color: #161515;
+    bottom: 0;
+}
+
+.LinkBtn{
+    text-decoration: none;
+    position: relative;
+    color: #fff;
+}
+
+.LinkBtn2{
+    color: #1c1c1c;
+}
+
+@media (max-width: 768px) {
+
+    .nav-menu{
+        overflow: hidden;
+        width: 90px;
+        transition: width 0.2s linear;
+        margin-left: -40px;
+    }
+    .nav-menu:hover{
+        width: 280px;
+        transition: all 0.5s ease;
+    }
+
+    .welcomeText{
+        display: none;
+    }
+}
