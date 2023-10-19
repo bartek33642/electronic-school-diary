@@ -4,10 +4,13 @@ const pool = require('../db');
 const cors = require("cors");
 const authMiddleware = require('../app/middleware/authMiddleware');
 const app = express();
+const bodyParser = require('body-parser')
 
 
 app.use(cors());
 app.options('*', cors()); 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: "2048kb" }));
 
 app.get("/", (req, res) => {
     console.log("start");

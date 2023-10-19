@@ -149,7 +149,9 @@ export function Login() {
 
     const loginData = { email, password };
 
-    const login$ = ajax.post("http://localhost:3001/REST/login", loginData, {
+    console.log("loginData: ", loginData); 
+
+    const login$ = ajax.post("http://localhost:3001/REST/REST/login", loginData, {
       "Content-Type": "application/json",
     });
 

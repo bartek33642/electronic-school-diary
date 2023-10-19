@@ -4,7 +4,7 @@ const userDAO = {
   // Function to create a new user and return the user_id
   registerUser: async (email, password, role, active, status, first_name, second_name) => {
     try {
-      const query = 'INSERT INTO gradebook.users (e-mail, password, role, active, status, first_name, second_name) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING user_id';
+      const query = 'INSERT INTO gradebook.users (email, password, role, active, status, first_name, second_name) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING user_id';
       const values = [email, password, role, active, status, first_name, second_name];
 
       const result = await pool.query(query, values);
@@ -16,7 +16,7 @@ const userDAO = {
 
   loginUser: async (email, password) => {
     try {
-      const query = 'SELECT user_id, password FROM gradebook.users WHERE e-mail = $1';
+      const query = 'SELECT user_id, password FROM gradebook.users WHERE email = $1';
       const result = await pool.query(query, [email]);
 
       if (result.rows.length === 0) {
