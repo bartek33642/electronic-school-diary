@@ -21,8 +21,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt'); // Dodaj bibliotekę do haszowania hasła
 const router = express.Router();
-const pool = require('../db');
-const config = require('../config');
+const pool = require('../../../db');
+const config = require('../../config');
 
 router.post('/REST/login', async (req, res) => {
     const { email, password } = req.body;

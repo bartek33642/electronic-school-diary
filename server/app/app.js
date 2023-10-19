@@ -6,7 +6,8 @@ const authMiddleware = require('../app/middleware/authMiddleware');
 const app = express();
 
 
-app.use(cors())
+app.use(cors());
+app.options('*', cors()); 
 
 app.get("/", (req, res) => {
     console.log("start");
@@ -48,6 +49,8 @@ app.use('/teacher', authMiddleware);
 //       res.status(500).send('Internal Server Error');
 //     }
 //   });
+
+app.use('/REST', require('./REST/routes/adminRoutes'));
 
 app.get('/*', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');

@@ -2,24 +2,25 @@ import React from "react";
 import "./Role.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from 'axios';
 
 export function Role() {
     const [roles, setRoles] = useState([]);
 
-    useEffect(() => {
-        const token = localStorage.getItem('jwtToken');
-        if (token) {
-          axios.get('/getUserRoles', { headers: { Authorization: `Bearer ${token}` } })
-            .then((response) => {
-              const roles = response.data;
-              setRoles(roles); // Ustaw role w stanie komponentu.
-            })
-            .catch((error) => {
-              // Obsłuż błąd.
-            });
-        }
-      }, []);
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem('jwtToken');
+    //     if (token) {
+    //       axios.get('/getUserRoles', { headers: { Authorization: `Bearer ${token}` } })
+    //         .then((response) => {
+    //           const roles = response.data;
+    //           setRoles(roles); // Ustaw role w stanie komponentu.
+    //         })
+    //         .catch((error) => {
+    //           // Obsłuż błąd.
+    //         });
+    //     }
+    //   }, []);
 
     return(
         <div className="role-container">
