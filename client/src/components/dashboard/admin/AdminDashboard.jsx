@@ -1,7 +1,13 @@
 import React from "react";
 import './AdminDasboard.css';
 import { AdminMenu } from "../../menu/admin/AdminMenu";
+import { CountdownToVacations } from "../../../dependenciesAndRequirements/CountdownToVacations";
+import { FiSun } from 'react-icons/fi';
+
 export function AdminDashboard(){
+
+    const date = '2024-06-22';
+    const daysUntil = CountdownToVacations(date);
 
     return(        
         <div className="dashboard">
@@ -20,9 +26,6 @@ export function AdminDashboard(){
                         </div>
 
                     </div>
-               
-
-
 
                     <div className="admin-box admin-box2">
 
@@ -46,6 +49,21 @@ export function AdminDashboard(){
 
                     </div>
                 </div>
+
+                <div className="admin-box-wide">
+                    <div className="admin-box-wide-left">
+                        <FiSun className="admin-box-wide-icon"/>
+                    </div>
+
+                    <div className="admin-box-wide-right">
+                        <p className="admin-box-wide-right-p">Do wakacji pozostało: 
+                         {daysUntil} dni</p>
+                         <progress max={366} value={366-daysUntil} className="admin-progress-vacation">{daysUntil} dni</progress>
+                    </div>
+                    
+                </div>
+
+
 
             </div> 
             

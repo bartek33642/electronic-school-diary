@@ -27,6 +27,7 @@
 .right-first-content{
     background-color: #ffffff4f;
     border-radius: 15px;
+    padding: 2%;
 }
 
 .left-first-content, .right-first-content{
@@ -41,6 +42,7 @@
     align-self: center;
     padding-left: 2%;
 }
+
 #btnLogin{
     margin-top: 5%;
     margin-left: 5%; 
@@ -53,10 +55,8 @@
 }
 #btnLogin:hover{
    color: #fff5ac;
+   cursor: pointer;
 }
-
-
-
 
 @media (max-width: 340px) {
     .first-element{
@@ -85,49 +85,3 @@
 
    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 
-.container{
-    display: flex; 
-    flex-direction: column;
-    text-align: center;
-}
-
-.image{    
-    justify-self: center;
-    align-content: center;
-    width: 100%;
-}
-.img-student{
-    max-width: 100%;
-}
-.bttn-login-homepage{
-    background-color: #031030;
-    color: #fff;
-    font-size: 18px;
-    border-radius: 10vh;
-    width: 60%;
-}
-
-.bttn-login-homepage:hover{
-    background-color: #031030a3;
-}
-
-.content{
-    text-align: center;
-    font-size: 16px;
-} */

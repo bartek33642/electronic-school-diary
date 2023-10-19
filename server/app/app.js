@@ -2,7 +2,7 @@ import config from "./config";
 const express = require('express');
 const pool = require('../db');
 const cors = require("cors");
-const jwtMiddleware = require('./middleware/jwtMiddleware');
+const authMiddleware = require('../app/middleware/authMiddleware');
 const app = express();
 
 
@@ -13,13 +13,13 @@ app.get("/", (req, res) => {
     res.send("Hello, Server was started")
 });
 
-// Add the JWT middleware to secure routes
-app.use('/REST/admin', jwtMiddleware); 
-app.use('/REST/grade', jwtMiddleware);
-app.use('/REST/parent', jwtMiddleware);
-app.use('/REST/principal', jwtMiddleware);
-app.use('/REST/student', jwtMiddleware);
-app.use('/REST/teacher', jwtMiddleware);
+// // Add the JWT middleware to secure routes
+app.use('/admin', authMiddleware); 
+app.use('/grade', authMiddleware);
+app.use('/parent', authMiddleware);
+app.use('/principal', authMiddleware);
+app.use('/student', authMiddleware);
+app.use('/teacher', authMiddleware);
 
 // //test
 // app.get('/roles', async (req, res) => {

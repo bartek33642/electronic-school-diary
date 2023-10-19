@@ -13,8 +13,10 @@ html, body{
     --primaryBG: #D0D0D0;
     --second: #031030;
     --third: #031030ed;
-    --fourth: #ffffff;
+    --white: #ffffff;
     --fifth: #c4c4c4;
     --blue: #3737a0;
+    --lightgrey: #e2e2e2;
+    --black: #111;
     --body-font: 'Poppins', sans-serif, 14px;
 }

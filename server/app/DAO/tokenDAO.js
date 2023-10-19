@@ -4,7 +4,7 @@ const tokenDAO = {
   // Function to create a new token in the database
   createToken: async (userId, type, value) => {
     try {
-      const query = 'INSERT INTO token (user_id, type, value, create_date) VALUES ($1, $2, $3, $4) RETURNING *';
+      const query = 'INSERT INTO gradebook.token (user_id, type, value, create_date) VALUES ($1, $2, $3, $4) RETURNING *';
       const values = [userId, type, value, new Date()];
 
       const result = await pool.query(query, values);
@@ -17,7 +17,7 @@ const tokenDAO = {
   // Function to get a token by its value
   getTokenByValue: async (value) => {
     try {
-      const query = 'SELECT * FROM token WHERE value = $1';
+      const query = 'SELECT * FROM gradebook.token WHERE value = $1';
       const values = [value];
 
       const result = await pool.query(query, values);
@@ -30,7 +30,7 @@ const tokenDAO = {
   // Function to delete a token by its value
   deleteTokenByValue: async (value) => {
     try {
-      const query = 'DELETE FROM token WHERE value = $1';
+      const query = 'DELETE FROM gradebook.token WHERE value = $1';
       const values = [value];
 
       await pool.query(query, values);

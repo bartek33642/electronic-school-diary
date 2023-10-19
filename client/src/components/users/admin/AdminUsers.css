@@ -1,0 +1,28 @@
+.users-admin-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.admin-users-header{
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-users-elements{
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.users-selection, .admin-users-btns{
+    min-width: 150px;
+    max-height: 40px;
+    min-height: 30px;
+    border-radius: 15px;
+}
+
+.admin-users-btns{
+    margin-right: 10px;
+    
+}

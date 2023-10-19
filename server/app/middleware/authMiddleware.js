@@ -1,37 +1,42 @@
-const express = require('express');
+// import jwt from 'jsonwebtoken';
+// import config from '../config';
+
+// const authMiddleware = (req, res, next) => {
+//   let token = req.headers['x-auth-token'] || req.headers['authorization'];
+//   if (token && token.startsWith('Bearer ')) {
+//     token = token.slice(7, token.length);
+//   }
+//   if (!token) return res.status(401).send('Access denied. No token provided.');
+
+//   try {
+//     req.user = jwt.verify(token, config.JwtSecret);
+//     next();
+//   }
+//   catch (ex) {
+//     res.status(400).send('Invalid token.');
+//   }
+// };
+
+// export default authMiddleware;
+
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const userDAO = require('../DAO/userDAO');
 const config = require('../config');
 
-const router = express.Router();
+const authMiddleware = (req, res, next) => {
+  const token = req.header('Authorization');
 
-// Route to handle user registration
-router.post('/register', async (req, res) => {
-  const { email, password, role, active, status, first_name, second_name } = req.body;
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication failed: No token provided.' });
+  }
 
-  try {
-    // Check if the user with the given email already exists in the database
-    const existingUser = await userDAO.getUserByEmail(email);
-
-    if (existingUser) {
-      return res.status(409).json({ message: 'User with this email already exists.' });
+  jwt.verify(token, config.jwtSecret, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Authentication failed: Invalid token.' });
     }
 
-    // Hash the password before saving it to the database
-    const hashedPassword = await bcrypt.hash(password, 10);
+    req.user = user;
+    next();
+  });
+};
 
-    // Create the user and get the user_id
-    const userId = await userDAO.registerUser(email, hashedPassword, role, active, status, first_name, second_name);
-
-    // Create a JWT token for the newly registered user
-    const token = jwt.sign({ user_id: userId, email, role }, config.jwtSecret, { expiresIn: '1h' });
-
-    res.json({ token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error occurred while registering user.' });
-  }
-});
-
-module.exports = router;
+module.exports = authMiddleware;

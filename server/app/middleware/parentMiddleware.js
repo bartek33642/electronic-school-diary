@@ -1,18 +1,14 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const router = express.Router();
-const pool = require('../db');
-const config = require('../config');
+import jwt from "jsonwebtoken";
+import config from "../config";
 
+const parentMiddleware = (req, res, next) => {
 
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    if (req.user.role === 'parent') {
+        next(); // Jeśli użytkownik jest rodzicem, pozwól mu przejść dalej.
+      } else {
+        res.status(403).send('Access denied.'); // W przeciwnym razie zakaz dostępu.
+      }
 
-    const user = { email, role: 'parent' }; 
-    const token = jwt.sign(user, config.jwtSecret, { expiresIn: '1h' });
+};
 
-    res.json({ token });
-});
-
-  
-module.exports = router;
+export default parentMiddleware;

@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import './AdminMarks.css';
 import { AdminMenu } from "../../menu/admin/AdminMenu";
+import ModalWindow from "../../modalWindow/ModalWindow";
 
 export function AdminMarks(){
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+        console.log(isModalOpen);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        console.log(isModalOpen);
+    };
+
     return(
         <>
         
@@ -11,7 +25,7 @@ export function AdminMarks(){
             
          
             <div className="admin-marks-elements">
-                <h1 className="admin-header">Oceny</h1>
+                <h2 className="admin-marks-header">Oceny</h2>
                     <p className="marks-title">Szkoła</p>
                 
                     <select name="" id="" className="marks-selection">
@@ -62,24 +76,28 @@ export function AdminMarks(){
                     </tr>
                     <tr>
                         <td>Język polski</td>
-                        <td>3+ </td>
+                        <td><input type="button" value="+" onClick={openModal} className="admin-marks-button"/>
+                        <ModalWindow isOpen={isModalOpen} onClose={closeModal}>
+                            <h2>Wpisz ocenę</h2>
+                        </ModalWindow>
+                        </td>
                     </tr>
 
                     <tr>
                         <td>Matematyka</td>
-                        <td>4</td>
+                        <td><td><input type="button" value="+" className="admin-marks-button"/></td></td>
                     </tr>
                     <tr>
                         <td>Język angielski</td>
-                        <td>3</td>
+                        <td><td><input type="button" value="+" className="admin-marks-button"/></td></td>
                     </tr>
                     <tr>
                         <td>W-F</td>
-                        <td>4</td>
+                        <td><td><input type="button" value="+" className="admin-marks-button"/></td></td>
                     </tr>
                     <tr>
                         <td>Przyroda</td>
-                        <td>5</td>
+                        <td><td><input type="button" value="+" className="admin-marks-button"/></td></td>
                     </tr>
 
                 </table>

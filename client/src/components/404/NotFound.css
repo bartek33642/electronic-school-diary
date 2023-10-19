@@ -1,0 +1,32 @@
+@import '../../App.css';
+
+.view-404{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+
+}
+
+.img-404{
+    max-width: 30vw;
+}
+
+.button-404-text{
+    text-decoration: none;
+    color: var(--black);
+}
+
+.button-404{
+    border: none;
+    border-radius: 20px;
+    min-height: 30px;
+    max-height: 50px;
+    background-color: #59a3fb;
+}
+
+.h2-404{
+    color: var(--black);
+    font-weight: bold;
+    text-align: center;
+}

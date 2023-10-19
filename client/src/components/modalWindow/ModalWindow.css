@@ -1,0 +1,15 @@
+@import '../../App.css';
+
+.modal{
+    background-color: var(--white);
+    min-width: 200px;
+    min-height: 130px;
+    position: fixed;
+    box-shadow: 0 0 0 10px 0 var(--black);
+}
+
+.modal-content{
+    color: var(--black);
+    width: auto;
+    height: auto;
+}

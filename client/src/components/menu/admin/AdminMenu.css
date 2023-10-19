@@ -47,6 +47,10 @@ li:active{
     margin-left: 10px;
 }
 
+.nav-item:hover{
+    color: #ffffff6f;
+}
+
 .twoMenuBtns{
     color: #161515;
     bottom: 0;

@@ -13,6 +13,11 @@ import { AdminDashboard } from './components/dashboard/admin/AdminDashboard';
 import { Role } from './components/role/Role';
 import { AdminMarks } from '../src/components/marks/admin/AdminMarks';
 import { ParentDashboard } from './components/dashboard/parent/ParentDasboard';
+import { StudentDashboard } from './components/dashboard/student/StudentDashboard';
+import { TeacherDashboard } from './components/dashboard/teacher/TeacherDashboard';
+import { PrincipalDashboard } from './components/dashboard/principal/PrincipalDashboard';
+import { AdminUsers } from './components/users/admin/AdminUsers';
+
 
 function App() {
   return (
@@ -27,9 +32,13 @@ function App() {
           {/* Do zmiany dodać zabezpieczeni ścieżek*/}
           <Route path='/role' element={< Role/>} />
           <Route path="/register" element={<RegisterAdmin />} />
-          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/grades" element={<AdminMarks />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/parent" element={<ParentDashboard />} />
+          <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/principal" element={<PrincipalDashboard />} />
+          <Route path="/teacher" element={<TeacherDashboard />} />
+          <Route path="/users-admin" element={<AdminUsers />} />
 
 
          

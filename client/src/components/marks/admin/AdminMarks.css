@@ -4,10 +4,11 @@
     display: flex;
     flex-direction: row;
 }
-.admin-header{
+.admin-marks-header{
     display: flex;
     flex-direction: column;
 }
+
 .admin-marks-elements{
     display: flex;
     flex-direction: column;
@@ -25,7 +26,7 @@
 .marks-table{
     min-height: 80px;
     table-layout: fixed;
-    background-color: var(--fourth);
+    background-color: var(--white);
     margin: 20px 0 20px 10px;
     border-collapse: collapse;
     border: black 1px solid;
@@ -41,4 +42,10 @@
 
 .header-table{
     background-color: var(--fifth);
+}
+
+.admin-marks-button{
+    min-width: 20px;
+    max-width: 30px;
+    border-radius: 20%;
 }

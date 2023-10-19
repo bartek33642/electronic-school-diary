@@ -1,15 +1,18 @@
+@import '../../App.css';
+
 .role-container{
     margin: 5%;
+    padding: 2%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-
 }
 
 .boxRole{
     width: 220px;
     height: 200px;
-    background-color: #e2e2e2;
+    background-color: var(--blue);
+    color: var(--lightgrey);
     border-radius: 20px;
     text-align: center;
     padding-top: 2%;
@@ -17,6 +20,12 @@
     display: flex;
     flex-direction: column;
     margin: 10px;
+    box-shadow: 5px -5px #5d5d5d24;
+    transition: transform 0.4s ease;
+}
+
+.boxRole:hover{
+    transform: scale(1.1);
 }
 
 .btnBoxRole{
@@ -36,4 +45,12 @@
 
 .userName{
     padding-top: 15%;
+}
+
+@media (max-width: 870px) {
+    .role-container{
+        margin: auto;
+        padding: auto;
+        justify-content: center;
+    }    
 }
