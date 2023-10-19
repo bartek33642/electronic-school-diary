@@ -63,25 +63,25 @@ export function Login() {
   };
 
   const handleLogin = async () => {
-  //   const email = document.getElementById("login").value;
-  //   const password = document.getElementById("password").value;
+    const email = document.getElementById("login").value;
+    const password = document.getElementById("password").value;
 
-    // try {
-    //   // Wyślij żądanie logowania do serwera.
-    //   const response = await axios.post("http://localhost:3001/REST/login", { email, password });
+    try {
+      // Wyślij żądanie logowania do serwera.
+      const response = await axios.post("http://localhost:3001/REST/login", { email, password });
 
-    //   if (response.data.token) {
-    //     // Jeśli otrzymaliśmy token JWT w odpowiedzi, zachowujemy go w Local Storage.
-    //     localStorage.setItem("jwtToken", response.data.token);
+      if (response.data.token) {
+        // Jeśli otrzymaliśmy token JWT w odpowiedzi, zachowujemy go w Local Storage.
+        localStorage.setItem("jwtToken", response.data.token);
 
-    //     // Przekieruj użytkownika do strony roli (na przykład /role).
-    //     window.location.href = "/role";
-    //   } else {
-    //     console.error("Nieprawidłowa odpowiedź serwera.");
-    //   }
-    // } catch (error) {
-    //   console.error("Błąd logowania: ", error);
-    // }
+        // Przekieruj użytkownika do strony roli (na przykład /role).
+        window.location.href = "/role";
+      } else {
+        console.error("Nieprawidłowa odpowiedź serwera.");
+      }
+    } catch (error) {
+      console.error("Błąd logowania: ", error);
+    }
   };
 
   return (

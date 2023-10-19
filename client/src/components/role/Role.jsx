@@ -7,20 +7,19 @@ import axios from 'axios';
 export function Role() {
     const [roles, setRoles] = useState([]);
 
-
-    // useEffect(() => {
-    //     const token = localStorage.getItem('jwtToken');
-    //     if (token) {
-    //       axios.get('/getUserRoles', { headers: { Authorization: `Bearer ${token}` } })
-    //         .then((response) => {
-    //           const roles = response.data;
-    //           setRoles(roles); // Ustaw role w stanie komponentu.
-    //         })
-    //         .catch((error) => {
-    //           // Obsłuż błąd.
-    //         });
-    //     }
-    //   }, []);
+    useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        if (token) {
+          axios.get('/getUserRoles', { headers: { Authorization: `Bearer ${token}` } })
+            .then((response) => {
+              const roles = response.data;
+              setRoles(roles); // Ustawianie roli w stanie komponentu.
+            })
+            .catch((error) => {
+              // Obsłużenine błędu.
+            });
+        }
+      }, []);
 
     return(
         <div className="role-container">
