@@ -46,42 +46,130 @@
 //     );
 // }
 
+// import React, { useState } from "react";
+// import "./Login.css";
+// import axios from 'axios';
+// import imageEducation from "../../images/education.svg";
+// import { FiEye, FiEyeOff } from "react-icons/fi";
+
+// export function Login() {
+//   const [showPassword, setShowPassword] = useState(false);
+//   // const [email, setEmail] = useState("");
+//   // const [password, setPassword] = useState("");
+
+
+//   const handleShowPasswordChange = () => {
+//     setShowPassword(!showPassword);
+//   };
+
+//   const handleLogin = async () => {
+//     const email = document.getElementById("login").value;
+//     const password = document.getElementById("password").value;
+
+//     try {
+//       // Wyślij żądanie logowania do serwera.
+//       const response = await axios.post("http://localhost:3001/REST/login", { email, password });
+
+//       if (response.data.token) {
+//         // Jeśli otrzymaliśmy token JWT w odpowiedzi, zachowujemy go w Local Storage.
+//         localStorage.setItem("jwtToken", response.data.token);
+
+//         // Przekieruj użytkownika do strony roli (na przykład /role).
+//         window.location.href = "/role";
+//       } else {
+//         console.error("Nieprawidłowa odpowiedź serwera.");
+//       }
+//     } catch (error) {
+//       console.error("Błąd logowania: ", error);
+//     }
+//   };
+
+//   return (
+//     <div className="login-form">
+//       <div className="login-content">
+//         <div className="left-login-content">
+//           <img src={imageEducation} className="image-login" alt="Education" />
+//         </div>
+//         <div className="right-login-content">
+//           <h3 className="h3-login">Logowanie</h3>
+//           <p className="p-login">Zaloguj się do aplikacji e-dziennik</p>
+
+//           E-mail: <input type="email" id="login" /> <br />
+//           <div className="password-container">
+//             Hasło:
+//             <input
+//               type={showPassword ? "text" : "password"}
+//               id="password"
+//             />
+//             {showPassword ? (
+//               <span className="password-toggle" onClick={handleShowPasswordChange}>
+//                 <FiEyeOff alt="password show/hide eye" className="fi-login-eye" />
+//               </span>
+//             ) : (
+//               <span className="password-toggle" onClick={handleShowPasswordChange}>
+//                 <FiEye alt="password show/hide eye" className="fi-login-eye" />
+//               </span>
+//             )}
+//             <br />
+//           </div>
+//           <button
+//             onClick={handleLogin}
+//             type="button"
+//             className="loginBttn"
+//           >
+//             Zaloguj się
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
 import React, { useState } from "react";
 import "./Login.css";
-import axios from 'axios';
 import imageEducation from "../../images/education.svg";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+// import { Observable } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
 
   const handleShowPasswordChange = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     const email = document.getElementById("login").value;
     const password = document.getElementById("password").value;
 
-    try {
-      // Wyślij żądanie logowania do serwera.
-      const response = await axios.post("http://localhost:3001/REST/login", { email, password });
+    const loginData = { email, password };
 
-      if (response.data.token) {
-        // Jeśli otrzymaliśmy token JWT w odpowiedzi, zachowujemy go w Local Storage.
-        localStorage.setItem("jwtToken", response.data.token);
+    const login$ = ajax.post("http://localhost:3001/REST/login", loginData, {
+      "Content-Type": "application/json",
+    });
 
-        // Przekieruj użytkownika do strony roli (na przykład /role).
-        window.location.href = "/role";
-      } else {
-        console.error("Nieprawidłowa odpowiedź serwera.");
-      }
-    } catch (error) {
-      console.error("Błąd logowania: ", error);
-    }
+    login$
+      .pipe(
+        map((response) => response.response), // Dostęp do odpowiedzi.
+        catchError((error) => {
+          // Obsłuż błąd.
+          console.error("Błąd logowania: ", error);
+          return of(null); // Zwróć pustą wartość w przypadku błędu.
+        })
+      )
+      .subscribe((data) => {
+        if (data && data.token) {
+          localStorage.setItem("jwtToken", data.token);
+          window.location.href = "/role";
+        } else {
+          console.error("Nieprawidłowa odpowiedź serwera.");
+        }
+      });
   };
 
   return (
@@ -112,11 +200,7 @@ export function Login() {
             )}
             <br />
           </div>
-          <button
-            onClick={handleLogin}
-            type="button"
-            className="loginBttn"
-          >
+          <button onClick={handleLogin} type="button" className="loginBttn">
             Zaloguj się
           </button>
         </div>
