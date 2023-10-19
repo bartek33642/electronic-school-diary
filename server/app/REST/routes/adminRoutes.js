@@ -82,19 +82,20 @@ router.post('/REST/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        if (!email || !password) {
-            return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło. Nie wypełniono' });
-        }
-
         // Sprawdź, czy istnieje użytkownik o podanym e-mailu w bazie danych.
         const user = await pool.query("SELECT * FROM gradebook.users WHERE email = $1", [email]);
+        
+        if (!email || !password) {
+            return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło.' });
+        }
 
         if (user.rows.length === 0) {
             // Jeśli nie znaleziono użytkownika, zwróć błąd.
             return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło.' });
         }
 
-        // Usunięta weryfikacja hasła z użyciem bcrypt.
+        // Porównanie hasła z bazą danych za pomocą bcrypt.
+        // const passwordMatch = await bcrypt.compare(password, user.rows[0].password);
 
         // Użytkownik zweryfikowany, generuj token JWT.
         // const token = jwt.sign({ email, role: 'admin' }, config.jwtSecret, { expiresIn: '1h' });

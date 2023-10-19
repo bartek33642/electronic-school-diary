@@ -26,7 +26,7 @@
   border-radius: 30px;
   text-align: center;
   height: 140px;
-  margin: 20px;
+  margin: 10px;
 
 }
 
@@ -96,5 +96,57 @@ svg.admin-box-wide-icon{
   width: 95%;
   height: 30px;
 }
+.admin-content-buttons-all{
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.admin-content-buttons{
+  display: flex;
+  flex-direction: row;
+  width: 260px;
+  height: 140px;
+  background-color: var(--lightgrey);
+  border: none;
+  border-radius: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.admin-button-first{
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  color: var(--black);
+}
+
+.admin-button-content{
+  text-decoration: none;
+  margin: 10px;
+}
+.admin-content-buttons:hover{
+  cursor: pointer;
+}
+
+.admin-button-first-left-h4{
+  font-size: 20px;
+}
+
+.admin-button-first-left, .admin-button-first-right{
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-button-first-left{
+  width: 50%;
+}
+
+.admin-button-first-right{
+  width: 30%;
+}
+
 
 

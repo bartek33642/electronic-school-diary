@@ -2,7 +2,8 @@ import React from "react";
 import './AdminDasboard.css';
 import { AdminMenu } from "../../menu/admin/AdminMenu";
 import { CountdownToVacations } from "../../../dependenciesAndRequirements/CountdownToVacations";
-import { FiSun } from 'react-icons/fi';
+import { FiSun, FiSettings, FiUsers, FiMap } from 'react-icons/fi';
+import { Link } from "react-router-dom";
 
 export function AdminDashboard(){
 
@@ -63,9 +64,55 @@ export function AdminDashboard(){
                     
                 </div>
 
+                <div className="admin-content-buttons-all">
+                <Link to='/users-admin' className="admin-button-content">
+                    <div className="admin-content-buttons">
+                
+                    <div className="admin-button-first">
+                    <div className="admin-button-first-left">
+                        <h4 className="admin-button-first-left-h4">Użytkownicy</h4>
+                    </div>
+                    <div className="admin-button-first-right">
+                        <FiUsers className="admin-box-wide-icon admin-button-icons" />
+                    </div>
+                </div>
+                </div>
+                </Link>
+
+
+                <Link to='/school' className="admin-button-content">
+                    <div className="admin-content-buttons">
+                
+                    <div className="admin-button-first">
+                    <div className="admin-button-first-left">
+                        <h4 className="admin-button-first-left-h4">Szkoły</h4>
+                    </div>
+                    <div className="admin-button-first-right">
+                        <FiMap className="admin-box-wide-icon" />
+                    </div>
+                </div>
+                </div>
+                </Link>
+
+                <Link to='/settings' className="admin-button-content">
+                    <div className="admin-content-buttons">
+                
+                    <div className="admin-button-first">
+                    <div className="admin-button-first-left">
+                        <h4 className="admin-button-first-left-h4">Ustawienia</h4>
+                    </div>
+                    <div className="admin-button-first-right">
+                        <FiSettings className="admin-box-wide-icon" />
+                    </div>
+                </div>
+                </div>
+                </Link>
+            </div>
 
 
             </div> 
+        
+
             
         
        </div>
