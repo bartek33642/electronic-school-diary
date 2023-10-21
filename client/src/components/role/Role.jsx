@@ -118,16 +118,16 @@ export function Role() {
   
         roles$
           .pipe(
-            map((response) => response.response), // Dostęp do odpowiedzi.
+            map((response) => response.response),
             catchError((error) => {
-              // Obsłuż błąd.
+              // Obsłużenie błędu
               console.error(error);
-              return of(null); // Zwróć pustą wartość w przypadku błędu.
+              return of(null);             
             })
           )
           .subscribe((data) => {
             if (data !== null) {
-              setRoles(data); // Ustaw role w stanie komponentu.
+              setRoles(data); // Ustawianie roli w stanie komponentu.
             }
           });
       }
