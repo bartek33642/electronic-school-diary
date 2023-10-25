@@ -94,7 +94,7 @@ export function AdminDashboard(){
                 </div>
                 </Link>
 
-                <Link to='/settings' className="admin-button-content">
+                <Link to='/admin-settings' className="admin-button-content">
                     <div className="admin-content-buttons">
                 
                     <div className="admin-button-first">

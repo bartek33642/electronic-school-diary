@@ -18,12 +18,12 @@ app.get("/", (req, res) => {
 });
 
 // // Add the JWT middleware to secure routes
-app.use('/admin', authMiddleware); 
-app.use('/grade', authMiddleware);
-app.use('/parent', authMiddleware);
-app.use('/principal', authMiddleware);
-app.use('/student', authMiddleware);
-app.use('/teacher', authMiddleware);
+// app.use('/admin', authMiddleware); 
+// app.use('/grade', authMiddleware);
+// app.use('/parent', authMiddleware);
+// app.use('/principal', authMiddleware);
+// app.use('/student', authMiddleware);
+// app.use('/teacher', authMiddleware);
 
 // //test
 // app.get('/roles', async (req, res) => {
@@ -53,7 +53,7 @@ app.use('/teacher', authMiddleware);
 //     }
 //   });
 
-app.use('/REST', require('./REST/routes/adminRoutes'));
+// app.use('/REST', require('./REST/routes/adminRoutes'));
 
 app.get('/*', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');

@@ -1,6 +1,5 @@
 @import '../../App.css';
 
-
 .login-form{
     margin: auto;
     padding: auto;
@@ -35,8 +34,9 @@
 
 .fi-login-eye{
     position: relative;
-    right: 8%;
-    transform: translateY(20%);
+    right: -92%;
+    transform: translateY(-199%);
+    
     cursor: pointer;
 }
 
@@ -78,8 +78,15 @@
     text-decoration: none;
     color: #1d1d1d;
 }
-
-
+.input-label-login{
+    margin-top: 5px;
+}
+.input-label-login #login{
+    width: 100%;
+}
+.input-label-login #password{
+    width: 100%;
+}
 
 @media (max-width: 768px) {
     .login-content{

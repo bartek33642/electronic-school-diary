@@ -1,10 +1,10 @@
 import React from "react";
 import './Register.css';
 
-export function RegisterPrincipal(){
+export function RegisterTeacher(){
     return (
       <div className="register-form">
-        <form action="/register-principal" method="post">
+        <form action="/register-teacher" method="post">
         Adres e-mail: <input type="text" id="email" name="email"/> <br />
         Hasło: <input type="password" id="password-register" name="password"/> <br />
         Imię: <input type="text" name="first-name" id="first-name" /> <br />
@@ -13,8 +13,8 @@ export function RegisterPrincipal(){
         Szkoła: <select name="school" id="school">
             <option value="" name='option-school'></option>
         </select> <br />
-        <input type="submit" value="Zapisz" />
-
+        Specjalizacja: <input type="text" name="specialization" /> <br />
+        <input type="submit" value="Zapisz"/>
         </form>
       </div>
     );

@@ -11,18 +11,37 @@
 .admin-users-elements{
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     padding-left: 10px;
     padding-top: 10px;
+    width: 100%;
 }
 
 .users-selection, .admin-users-btns{
-    min-width: 150px;
+    min-width: 300px;
     max-height: 40px;
     min-height: 30px;
     border-radius: 15px;
+    margin: 5px;
 }
 
 .admin-users-btns{
     margin-right: 10px;
-    
+    cursor: pointer;
+}
+
+.users-admin-create-accounts{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-top: 5vh;
+}
+
+.create-accounts-admin-btn{
+    border-radius: 15px;
+    height: 40px;
+    width: 80%;
+    cursor: pointer;
+    margin:10px;
 }

@@ -17,6 +17,8 @@ import { StudentDashboard } from './components/dashboard/student/StudentDashboar
 import { TeacherDashboard } from './components/dashboard/teacher/TeacherDashboard';
 import { PrincipalDashboard } from './components/dashboard/principal/PrincipalDashboard';
 import { AdminUsers } from './components/users/admin/AdminUsers';
+import { AdminSettings } from './components/settings/admin/AdminSettings';
+import { ParenttudentTimetable } from './components/timetable/ParentStudentTimetable/ParentStudentTimetable';
 
 
 function App() {
@@ -39,8 +41,8 @@ function App() {
           <Route path="/principal" element={<PrincipalDashboard />} />
           <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/users-admin" element={<AdminUsers />} />
-
-
+          <Route path="/admin-settings" element={<AdminSettings />} />
+          <Route path="/student-timetable" element={<ParenttudentTimetable />} />
          
         </Routes>
       </BrowserRouter>

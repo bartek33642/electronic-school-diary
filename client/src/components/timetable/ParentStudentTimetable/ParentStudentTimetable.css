@@ -1,0 +1,13 @@
+@import '../../../App.css';
+
+.scheduler_default_corner{
+background-color: white !important;
+}
+
+.scheduler_default_corner_inner{
+    background-color: white !important;
+}
+
+element.style{
+    background-color: white !important;
+}

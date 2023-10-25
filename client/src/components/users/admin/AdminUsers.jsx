@@ -1,14 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import './AdminUsers.css';
 import { AdminMenu } from "../../menu/admin/AdminMenu";
 import Modal from '@mui/material/Modal';
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
+import { RegisterAdmin } from "../../Register/RegisterAdmin";
+import { RegisterPrincipal } from "../../Register/RegisterPrincipal";
+import { RegisterTeacher } from "../../Register/RegisterTeacher";
+import { RegisterParent } from "../../Register/RegisterParent";
+import { RegisterStudent } from "../../Register/RegisterStudent";
+
 
 export function AdminUsers(){
-    const [open, setOpen] = React.useState(false);
-    const [open1, setOpen1] = React.useState(false);
-    const [open2, setOpen2] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [open1, setOpen1] = useState(false);
+    const [open2, setOpen2] = useState(false);
+    const [open3, setOpen3] = useState(false);
+    const [open4, setOpen4] = useState(false);
+    const [open5, setOpen5] = useState(false);
+    const [open6, setOpen6] = useState(false);
+    const [open7, setOpen7] = useState(false);
+
 
 
     const handleOpen = () => {
@@ -18,34 +30,68 @@ export function AdminUsers(){
       setOpen(false);
     };
 
-
     const handleOpen1 = () => {
-        setOpen1(true);
-      };
-      const handleClose1 = () => {
-        setOpen1(false);
-      };
+      setOpen1(true);
+    };
+    const handleClose1 = () => {
+      setOpen1(false);
+    };
 
-      const handleOpen2 = () => {
-        setOpen2(true);
-      };
-      const handleClose2 = () => {
-        setOpen2(false);
-      };
+    const handleOpen2 = () => {
+      setOpen2(true);
+    };
+    const handleClose2 = () => {
+      setOpen2(false);
+    };
+
+    const handleOpen3 = () => {
+      setOpen3(true);
+    };
+    const handleClose3 = () => {
+      setOpen3(false);
+    };
+
+    const handleOpen4 = () => {
+      setOpen4(true);
+    };
+    const handleClose4 = () => {
+      setOpen4(false);
+    };
+
+    const handleOpen5 = () => {
+      setOpen5(true);
+    };
+    const handleClose5 = () => {
+      setOpen5(false);
+    };
+
+    const handleOpen6 = () => {
+      setOpen6(true);
+    };
+    const handleClose6 = () => {
+      setOpen6(false);
+    };
+
+    const handleOpen7 = () => {
+      setOpen7(true);
+    };
+    const handleClose7 = () => {
+      setOpen7(false);
+    };
 
     const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        pt: 2,
-        px: 4,
-        pb: 3,
-      };
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: '60%',
+      bgcolor: "background.paper",
+      border: "2px solid #000",
+      boxShadow: 24,
+      pt: 2,
+      px: 4,
+      pb: 3,
+    };
 
     return (
       <div className="users-admin-container">
@@ -68,7 +114,7 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style, width: 200 }}>
+              <Box sx={{ ...style}}>
                 <h2 id="child-modal-title">Dodaj szkołę </h2>
                 Nazwa szkoły:
                 <input type="text" name="nazwa_szkoly" id="" />
@@ -102,7 +148,7 @@ export function AdminUsers(){
               aria-describedby="parent-modal-description"
               id="2"
             >
-              <Box sx={{ ...style, width: 200 }}>
+              <Box sx={{ ...style}}>
                 <h2 id="child-modal-title">Dodaj klasę </h2>
                 <p className="users-title">Szkoła</p>
                 <select name="" id="" className="users-selection">
@@ -123,77 +169,116 @@ export function AdminUsers(){
               </Box>
             </Modal>
 
-            <input
-              type="button"
-              value="Dodaj użytkownika "
-              className="admin-users-btns"
-              onClick={handleOpen2}
-            />
-                        <Modal
+            <input 
+              type="button" 
+              value="Przeglądaj użytkowników"
+              className="admin-users-btns" 
+              onClick={handleOpen2}/>
+
+            <Modal
               open={open2}
               onClose={handleClose2}
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style, width: 200 }}>
-                <h2 id="child-modal-title">Dodaj użytkownika </h2>
-                Adres e-mail:
-                <input type="text" name="e-mail" id="" />
-                <br />
-                Hasło: <input type="text" name="haslo" id="" />
-                <br />
-                Czy aktywny: <input type="checkbox" name="aktywny" id="" />
-                <br />
-                Status: 
-                <select name="" id="" className="users-selection">
-                  <option value="-" selected disabled>
-                    {" "}
-                  </option>
-                  <option value="admin">admin</option>
-                  <option value="principal">dyrektor</option>
-                  <option value="teacher">nauczyciel</option>
-                  <option value="parent">rodzic</option>
-                  <option value="student">uczeń</option>
-                </select>
-                <br />
-                Imię: <input type="text" name="imie" id="" />
-                <br />
-                Naziwsko: <input type="text" name="nazwisko" id="" />
-                <br />
-                <input type="submit" value="Zapisz" />
-                <br />
+              <Box sx={{ ...style}}>
+                <h2 id="child-modal-title">Użytkownicy </h2>
+
                 <Button onClick={handleClose2}>Zamknij</Button>
               </Box>
             </Modal>
+          
+          </div>
 
+            <div className="users-admin-create-accounts">
+
+            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen3}>
+            Dodaj administratora
+            </button>
+            <Modal
+              open={open3}
+              onClose={handleClose3}
+              aria-labelledby="parent-modal-title"
+              aria-describedby="parent-modal-description"
+            >
+              <Box sx={{ ...style}}>
+                <h2 id="child-modal-title">Dodaj Administratora </h2>
+                  <RegisterAdmin />
+
+                <Button onClick={handleClose3}>Zamknij</Button>
+              </Box>
+            </Modal>
             
-          </div>
+            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen4}>
+            Dodaj dyrektora
+            </button>
+            <Modal
+              open={open4}
+              onClose={handleClose4}
+              aria-labelledby="parent-modal-title"
+              aria-describedby="parent-modal-description"
+            >
+              <Box sx={{ ...style}}>
+                <h2 id="child-modal-title">Dodaj dyrektora </h2>
+                  <RegisterPrincipal />
 
-          <div className="admin-users-selectUsers">
-            <p className="users-title">Szkoła</p>
+                <Button onClick={handleClose4}>Zamknij</Button>
+              </Box>
+            </Modal>
 
-            <select name="" id="" className="users-selection">
-              <option value="-" selected disabled>
-                {" "}
-              </option>
-              <option value="1lo">1LO</option>
-              <option value="2lo">2LO</option>
-              <option value="zst">ZST</option>
-              <option value="zsme">ZSME</option>
-            </select>
+            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen5}>
+            Dodaj nauczyciela
+            </button>
+            <Modal
+              open={open5}
+              onClose={handleClose5}
+              aria-labelledby="parent-modal-title"
+              aria-describedby="parent-modal-description"
+            >
+              <Box sx={{ ...style}}>
+                <h2 id="child-modal-title">Dodaj nauczyciela </h2>
+                  <RegisterTeacher />
 
-            <p className="users-title">Klasa</p>
+                <Button onClick={handleClose5}>Zamknij</Button>
+              </Box>
+            </Modal>
 
-            <select name="" id="" className="users-selection">
-              <option value="-" selected disabled>
-                {" "}
-              </option>
-              <option value="4a">4a</option>
-              <option value="2a">2a</option>
-              <option value="1b">1b</option>
-              <option value="3c">3c</option>
-            </select>
-          </div>
+            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen6}>
+            Dodaj rodzica
+            </button>
+            <Modal
+              open={open6}
+              onClose={handleClose6}
+              aria-labelledby="parent-modal-title"
+              aria-describedby="parent-modal-description"
+            >
+              <Box sx={{ ...style}}>
+                <h2 id="child-modal-title">Dodaj rodzica </h2>
+                  <RegisterParent />
+
+                <Button onClick={handleClose6}>Zamknij</Button>
+              </Box>
+            </Modal>
+
+            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen7}>
+            Dodaj ucznia
+            </button>
+            <Modal
+              open={open7}
+              onClose={handleClose7}
+              aria-labelledby="parent-modal-title"
+              aria-describedby="parent-modal-description"
+            >
+              <Box sx={{ ...style}}>
+                <h2 id="child-modal-title">Dodaj ucznia </h2>
+                  <RegisterStudent />
+
+                <Button onClick={handleClose7}>Zamknij</Button>
+              </Box>
+            </Modal>
+
+            </div>
+
         </div>
       </div>
     );

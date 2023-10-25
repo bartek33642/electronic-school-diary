@@ -184,10 +184,12 @@ export function Login() {
           <h3 className="h3-login">Logowanie</h3>
           <p className="p-login">Zaloguj się do aplikacji e-dziennik</p>
 
-          E-mail: <input type="email" id="login" /> <br />
+          E-mail: 
+          <div className="input-label-login">
+          <input type="email" id="login" /> </div> <br />
           <div className="password-container">
             Hasło:
-            <input
+            <div className="input-label-login"><input
               type={showPassword ? "text" : "password"}
               id="password"
             />
@@ -199,7 +201,7 @@ export function Login() {
               <span className="password-toggle" onClick={handleShowPasswordChange}>
                 <FiEye alt="password show/hide eye" className="fi-login-eye" />
               </span>
-            )}
+            )}</div>
             <br />
           </div>
           <button onClick={handleLogin} type="button" className="loginBttn">

@@ -20,7 +20,7 @@ export function AdminMenu(){
       <li> <FiUserMinus className="Fi" /><Link to='/remarks' className="LinkBtn">  <span className="nav-item"> Uwagi </span></Link></li>
       <li> <FiLayers className="Fi" /><Link to='/subjects' className="LinkBtn"> <span className="nav-item"> Przedmioty</span></Link></li>
       <li> <FiCheckSquare className="Fi" /><Link to='/polls' className="LinkBtn"> <span className="nav-item"> Ankiety</span></Link></li>
-      <li> <FiSettings className="Fi" /> <Link to='/settings' className="LinkBtn"><span className="nav-item"> Ustawienia</span></Link></li>
+      <li> <FiSettings className="Fi" /> <Link to='/admin-settings' className="LinkBtn"><span className="nav-item"> Ustawienia</span></Link></li>
       <li className="twoMenuBtns"> <FiPower className="Fi" /><Link to='/' className="LinkBtn LinkBtn2">  <span className="nav-item"> Wyloguj</span></Link></li>
      </ul>
      </nav>
