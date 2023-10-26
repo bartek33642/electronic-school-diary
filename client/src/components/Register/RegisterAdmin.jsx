@@ -44,9 +44,13 @@ export function RegisterAdmin() {
         };
 
         // Wysłanie danych do serwera
-        const registration$ = ajax.post("http://localhost:3001/REST/register-admin", registrationData, {
-          "Content-Type": "application/json",
-      });
+        const registration$ = ajax.post(
+          "http://localhost:3001/REST/register-admin",
+          registrationData,
+          {
+            "Content-Type": "application/json",
+          }
+        );
 
         registration$
             .pipe(

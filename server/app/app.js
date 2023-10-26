@@ -21,8 +21,14 @@ app.get("/", (req, res) => {
 
 app.use('/REST/login', require('../app/middleware/loginMiddleware'));
 
-app.post('/REST/register-admin', (req, res) => {
-  require('../app/middleware/adminMiddleware')(req, res);
+// app.post('/REST/register-admin', (req, res) => {
+//   require('../app/middleware/adminMiddleware')(req, res);
+// });
+
+const adminMiddleware = require('../app/middleware/adminMiddleware'); // Import modułu
+
+app.use('/REST/register-admin', (req, res) => {
+  adminMiddleware(req, res); // Wywołanie adminMiddleware z argumentami req i res
 });
 //end new
 

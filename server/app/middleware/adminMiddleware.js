@@ -4,7 +4,7 @@ const pool = require('../../db');
 const express = require('express');
 const router = express.Router();
 
-const admin = (req, res, next) => {
+const adminMiddleware = (req, res, next) => {
 
     // let token = req.headers['x-access-token'] || req.headers['authorization'];
     // if (token.startsWith('Bearer ')) {
@@ -39,4 +39,4 @@ const admin = (req, res, next) => {
     }
   })
 };
-export default admin;
+module.exports = adminMiddleware;
