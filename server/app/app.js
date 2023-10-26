@@ -10,6 +10,7 @@ const bodyParser = require('body-parser')
 app.use(cors({
   origin: '*',
 }));
+
 app.options('*', cors()); 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: "2048kb" }));
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 //new
-
+//app.js
 app.use('/REST/login', require('../app/middleware/loginMiddleware'));
 
 // app.post('/REST/register-admin', (req, res) => {
@@ -30,7 +31,7 @@ app.use('/REST/login', require('../app/middleware/loginMiddleware'));
 const adminMiddleware = require('../app/middleware/adminMiddleware'); // Import modułu
 
 app.use('/REST/register-admin', (req, res) => {
-  adminMiddleware(req, res); // Wywołanie adminMiddleware z argumentami req i res
+  adminMiddleware(req, res); 
 });
 //end new
 
@@ -44,18 +45,18 @@ app.use('/REST/register-admin', (req, res) => {
 // app.use('/teacher', authMiddleware);
 
 // //test
-app.get('/roles', async (req, res) => {
-    try {
-      const query = 'SELECT * FROM gradebook.roles';
-      const { rows } = await pool.query(query);
-      res.send(rows);
-      console.log("Roles okay");
+// app.get('/roles', async (req, res) => {
+//     try {
+//       const query = 'SELECT * FROM gradebook.roles';
+//       const { rows } = await pool.query(query);
+//       res.send(rows);
+//       console.log("Roles okay");
 
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-    }
-  });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send('Internal Server Error');
+//     }
+//   });
 
 // // test
 // app.get('/users', async (req, res) => {
