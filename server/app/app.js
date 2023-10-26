@@ -21,8 +21,9 @@ app.get("/", (req, res) => {
 
 app.use('/REST/login', require('../app/middleware/loginMiddleware'));
 
-app.post('/REST/register-admin', require('../app/middleware/adminMiddleware'));
-
+app.post('/REST/register-admin', (req, res) => {
+  require('../app/middleware/adminMiddleware')(req, res);
+});
 //end new
 
 
@@ -35,18 +36,18 @@ app.post('/REST/register-admin', require('../app/middleware/adminMiddleware'));
 // app.use('/teacher', authMiddleware);
 
 // //test
-// app.get('/roles', async (req, res) => {
-//     try {
-//       const query = 'SELECT * FROM gradebook.roles';
-//       const { rows } = await pool.query(query);
-//       res.send(rows);
-//       console.log("Roles okay");
+app.get('/roles', async (req, res) => {
+    try {
+      const query = 'SELECT * FROM gradebook.roles';
+      const { rows } = await pool.query(query);
+      res.send(rows);
+      console.log("Roles okay");
 
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).send('Internal Server Error');
-//     }
-//   });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
 
 // // test
 // app.get('/users', async (req, res) => {
