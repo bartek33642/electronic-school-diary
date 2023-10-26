@@ -11,3 +11,11 @@ background-color: white !important;
 element.style{
     background-color: white !important;
 }
+
+.partent-student-timetable-container{
+    display: flex;
+    flex-direction: row;
+}
+.parent-student-timetable-view{
+    margin: 10px;
+}

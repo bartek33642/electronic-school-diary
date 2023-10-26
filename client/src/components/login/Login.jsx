@@ -151,7 +151,7 @@ export function Login() {
 
     console.log("loginData: ", loginData); 
 
-    const login$ = ajax.post("http://localhost:3001/REST/REST/login", loginData, {
+    const login$ = ajax.post("http://localhost:3001/REST/login", loginData, {
       "Content-Type": "application/json",
     });
 
@@ -164,9 +164,16 @@ export function Login() {
           return of(null); // Zwróć pustą wartość w przypadku błędu.
         })
       )
+      // .subscribe((data) => {
+      //   if (data && data.token) {
+      //     localStorage.setItem("jwtToken", data.token);
+      //     window.location.href = "/role";
+      //   } else {
+      //     console.error("Nieprawidłowa odpowiedź serwera.");
+      //   }
+      // });
       .subscribe((data) => {
-        if (data && data.token) {
-          localStorage.setItem("jwtToken", data.token);
+        if (data) {
           window.location.href = "/role";
         } else {
           console.error("Nieprawidłowa odpowiedź serwera.");

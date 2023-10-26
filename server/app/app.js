@@ -17,6 +17,15 @@ app.get("/", (req, res) => {
     res.send("Hello, Server was started")
 });
 
+//new
+
+app.use('/REST/login', require('../app/middleware/loginMiddleware'));
+
+app.post('/REST/register-admin', require('../app/middleware/adminMiddleware'));
+
+//end new
+
+
 // // Add the JWT middleware to secure routes
 // app.use('/admin', authMiddleware); 
 // app.use('/grade', authMiddleware);
