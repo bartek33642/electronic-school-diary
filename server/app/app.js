@@ -2,9 +2,10 @@ import config from "./config";
 const express = require('express');
 const pool = require('../db');
 const cors = require("cors");
-const authMiddleware = require('../app/middleware/authMiddleware');
+// const authMiddleware = require('../app/middleware/authMiddleware');
 const app = express();
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+import routes from "./REST/routes";
 
 
 app.use(cors({
@@ -20,20 +21,22 @@ app.get("/", (req, res) => {
     res.send("Hello, Server was started")
 });
 
-//new
+routes(app);
+
+// login & register
 //app.js
-app.use('/REST/login', require('../app/middleware/loginMiddleware'));
+// app.use('/REST/login', require('../app/middleware/loginMiddleware'));
 
 // app.post('/REST/register-admin', (req, res) => {
 //   require('../app/middleware/adminMiddleware')(req, res);
 // });
 
-const adminMiddleware = require('../app/middleware/adminMiddleware'); // Import modułu
+// const adminMiddleware = require('../app/middleware/adminMiddleware'); 
 
-app.use('/REST/register-admin', (req, res) => {
-  adminMiddleware(req, res); 
-});
-//end new
+// app.use('/REST/register-admin', (req, res) => {
+//   adminMiddleware(req, res); 
+// });
+// end login & register
 
 
 // // Add the JWT middleware to secure routes
@@ -78,4 +81,6 @@ app.get('/*', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.listen(config.port, () => {console.log(`Server started on port ${config.port}`)})
+app.listen(config.port, () => {
+  console.log(`Server started on port ${config.port}`)
+})

@@ -1,17 +1,5 @@
 @import '../../../App.css';
 
-.scheduler_default_corner{
-background-color: white !important;
-}
-
-.scheduler_default_corner_inner{
-    background-color: white !important;
-}
-
-element.style{
-    background-color: white !important;
-}
-
 .partent-student-timetable-container{
     display: flex;
     flex-direction: row;
@@ -19,3 +7,5 @@ element.style{
 .parent-student-timetable-view{
     margin: 10px;
 }
+
+ 

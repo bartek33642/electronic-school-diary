@@ -1,0 +1,25 @@
+.admin-topics-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.admin-topics-elements{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
+}
+
+.buttons-admin-topics{
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons-admin-topics input{
+    border-radius: 20px;
+    height: 50px;
+    min-width: 800px;
+    margin: 20px;
+    cursor: pointer;
+}

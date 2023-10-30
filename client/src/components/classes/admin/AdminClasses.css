@@ -1,0 +1,24 @@
+.adminClasses-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.adminClasses-elements{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    width: 100%;
+}
+
+.buttons-adminClasses{
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons-adminClasses input{
+    border-radius: 20px;
+    height: 50px;
+    min-width: 800px;
+    margin: 20px;
+    cursor: pointer;
+}

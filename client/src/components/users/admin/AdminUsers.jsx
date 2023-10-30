@@ -114,7 +114,7 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style}}>
+              <Box sx={{ ...style }}>
                 <h2 id="child-modal-title">Dodaj szkołę </h2>
                 Nazwa szkoły:
                 <input type="text" name="nazwa_szkoly" id="" />

@@ -19,6 +19,10 @@ import { PrincipalDashboard } from './components/dashboard/principal/PrincipalDa
 import { AdminUsers } from './components/users/admin/AdminUsers';
 import { AdminSettings } from './components/settings/admin/AdminSettings';
 import { ParentStudentTimetable } from './components/timetable/ParentStudentTimetable/ParentStudentTimetable';
+import { Schools } from './components/schools/Schools';
+import { AdminClasses } from './components/classes/admin/AdminClasses';
+import { AdminTopics } from './components/topics/admin/AdminTopics';
+import { AdminGrades } from './components/grades/admin/AdminGrades';
 
 
 function App() {
@@ -43,6 +47,10 @@ function App() {
           <Route path="/users-admin" element={<AdminUsers />} />
           <Route path="/admin-settings" element={<AdminSettings />} />
           <Route path="/student-timetable" element={<ParentStudentTimetable />} />
+          <Route path="/schools" element={<Schools />} />
+          <Route path='/admin-classes' element={<AdminClasses />} />
+          <Route path='/admin-topics' element={<AdminTopics />} />
+          <Route path='/admin-grades' element={<AdminGrades />} />
          
         </Routes>
       </BrowserRouter>

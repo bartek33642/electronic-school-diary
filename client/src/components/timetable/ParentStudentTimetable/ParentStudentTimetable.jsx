@@ -103,6 +103,7 @@ export function ParentStudentTimetable(){
     <div className="partent-student-timetable-container">
     <StudentMenu />
     <div className="parent-student-timetable-view">
+      <h3>Plan zajęć: </h3>
     <Paper>
     <Scheduler
       data={schedulerData}
@@ -117,6 +118,10 @@ export function ParentStudentTimetable(){
       <Appointments />
     </Scheduler>
   </Paper>
+
+
+
+ 
   </div>
   </div>
   );

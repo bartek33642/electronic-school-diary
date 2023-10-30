@@ -1,21 +1,67 @@
-// import React from "react";
+// import React, { useState } from "react";
 // import './Register.css';
+// import { ajax } from 'rxjs/ajax';
+// import { catchError, map } from 'rxjs/operators';
+// import { of } from 'rxjs';
 
-// export function RegisterAdmin(){
+// export function RegisterAdmin() {
+//     const [email, setEmail] = useState('');
+//     const [password, setPassword] = useState('');
+//     const [firstName, setFirstName] = useState('');
+//     const [lastName, setLastName] = useState('');
+//     const [isActive, setIsActive] = useState(false);
+
+//     const handleRegister = () => {
+
+//         const registrationData = {
+//             email,
+//             password,
+//             role: '1', 
+//             active: isActive,
+//             status: 'admin',
+//             first_name: firstName,
+//             second_name: lastName,
+//         };
+
+//         const registration$ = ajax.post(
+//           "http://localhost:3001/REST/register-admin",
+//           registrationData,
+//           {
+//             "Content-Type": "application/json",
+//           }
+//         );
+
+//         registration$
+//             .pipe(
+//                 map((response) => response.response), 
+//                 catchError((error) => {
+//                     console.error("Błąd rejestracji: ", error);
+//                     return of(null); 
+//                 })
+//             )
+//             .subscribe((data) => {
+//                 if (data) {
+//                     console.log("Admin zarejestrowany pomyślnie.");
+//                 } else {
+//                     console.error("Nieprawidłowa odpowiedź serwera.");
+//                 }
+//             });
+//     };
+
 //     return (
-//       <div className="register-form">
-//         <form action="/register-admin" method="post">
-//         Adres e-mail: <input type="text" id="email" name="email"/> <br />
-//         Hasło: <input type="password" id="password-register" name="password"/> <br />
-//         Imię: <input type="text" name="first-name" id="first-name" /> <br />
-//         Nazwisko: <input type="text" name="last-name" id="last-name" /><br />
-//         Czy aktywny: <input type="checkbox" name="active" id="active" />  <br />
-//         <input type="submit" value="Zapisz" />
-//         </form>
-//       </div>
+//         <div className="register-form">
+//             <form>
+//                 Adres e-mail: <input type="text" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
+//                 Hasło: <input type="password" id="password-register" name="password" value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
+//                 Imię: <input type="text" name="first-name" id="first-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} /> <br />
+//                 Nazwisko: <input type="text" name="last-name" id="last-name" value={lastName} onChange={(e) => setLastName(e.target.value)} /><br />
+//                 Czy aktywny: <input type="checkbox" name="active" id="active" checked={isActive} onChange={() => setIsActive(!isActive)} />  <br />
+//                 <input type="button" value="Zapisz" onClick={handleRegister} />
+//             </form>
+//         </div>
 //     );
-    
 // }
+
 
 
 import React, { useState } from "react";
@@ -30,20 +76,21 @@ export function RegisterAdmin() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [isActive, setIsActive] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); // Dodane pole na komunikat o błędzie
 
     const handleRegister = () => {
-        // Przygotuj dane do wysłania na serwer
+        setErrorMessage(''); // Wyczyść komunikat o błędzie przed próbą rejestracji
+
         const registrationData = {
             email,
             password,
-            role: '1', 
+            role: '1',
             active: isActive,
             status: 'admin',
             first_name: firstName,
             second_name: lastName,
         };
 
-        // Wysłanie danych do serwera
         const registration$ = ajax.post(
           "http://localhost:3001/REST/register-admin",
           registrationData,
@@ -54,11 +101,11 @@ export function RegisterAdmin() {
 
         registration$
             .pipe(
-                map((response) => response.response), // Dostęp do odpowiedzi.
+                map((response) => response.response), 
                 catchError((error) => {
-                    // Obsłuż błąd.
                     console.error("Błąd rejestracji: ", error);
-                    return of(null); // Zwróć pustą wartość w przypadku błędu.
+                    setErrorMessage("Błąd rejestracji. Spróbuj ponownie."); // Ustaw komunikat o błędzie
+                    return of(null);
                 })
             )
             .subscribe((data) => {
@@ -66,6 +113,7 @@ export function RegisterAdmin() {
                     console.log("Admin zarejestrowany pomyślnie.");
                 } else {
                     console.error("Nieprawidłowa odpowiedź serwera.");
+                    setErrorMessage("Nieprawidłowa odpowiedź serwera.");
                 }
             });
     };
@@ -79,6 +127,7 @@ export function RegisterAdmin() {
                 Nazwisko: <input type="text" name="last-name" id="last-name" value={lastName} onChange={(e) => setLastName(e.target.value)} /><br />
                 Czy aktywny: <input type="checkbox" name="active" id="active" checked={isActive} onChange={() => setIsActive(!isActive)} />  <br />
                 <input type="button" value="Zapisz" onClick={handleRegister} />
+                {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Wyświetlanie komunikatu o błędzie */}
             </form>
         </div>
     );

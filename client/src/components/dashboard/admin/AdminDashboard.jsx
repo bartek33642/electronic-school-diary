@@ -80,7 +80,7 @@ export function AdminDashboard(){
                 </Link>
 
 
-                <Link to='/school' className="admin-button-content">
+                <Link to='/schools' className="admin-button-content">
                     <div className="admin-content-buttons">
                 
                     <div className="admin-button-first">

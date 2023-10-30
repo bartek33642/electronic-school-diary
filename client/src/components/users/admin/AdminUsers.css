@@ -19,8 +19,7 @@
 
 .users-selection, .admin-users-btns{
     min-width: 300px;
-    max-height: 40px;
-    min-height: 30px;
+    min-height: 40px;
     border-radius: 15px;
     margin: 5px;
 }
@@ -45,3 +44,8 @@
     cursor: pointer;
     margin:10px;
 }
+
+/* .boxStyle{
+    height: 300px;
+    overflow-y: auto;
+} */ /* sprawdzić stylowanie scrollbara */

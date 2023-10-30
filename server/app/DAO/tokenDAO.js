@@ -1,13 +1,31 @@
-import config from "../config";
-const pool = require('../../db');
-
-// tokenDAO.js
+const config = require('../config'); // Upewnij się, że importujesz konfigurację z odpowiedniego pliku
 const jwt = require('jsonwebtoken');
+const momentWrapper = require('../service/momentWrapper');
+const applicationException = require('../service/applicationException');
 
-const jwtSecret = 'secret_key';
+// Typy tokenów
+const tokenTypeEnum = {
+  authorization: 'authorization',
+};
 
-function generateAccessToken(user) {
-  return jwt.sign(user, jwtSecret, { expiresIn: '1h' });
+// Funkcja do generowania tokenów JWT
+function generateToken(payload) {
+  const token = jwt.sign(payload, config.JwtSecret, { expiresIn: '1h' }); // Ustaw wygaśnięcie na 1 godzinę
+  return token;
 }
 
-module.exports = { generateAccessToken };
+// Funkcja do weryfikacji tokenów JWT
+function verifyToken(token) {
+  try {
+    const payload = jwt.verify(token, config.JwtSecret);
+    return payload;
+  } catch (error) {
+    throw applicationException.new(applicationException.UNAUTHORIZED, 'Invalid token');
+  }
+}
+
+module.exports = {
+  generateToken,
+  verifyToken,
+  tokenTypeEnum,
+};

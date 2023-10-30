@@ -1,17 +1,35 @@
-import config from "../config";
-const pool = require('../../db');
+const pool = require('../../db'); // Importuj obiekt konfiguracji bazy danych z pliku db.js
 
-
-// passwordDAO.js
-const bcrypt = require('bcrypt');
-
-async function hashPassword(password) {
-  const saltRounds = 10;
-  return await bcrypt.hash(password, saltRounds);
+// Tworzenie nowego hasła
+async function createPassword(userId, hashedPassword) {
+  const query = 'INSERT INTO gradebook.users (user_id, password) VALUES ($1, $2) RETURNING *';
+  const values = [userId, hashedPassword];
+  const result = await pool.query(query, values);
+  return result.rows[0];
 }
 
-async function comparePassword(plainPassword, hashedPassword) {
-  return await bcrypt.compare(plainPassword, hashedPassword);
+// Autoryzacja użytkownika na podstawie hasła
+async function authorize(userId, hashedPassword) {
+  const query = 'SELECT password FROM gradebook.users WHERE user_id = $1 AND password = $2';
+  const values = [userId, hashedPassword];
+  const result = await pool.query(query, values);
+  if (result.rows.length > 0) {
+    // Użytkownik autoryzowany
+    return true;
+  }
+  // Użytkownik nieautoryzowany
+  return false;
 }
 
-module.exports = { hashPassword, comparePassword };
+// Aktualizacja hasła użytkownika
+async function updatePassword(userId, hashedPassword) {
+  const query = 'UPDATE gradebook.users SET password = $1 WHERE user_id = $2';
+  const values = [hashedPassword, userId];
+  await pool.query(query, values);
+}
+
+module.exports = {
+  createPassword,
+  authorize,
+  updatePassword,
+};
