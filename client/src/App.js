@@ -23,6 +23,11 @@ import { Schools } from './components/schools/Schools';
 import { AdminClasses } from './components/classes/admin/AdminClasses';
 import { AdminTopics } from './components/topics/admin/AdminTopics';
 import { AdminGrades } from './components/grades/admin/AdminGrades';
+import { RegisterParent } from './components/Register/RegisterParent';
+import { RegisterPrincipal } from './components/Register/RegisterPrincipal';
+import { RegisterStudent } from './components/Register/RegisterStudent';
+import { RegisterTeacher } from './components/Register/RegisterTeacher';
+import { StudentMarks } from './components/marks/student/StudentMarks';
 
 
 function App() {
@@ -37,7 +42,11 @@ function App() {
 
           {/* Do zmiany dodać zabezpieczeni ścieżek*/}
           <Route path='/role' element={< Role/>} />
-          <Route path="/register" element={<RegisterAdmin />} />
+          <Route path="/register-admin" component={<RegisterAdmin />} />
+          <Route path="/register-parent" component={<RegisterParent />} />
+          <Route path="/register-principal" component={<RegisterPrincipal />} />
+          <Route path="/register-student" component={<RegisterStudent />} />
+          <Route path="/register-teacher" component={<RegisterTeacher />} />
           <Route path="/grades" element={<AdminMarks />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/parent" element={<ParentDashboard />} />
@@ -51,6 +60,7 @@ function App() {
           <Route path='/admin-classes' element={<AdminClasses />} />
           <Route path='/admin-topics' element={<AdminTopics />} />
           <Route path='/admin-grades' element={<AdminGrades />} />
+          <Route path='/student-marks' element={<StudentMarks />} />
          
         </Routes>
       </BrowserRouter>

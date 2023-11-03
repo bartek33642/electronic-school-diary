@@ -16,14 +16,21 @@ import parentEndpoint from './parent.endpoint';
 import principalEndpoint from './principal.endpoint';
 import studentEndpoint from './student.endpoint';
 import teacherEndpoint from './teacher.endpoint';
+import schoolEndpoint from './school.endpoint';
+import classEndpoint from './class.endpoint';
+import pollEndpoint from './poll.endpoint';
 
-const routes = function (router) {
-  userEndpoint(router);
-  adminEndpoint(router);
-  parentEndpoint(router);
-  principalEndpoint(router);
-  studentEndpoint(router);
-  teacherEndpoint(router);
+const routes = function (app) {
+  userEndpoint(app);
+  adminEndpoint(app);
+  parentEndpoint(app);
+  principalEndpoint(app);
+  studentEndpoint(app);
+  teacherEndpoint(app);
+  schoolEndpoint(app);
+  classEndpoint(app);
+  pollEndpoint(app);
 };
+
 
 export default routes;

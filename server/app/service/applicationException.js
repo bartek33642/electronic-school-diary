@@ -1,4 +1,3 @@
-
 function ApplicationException(error, message)
 {
   this.error = error;

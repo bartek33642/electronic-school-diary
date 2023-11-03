@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import './AdminUsers.css';
 import { AdminMenu } from "../../menu/admin/AdminMenu";
 import Modal from '@mui/material/Modal';
@@ -21,7 +21,8 @@ export function AdminUsers(){
     const [open6, setOpen6] = useState(false);
     const [open7, setOpen7] = useState(false);
 
-
+    const [userData, setUserData] = useState([]);
+    const [schoolData, setSchoolData] = useState([]);
 
     const handleOpen = () => {
       setOpen(true);
@@ -38,8 +39,9 @@ export function AdminUsers(){
     };
 
     const handleOpen2 = () => {
-      setOpen2(true);
+       setOpen2(true);
     };
+    
     const handleClose2 = () => {
       setOpen2(false);
     };
@@ -78,6 +80,34 @@ export function AdminUsers(){
     const handleClose7 = () => {
       setOpen7(false);
     };
+
+    useEffect(() => {
+      if (open2) {
+        // Wywołaj zapytanie HTTP GET na serwer, aby pobrać użytkowników
+        fetch('/users')
+          .then(response => response.json())
+          .then(data => {
+            // Zaktualizuj stan z danymi użytkowników
+            setUserData(data);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
+    }, [open2]);
+
+
+    useEffect(() => {
+      fetch('/schools')
+        .then(response => response.json())
+        .then(data => {
+          setSchoolData(data); 
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }, []);
+
 
     const style = {
       position: "absolute",
@@ -127,7 +157,14 @@ export function AdminUsers(){
                 <br />
                 Numer lokalu: <input type="text" name="nr_lokalu" id="" />
                 <br />
-                Kod pocztowy: <input type="text" name="kod_pocztowy" id="" />
+                Kod pocztowy:{" "}
+                <input
+                  type="text"
+                  name="kod_pocztowy"
+                  placeholder="XX-XXX"
+                  maxlength="6"
+                  id=""
+                />
                 <br />
                 <input type="submit" value="Zapisz" />
                 <br />
@@ -148,17 +185,18 @@ export function AdminUsers(){
               aria-describedby="parent-modal-description"
               id="2"
             >
-              <Box sx={{ ...style}}>
+              <Box sx={{ ...style }}>
                 <h2 id="child-modal-title">Dodaj klasę </h2>
                 <p className="users-title">Szkoła</p>
                 <select name="" id="" className="users-selection">
                   <option value="-" selected disabled>
-                    {" "}
+                    Wybierz szkołę
                   </option>
-                  <option value="1lo">1LO</option>
-                  <option value="2lo">2LO</option>
-                  <option value="zst">ZST</option>
-                  <option value="zsme">ZSME</option>
+                  {schoolData.map((school) => (
+                    <option key={school.school_id}>
+                      {school.school_name} {school.town}
+                    </option>
+                  ))}
                 </select>
                 <br />
                 Nazwa klasy: <input type="text" name="nazwa klasy" id="" />
@@ -169,11 +207,12 @@ export function AdminUsers(){
               </Box>
             </Modal>
 
-            <input 
-              type="button" 
+            <input
+              type="button"
               value="Przeglądaj użytkowników"
-              className="admin-users-btns" 
-              onClick={handleOpen2}/>
+              className="admin-users-btns"
+              onClick={handleOpen2}
+            />
 
             <Modal
               open={open2}
@@ -181,19 +220,29 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style}}>
+              <Box sx={{ ...style }}>
                 <h2 id="child-modal-title">Użytkownicy </h2>
-
+                <p>
+                  {userData.map((user) => (
+                    <li key={user.user_id}>
+                      {user.first_name} {user.second_name}, {user.status},{" "}
+                      {user.email}
+                    </li>
+                  ))}
+                </p>
                 <Button onClick={handleClose2}>Zamknij</Button>
               </Box>
             </Modal>
-          
           </div>
 
-            <div className="users-admin-create-accounts">
-
-            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen3}>
-            Dodaj administratora
+          <div className="users-admin-create-accounts">
+            <button
+              type="button"
+              name="button-create-account-admin"
+              className="create-accounts-admin-btn"
+              onClick={handleOpen3}
+            >
+              Dodaj administratora
             </button>
             <Modal
               open={open3}
@@ -201,16 +250,21 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style}}>
+              <Box sx={{ ...style }}>
                 <h2 id="child-modal-title">Dodaj Administratora </h2>
-                  <RegisterAdmin />
+                <RegisterAdmin />
 
                 <Button onClick={handleClose3}>Zamknij</Button>
               </Box>
             </Modal>
-            
-            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen4}>
-            Dodaj dyrektora
+
+            <button
+              type="button"
+              name="button-create-account-admin"
+              className="create-accounts-admin-btn"
+              onClick={handleOpen4}
+            >
+              Dodaj dyrektora
             </button>
             <Modal
               open={open4}
@@ -218,16 +272,21 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style}}>
+              <Box sx={{ ...style }}>
                 <h2 id="child-modal-title">Dodaj dyrektora </h2>
-                  <RegisterPrincipal />
+                <RegisterPrincipal />
 
                 <Button onClick={handleClose4}>Zamknij</Button>
               </Box>
             </Modal>
 
-            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen5}>
-            Dodaj nauczyciela
+            <button
+              type="button"
+              name="button-create-account-admin"
+              className="create-accounts-admin-btn"
+              onClick={handleOpen5}
+            >
+              Dodaj nauczyciela
             </button>
             <Modal
               open={open5}
@@ -235,16 +294,21 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style}}>
+              <Box sx={{ ...style }}>
                 <h2 id="child-modal-title">Dodaj nauczyciela </h2>
-                  <RegisterTeacher />
+                <RegisterTeacher />
 
                 <Button onClick={handleClose5}>Zamknij</Button>
               </Box>
             </Modal>
 
-            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen6}>
-            Dodaj rodzica
+            <button
+              type="button"
+              name="button-create-account-admin"
+              className="create-accounts-admin-btn"
+              onClick={handleOpen6}
+            >
+              Dodaj rodzica
             </button>
             <Modal
               open={open6}
@@ -252,16 +316,21 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style}}>
+              <Box sx={{ ...style }}>
                 <h2 id="child-modal-title">Dodaj rodzica </h2>
-                  <RegisterParent />
+                <RegisterParent />
 
                 <Button onClick={handleClose6}>Zamknij</Button>
               </Box>
             </Modal>
 
-            <button type="button" name="button-create-account-admin" className="create-accounts-admin-btn" onClick={handleOpen7}>
-            Dodaj ucznia
+            <button
+              type="button"
+              name="button-create-account-admin"
+              className="create-accounts-admin-btn"
+              onClick={handleOpen7}
+            >
+              Dodaj ucznia
             </button>
             <Modal
               open={open7}
@@ -269,16 +338,14 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style}}>
+              <Box sx={{ ...style }}>
                 <h2 id="child-modal-title">Dodaj ucznia </h2>
-                  <RegisterStudent />
+                <RegisterStudent />
 
                 <Button onClick={handleClose7}>Zamknij</Button>
               </Box>
             </Modal>
-
-            </div>
-
+          </div>
         </div>
       </div>
     );

@@ -11,7 +11,7 @@
     background-color: var(--blue);
     color: #9c9b9b;
 }
-ul, li{
+.menu-ul, .menu-li{
     list-style: none;
     background-color: var(--blue);
     color: #fff;
@@ -23,21 +23,21 @@ ul, li{
     width: fit-content;
 }
 
-ul, .welcomeText{
+.menu-ul, .welcomeText{
     height: max-content;
     width: max-content;
     border-radius: 0 50px 50px 0;
     padding-top: 2px;
     padding-bottom: 6px; 
 }
-li{
+.menu-li{
     margin-top: 10%;
     margin-right: 60px;
     padding: 2% 0 2% 0;
 
 }
 
-li:active{
+.menu-li:active{
     background-color: rgb(44, 55, 95);
     border-radius: 0 50px 50px 0;
 }

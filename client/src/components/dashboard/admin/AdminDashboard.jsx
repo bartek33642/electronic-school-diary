@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import './AdminDasboard.css';
 import { AdminMenu } from "../../menu/admin/AdminMenu";
 import { CountdownToVacations } from "../../../dependenciesAndRequirements/CountdownToVacations";
@@ -6,9 +6,50 @@ import { FiSun, FiSettings, FiUsers, FiMap } from 'react-icons/fi';
 import { Link } from "react-router-dom";
 
 export function AdminDashboard(){
+    const [userCount, setUserCount] = useState([]);
+    const [schoolCount, setSchoolCount] = useState([]);
+    const [pollCount, setPollCount] = useState([]);
+
+
 
     const date = '2024-06-22';
     const daysUntil = CountdownToVacations(date);
+
+    useEffect(() => {
+        // Pobierz liczbę użytkowników z serwera
+        fetch('/users-count')
+          .then(response => response.json())
+          .then(data => {
+            setUserCount(data.userCount); // Ustaw stan na liczbę użytkowników z bazy danych
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, []);
+
+      useEffect(() => {
+        // Pobierz liczbę szkół z serwera
+        fetch('/schools-count')
+          .then(response => response.json())
+          .then(data => {
+            setSchoolCount(data.schoolCount); // Ustaw stan na liczbę szkół z bazy danych
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, []);
+
+      useEffect(() => {
+        // Pobierz liczbę ankiet z serwera
+        fetch('/polls-count')
+          .then(response => response.json())
+          .then(data => {
+            setPollCount(data.pollCount); // Ustaw stan na liczbę ankiet z bazy danych
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, []);
 
     return(        
         <div className="dashboard">
@@ -23,7 +64,7 @@ export function AdminDashboard(){
                             <p className="p-admin-box-header">Ilość użytkowników</p>
                         </div>
                         <div className="admin-box-data">
-                            <p className="p-admin-box-data">48</p>
+                            <p className="p-admin-box-data">{userCount}</p>
                         </div>
 
                     </div>
@@ -34,7 +75,7 @@ export function AdminDashboard(){
                             <p className="p-admin-box-header">Ilość szkół</p>
                         </div>
                         <div className="admin-box-data">
-                            <p className="p-admin-box-data">6</p>
+                            <p className="p-admin-box-data">{schoolCount}</p>
                         </div>
 
                     </div>
@@ -45,7 +86,7 @@ export function AdminDashboard(){
                             <p className="p-admin-box-header">Ilość ankiet</p>
                         </div>
                         <div className="admin-box-data">
-                            <p className="p-admin-box-data">12</p>
+                            <p className="p-admin-box-data">{pollCount}</p>
                         </div>
 
                     </div>
