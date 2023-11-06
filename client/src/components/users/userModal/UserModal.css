@@ -1,0 +1,4 @@
+.modal-content {
+    max-height: 80vh; /* Maksymalna wysokość modala */
+    overflow-y: auto; /* Dodaj pasek przewijania w pionie, gdy zawartość jest za wysoka */
+  }

@@ -408,7 +408,7 @@ export function Login() {
   };
 
   return (
-    <div className="login-form">
+    <div className="login-form"> 
       <div className="login-content">
         <div className="left-login-content">
           <img src={imageEducation} className="image-login" alt="Education" />

@@ -21,3 +21,8 @@ html, body{
     --black: #111;
     --body-font: 'Poppins', sans-serif, 14px;
 }
+
+.modal-content {
+    max-height: 80vh; 
+    overflow-y: auto; 
+  }

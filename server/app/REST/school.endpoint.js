@@ -6,7 +6,7 @@ const schoolEndpoint = (app) => {
 
     app.get('/schools', async (req, res) => {
     try {
-      const schoolsQuery = 'SELECT school_name, town, street, building_number FROM gradebook.schools';
+      const schoolsQuery = 'SELECT school_id, school_name, town, street, building_number, apartment_number, zip_code FROM gradebook.schools';
       const { rows } = await pool.query(schoolsQuery);
       res.send(rows);
     //   console.log("Schools okay");
@@ -45,6 +45,24 @@ const schoolEndpoint = (app) => {
         res.status(500).json({ error: 'Błąd dodania szkoły' });
     }
   })
+
+  app.delete('/schools/:school_id', async (req, res) => {
+    const schoolId = req.params.school_id;
+  
+    try {
+      const deleteSchoolQuery = 'DELETE FROM gradebook.schools WHERE school_id = $1';
+      await pool.query(deleteSchoolQuery, [schoolId]);
+  
+      console.log('Usunięto szkołę z bazy danych');
+      res.status(204).end();
+    } catch (error) {
+      console.error('Błąd usuwania szkoły:', error);
+      res.status(500).json({ error: 'Błąd usuwania szkoły' });
+    }
+  });
+  
 }
+
+
 
 export default schoolEndpoint;

@@ -1,0 +1,15 @@
+.school-modal-input{
+    border-radius: 20px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.school-modal-button-save{
+    border-radius: 20px;
+    width: 100%;
+    min-height: 30px;
+    cursor: pointer;
+}
+
+
+

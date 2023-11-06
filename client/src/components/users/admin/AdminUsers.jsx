@@ -9,6 +9,9 @@ import { RegisterPrincipal } from "../../Register/RegisterPrincipal";
 import { RegisterTeacher } from "../../Register/RegisterTeacher";
 import { RegisterParent } from "../../Register/RegisterParent";
 import { RegisterStudent } from "../../Register/RegisterStudent";
+import { UserModal } from "../userModal/UserModal";
+import { SchoolModal } from "../../schools/schoolModal/SchoolModal";
+import { ClassModal } from "../../classes/classesModal/ClassModal";
 
 
 export function AdminUsers(){
@@ -138,39 +141,7 @@ export function AdminUsers(){
               onClick={handleOpen}
             />
 
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="parent-modal-title"
-              aria-describedby="parent-modal-description"
-            >
-              <Box sx={{ ...style }}>
-                <h2 id="child-modal-title">Dodaj szkołę </h2>
-                Nazwa szkoły:
-                <input type="text" name="nazwa_szkoly" id="" />
-                <br />
-                Miejscowość: <input type="text" name="miejscowosc" id="" />
-                <br />
-                Ulica: <input type="text" name="ulica" id="" />
-                <br />
-                Nr budynku: <input type="text" name="nr_budynku" id="" />
-                <br />
-                Numer lokalu: <input type="text" name="nr_lokalu" id="" />
-                <br />
-                Kod pocztowy:{" "}
-                <input
-                  type="text"
-                  name="kod_pocztowy"
-                  placeholder="XX-XXX"
-                  maxlength="6"
-                  id=""
-                />
-                <br />
-                <input type="submit" value="Zapisz" />
-                <br />
-                <Button onClick={handleClose}>Zamknij</Button>
-              </Box>
-            </Modal>
+           <SchoolModal open={open} handleClose={handleClose} />
 
             <input
               type="button"
@@ -178,34 +149,8 @@ export function AdminUsers(){
               className="admin-users-btns"
               onClick={handleOpen1}
             />
-            <Modal
-              open={open1}
-              onClose={handleClose1}
-              aria-labelledby="parent-modal-title"
-              aria-describedby="parent-modal-description"
-              id="2"
-            >
-              <Box sx={{ ...style }}>
-                <h2 id="child-modal-title">Dodaj klasę </h2>
-                <p className="users-title">Szkoła</p>
-                <select name="" id="" className="users-selection">
-                  <option value="-" selected disabled>
-                    Wybierz szkołę
-                  </option>
-                  {schoolData.map((school) => (
-                    <option key={school.school_id}>
-                      {school.school_name} {school.town}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                Nazwa klasy: <input type="text" name="nazwa klasy" id="" />
-                <br />
-                <input type="submit" value="Zapisz" />
-                <br />
-                <Button onClick={handleClose1}>Zamknij</Button>
-              </Box>
-            </Modal>
+            
+            <ClassModal open1={open1} handleClose1={handleClose1} schoolData={schoolData}/>
 
             <input
               type="button"
@@ -214,25 +159,8 @@ export function AdminUsers(){
               onClick={handleOpen2}
             />
 
-            <Modal
-              open={open2}
-              onClose={handleClose2}
-              aria-labelledby="parent-modal-title"
-              aria-describedby="parent-modal-description"
-            >
-              <Box sx={{ ...style }}>
-                <h2 id="child-modal-title">Użytkownicy </h2>
-                <p>
-                  {userData.map((user) => (
-                    <li key={user.user_id}>
-                      {user.first_name} {user.second_name}, {user.status},{" "}
-                      {user.email}
-                    </li>
-                  ))}
-                </p>
-                <Button onClick={handleClose2}>Zamknij</Button>
-              </Box>
-            </Modal>
+          <UserModal open2={open2} handleClose2={handleClose2} userData={userData} />
+
           </div>
 
           <div className="users-admin-create-accounts">
@@ -250,7 +178,7 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style }}>
+              <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj Administratora </h2>
                 <RegisterAdmin />
 
@@ -272,7 +200,7 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style }}>
+              <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj dyrektora </h2>
                 <RegisterPrincipal />
 
@@ -294,7 +222,7 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style }}>
+              <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj nauczyciela </h2>
                 <RegisterTeacher />
 
@@ -316,7 +244,7 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style }}>
+              <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj rodzica </h2>
                 <RegisterParent />
 
@@ -338,7 +266,7 @@ export function AdminUsers(){
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style }}>
+              <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj ucznia </h2>
                 <RegisterStudent />
 

@@ -119,6 +119,20 @@ const userEndpoint = (app) => {
     }
   });
 
+  app.delete('/users/:user_id', async (req, res) => {
+    const userId = req.params.user_id;
+  
+    try {
+      const deleteUserQuery = 'DELETE FROM gradebook.users WHERE user_id = $1';
+      await pool.query(deleteUserQuery, [userId]);
+  
+      console.log('Usunięto użytkownika z bazy danych');
+      res.status(204).end();
+    } catch (error) {
+      console.error('Błąd usuwania użytkownika:', error);
+      res.status(500).json({ error: 'Błąd usuwania użytkownika' });
+    }
+  });
 
 }
 
