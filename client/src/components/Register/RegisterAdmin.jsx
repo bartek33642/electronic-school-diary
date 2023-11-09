@@ -55,11 +55,11 @@ export function RegisterAdmin() {
     return (
         <div className="register-form">
             <form>
-                Adres e-mail: <input type="text" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
-                Hasło: <input type="password" id="password-register" name="password" value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
-                Imię: <input type="text" name="first-name" id="first-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} /> <br />
-                Nazwisko: <input type="text" name="last-name" id="last-name" value={lastName} onChange={(e) => setLastName(e.target.value)} /><br />
-                Czy aktywny: <input type="checkbox" name="active" id="active" checked={isActive} onChange={() => setIsActive(!isActive)} />  <br />
+                Adres e-mail: <input type="text" id="email" name="email" className="register-input" value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
+                Hasło: <input type="password" id="password-register" name="password" className="register-input" value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
+                Imię: <input type="text" name="first-name" id="first-name" className="register-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} /> <br />
+                Nazwisko: <input type="text" name="last-name" id="last-name" className="register-input" value={lastName} onChange={(e) => setLastName(e.target.value)} /><br />
+                Czy aktywny: <input type="checkbox" name="active" id="active"  checked={isActive} onChange={() => setIsActive(!isActive)} />  <br />
                 <input type="button" value="Zapisz" onClick={handleRegister} />
                 {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Wyświetlanie komunikatu o błędzie */}
             </form>

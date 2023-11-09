@@ -6,6 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 import routes from "./REST/routes";
 
+
 app.use(cors({
   origin: '*',
 }));
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 routes(app);
+
 
 app.get('/*', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');

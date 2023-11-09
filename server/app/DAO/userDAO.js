@@ -1,12 +1,21 @@
-const pool = require('../../db'); // Importuj obiekt konfiguracji bazy danych z pliku db.js
+const pool = require('../../db'); 
 
 // Pobranie użytkownika po adresie e-mail lub nazwie
+// userDAO.js
 async function getUserByEmail(emailOrName) {
   const query = 'SELECT * FROM gradebook.users WHERE email = $1';
   const values = [emailOrName];
-  const result = await pool.query(query, values);
-  return result.rows[0];
+  try {
+    const result = await pool.query(query, values);
+    const user = result.rows[0];
+    console.log('getUserByEmail - User:', user);
+    return user;
+  } catch (error) {
+    console.error('getUserByEmail - Error:', error);
+    throw error;
+  }
 }
+
 
 // Tworzenie nowego użytkownika
 async function createNewUser(userData) {

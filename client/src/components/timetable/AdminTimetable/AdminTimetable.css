@@ -1,0 +1,27 @@
+.admin-timetable-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.admin-timetable-elements{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+}
+
+
+.admin-timetable-buttons{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.admin-timetable-buttons input{
+    border-radius: 20px;
+    height: 50px;
+    min-width: 800px;
+    margin: 20px;
+    cursor: pointer;
+}

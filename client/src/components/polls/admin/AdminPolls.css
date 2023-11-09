@@ -1,0 +1,27 @@
+.admin-polls-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.admin-polls-elements{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+}
+
+
+.admin-polls-buttons{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.admin-polls-buttons input{
+    border-radius: 20px;
+    height: 50px;
+    min-width: 800px;
+    margin: 20px;
+    cursor: pointer;
+}

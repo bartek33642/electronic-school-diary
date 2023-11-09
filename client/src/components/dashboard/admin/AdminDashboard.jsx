@@ -4,14 +4,12 @@ import { AdminMenu } from "../../menu/admin/AdminMenu";
 import { CountdownToVacations } from "../../../dependenciesAndRequirements/CountdownToVacations";
 import { FiSun, FiSettings, FiUsers, FiMap } from 'react-icons/fi';
 import { Link } from "react-router-dom";
-import { CalendarComponent } from "../../calendar/Calendar";
+// import { CalendarComponent } from "../../calendar/Calendar";
 
 export function AdminDashboard(){
     const [userCount, setUserCount] = useState([]);
     const [schoolCount, setSchoolCount] = useState([]);
     const [pollCount, setPollCount] = useState([]);
-
-
 
     const date = '2024-06-22';
     const daysUntil = CountdownToVacations(date);
@@ -57,7 +55,7 @@ export function AdminDashboard(){
             <AdminMenu />        
             <div className="dasboard-content">
                 <h3>Witaj w panelu administratora</h3>
-                     <CalendarComponent /> 
+                     {/* <CalendarComponent />  */}
                 <div className="admin-boxes">
                     <div className="admin-box admin-box1">
 

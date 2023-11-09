@@ -21,7 +21,7 @@ const adminEndpoint = (app) => {
       res.status(201).json({ message: 'Admin zarejestrowany pomyślnie.' });
     } catch (error) {
       console.error('Błąd rejestracji:', error);
-      res.status(500).json({ error: 'Błąd rejestracji' });
+      res.status(500).json({ error: 'Błąd rejestracji', details: error.message });
     }
   });
 };

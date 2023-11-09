@@ -1,22 +1,24 @@
-const config = require('../config'); // Upewnij się, że importujesz konfigurację z odpowiedniego pliku
+// tokenDAO.js
+const config = require('../config'); 
 const jwt = require('jsonwebtoken');
 const momentWrapper = require('../service/momentWrapper');
 const applicationException = require('../service/applicationException');
 
-// Typy tokenów
-const tokenTypeEnum = {
-  authorization: 'authorization',
-};
+function createToken(payload) {
+  if (!config.JwtSecret) {
+    throw new Error('Secret key is missing');
+  }
 
-// Funkcja do generowania tokenów JWT
-function generateToken(payload) {
-  const token = jwt.sign(payload, config.JwtSecret, { expiresIn: '1h' }); // Ustaw wygaśnięcie na 1 godzinę
+  const token = jwt.sign(payload, config.JwtSecret, { expiresIn: '1h' });
   return token;
 }
 
-// Funkcja do weryfikacji tokenów JWT
 function verifyToken(token) {
   try {
+    if (!config.JwtSecret) {
+      throw new Error('Secret key is missing');
+    }
+
     const payload = jwt.verify(token, config.JwtSecret);
     return payload;
   } catch (error) {
@@ -24,8 +26,16 @@ function verifyToken(token) {
   }
 }
 
+function generateToken(payload) {
+  if (!config.JwtSecret) {
+    throw applicationException.new(applicationException.UNAUTHORIZED, 'Secret key is missing');
+  }
+  const token = jwt.sign(payload, config.SECRET_KEY, { expiresIn: '1h' });
+  return token;
+}
+
 module.exports = {
-  generateToken,
+  createToken,
   verifyToken,
-  tokenTypeEnum,
+  generateToken
 };

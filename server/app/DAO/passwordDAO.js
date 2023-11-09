@@ -1,4 +1,6 @@
-const pool = require('../../db'); // Importuj obiekt konfiguracji bazy danych z pliku db.js
+const pool = require('../../db');
+const bcrypt = require('bcrypt');
+
 
 // Tworzenie nowego hasła
 async function createPassword(userId, hashedPassword) {
@@ -28,8 +30,25 @@ async function updatePassword(userId, hashedPassword) {
   await pool.query(query, values);
 }
 
+//Weryfikacja
+async function verifyPassword(userId, providedPassword) {
+  const query = 'SELECT password FROM gradebook.users WHERE user_id = $1';
+  const values = [userId];
+  const result = await pool.query(query, values);
+
+  if (result.rows.length > 0) {
+    const storedPassword = result.rows[0].password;
+    // Porównaj hasła, na przykład za pomocą bcrypt.compare
+    const isPasswordValid = await bcrypt.compare(providedPassword, storedPassword);
+    return isPasswordValid;
+  }
+
+  return false;
+}
+
 module.exports = {
   createPassword,
   authorize,
   updatePassword,
+  verifyPassword,
 };

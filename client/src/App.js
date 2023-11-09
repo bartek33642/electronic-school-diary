@@ -28,6 +28,12 @@ import { RegisterPrincipal } from './components/Register/RegisterPrincipal';
 import { RegisterStudent } from './components/Register/RegisterStudent';
 import { RegisterTeacher } from './components/Register/RegisterTeacher';
 import { StudentMarks } from './components/marks/student/StudentMarks';
+import { AdminTimetable } from './components/timetable/AdminTimetable/AdminTimetable';
+import { AdminAttendance } from './components/attendance/admin/AdminAttendance';
+import { AdminRemarks } from './components/remarks/admin/AdminRemarks';
+import { AdminSubjects } from './components/subjects/admin/AdminSubjects';
+import { AdminPolls } from './components/polls/admin/AdminPolls';
+
 
 
 function App() {
@@ -61,6 +67,11 @@ function App() {
           <Route path='/admin-topics' element={<AdminTopics />} />
           <Route path='/admin-grades' element={<AdminGrades />} />
           <Route path='/student-marks' element={<StudentMarks />} />
+          <Route path='/admin-timetable' element={<AdminTimetable />} />
+          <Route path='/admin-attendance' element={<AdminAttendance />} />
+          <Route path='/admin-remarks' element={<AdminRemarks />}/>
+          <Route path='/admin-subjects' element={<AdminSubjects />} />
+          <Route path='/admin-polls' element={<AdminPolls />} />
          
         </Routes>
       </BrowserRouter>
