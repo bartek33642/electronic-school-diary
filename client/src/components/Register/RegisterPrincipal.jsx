@@ -13,6 +13,8 @@ export function RegisterPrincipal() {
   const [lastName, setLastName] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  
 
   useEffect(() => {
     fetch('/schools')
@@ -23,6 +25,7 @@ export function RegisterPrincipal() {
 
   const handleRegister = () => {
     setErrorMessage('');
+    setSuccessMessage('');
 
     const registrationData = {
       email,
@@ -32,6 +35,12 @@ export function RegisterPrincipal() {
       second_name: lastName,
       school_id: selectedSchool,
     };
+
+      // Sprawdź, czy wszystkie pola są wypełnione
+      if (!email || !password || !firstName || !lastName || !schools) {
+        setErrorMessage("Wszystkie pola są wymagane."); // Ustaw komunikat o błędzie
+        return;
+    }
 
     const registration$ = ajax.post(
       "http://localhost:3001/register-principal",
@@ -63,12 +72,12 @@ export function RegisterPrincipal() {
   return (
     <div className="register-form">
       <form>
-        Adres e-mail: <input type="text" id="email" name="email" className="register-input" value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
-        Hasło: <input type="password" id="password-register" name="password" className="register-input" value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
-        Imię: <input type="text" name="first-name" id="first-name" className="register-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} /> <br />
-        Nazwisko: <input type="text" name="last-name" id="last-name" className="register-input" value={lastName} onChange={(e) => setLastName(e.target.value)} /> <br />
+        Adres e-mail: <input type="text" id="email" name="email" className="register-input" value={email} onChange={(e) => setEmail(e.target.value)} required/> <br />
+        Hasło: <input type="password" id="password-register" name="password" className="register-input" value={password} onChange={(e) => setPassword(e.target.value)} required /> <br />
+        Imię: <input type="text" name="first-name" id="first-name" className="register-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} required/> <br />
+        Nazwisko: <input type="text" name="last-name" id="last-name" className="register-input" value={lastName} onChange={(e) => setLastName(e.target.value)} required /> <br />
         Czy aktywny: <input type="checkbox" name="active" id="active" checked={isActive} onChange={() => setIsActive(!isActive)} />  <br />
-        Szkoła: <select name="school_id" id="school" className="register-input" onChange={(e) => setSelectedSchool(e.target.value)} value={selectedSchool} >
+        Szkoła: <select name="school_id" id="school" className="register-input" onChange={(e) => setSelectedSchool(e.target.value)} value={selectedSchool} required>
           <option value="" name='option-school' disabled> Wybierz szkołę</option>
           {schools.map((school) => (
             <option key={school.school_id} value={school.school_id}>
@@ -78,6 +87,8 @@ export function RegisterPrincipal() {
         </select> <br />
         <input type="button" value="Zapisz" onClick={handleRegister} />
         {errorMessage && <div className="error-message">{errorMessage}</div>}
+        {successMessage && <div className="success-message">{successMessage}</div>} 
+
       </form>
     </div>
   );

@@ -81,17 +81,17 @@ export function SchoolModal(props){
                       school_name: e.target.value,
                     })
                   }
-                    />
+                  required />
           </div>
           <br />
           <div className="modal-text-titles">
           Miejscowość: 
           </div>
           <div className="modal-text-inputs">
-          <input type="text" name="miejscowosc" id="" className="school-modal-input" value={newSchoolData.town}
+          <input type="text" name="miejscowosc" id=""  className="school-modal-input" value={newSchoolData.town}
                   onChange={(e) =>
                     setNewSchoolData({ ...newSchoolData, town: e.target.value })
-                  }/>
+                  } required/>
           </div>
           <br />
           <div className="modal-text-titles">
@@ -101,7 +101,7 @@ export function SchoolModal(props){
           <input type="text" name="ulica" id="" className="school-modal-input" value={newSchoolData.street}
                   onChange={(e) =>
                     setNewSchoolData({ ...newSchoolData, street: e.target.value })
-                  }/>
+                  } required/>
           </div>
           <br />
           <div className="modal-text-titles">
@@ -111,7 +111,7 @@ export function SchoolModal(props){
           <input type="text" name="nr_budynku" id="" className="school-modal-input" value={newSchoolData.building_number}
                   onChange={(e) =>
                     setNewSchoolData({ ...newSchoolData, building_number: e.target.value })
-                  }/>
+                  } required/>
           </div>
           <br />
           <div className="modal-text-titles">
@@ -138,8 +138,8 @@ export function SchoolModal(props){
             value={newSchoolData.zip_code}
                   onChange={(e) =>
                     setNewSchoolData({ ...newSchoolData, zip_code: e.target.value })
-                  }
-          />
+                  } 
+                  required />
           </div>
           <br />
           <input type="submit" value="Zapisz" className="school-modal-button-save" onClick={handleAddSchool}/>

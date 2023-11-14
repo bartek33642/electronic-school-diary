@@ -1,0 +1,30 @@
+@import '../../../App.css';
+.first-container-elements{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    min-height: 300px;
+    max-height: 100%;
+}
+
+.letf-first-container, .right-fist-container{
+    background-color: var(--white);
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    
+}
+
+.letf-first-container{
+    width: calc(35% - 10px);
+    margin-right: 10px;
+
+}
+
+.right-fist-container{
+    width: calc(60% - 10px);
+}

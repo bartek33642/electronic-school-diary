@@ -20,6 +20,9 @@ import schoolEndpoint from './school.endpoint';
 import classEndpoint from './class.endpoint';
 import pollEndpoint from './poll.endpoint';
 import loginEndpoint from './login.endpoint';
+import marksEndpoint from './marks.endpoint';
+import topicsEndpoint from './topics.endpoint';
+import subjectEndpoint from './subject.endpoint';
 
 const routes = function (app) {
   userEndpoint(app);
@@ -31,7 +34,10 @@ const routes = function (app) {
   schoolEndpoint(app);
   classEndpoint(app);
   pollEndpoint(app);
-  loginEndpoint(app)
+  loginEndpoint(app);
+  marksEndpoint(app);
+  topicsEndpoint(app);
+  subjectEndpoint(app);
 };
 
 

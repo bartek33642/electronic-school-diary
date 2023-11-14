@@ -81,7 +81,7 @@ export function ClassModal(props){
                 id=""
                 className="input-select-class-modal"
                 value={selectedSchool}
-                onChange={(e) => setSelectedSchool(e.target.value)}
+                onChange={(e) => setSelectedSchool(e.target.value)}required
               >
                 <option value="-" selected disabled>
                   Wybierz szkołę
@@ -106,7 +106,7 @@ export function ClassModal(props){
               className="input-select-class-modal"
               value={className}
               onChange={(e) => setClassName(e.target.value)}
-            />
+              required />
           </div>
 
           <br />

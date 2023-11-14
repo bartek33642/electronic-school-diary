@@ -55,7 +55,6 @@ export function AdminDashboard(){
             <AdminMenu />        
             <div className="dasboard-content">
                 <h3>Witaj w panelu administratora</h3>
-                     {/* <CalendarComponent />  */}
                 <div className="admin-boxes">
                     <div className="admin-box admin-box1">
 
@@ -148,6 +147,8 @@ export function AdminDashboard(){
                 </div>
                 </Link>
             </div>
+            {/* <CalendarComponent />  */}
+
 
 
             </div> 

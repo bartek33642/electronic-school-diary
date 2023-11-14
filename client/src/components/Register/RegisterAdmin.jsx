@@ -10,10 +10,18 @@ export function RegisterAdmin() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [isActive, setIsActive] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(''); // Dodane pole na komunikat o błędzie
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState(''); // Dodane pole na komunikat o udanej rejestracji
 
     const handleRegister = () => {
-        setErrorMessage(''); // Wyczyść komunikat o błędzie przed próbą rejestracji
+        setErrorMessage('');
+        setSuccessMessage(''); // Wyczyść komunikat o udanej rejestracji przed próbą rejestracji
+
+        // Sprawdź, czy wszystkie pola są wypełnione
+        if (!email || !password || !firstName || !lastName) {
+            setErrorMessage("Wszystkie pola są wymagane."); // Ustaw komunikat o błędzie
+            return;
+        }
 
         const registrationData = {
             email,
@@ -35,16 +43,17 @@ export function RegisterAdmin() {
 
         registration$
             .pipe(
-                map((response) => response.response), 
+                map((response) => response.response),
                 catchError((error) => {
                     console.error("Błąd rejestracji: ", error);
-                    setErrorMessage("Błąd rejestracji. Spróbuj ponownie."); // Ustaw komunikat o błędzie
+                    setErrorMessage("Błąd rejestracji. Spróbuj ponownie.");
                     return of(null);
                 })
             )
             .subscribe((data) => {
                 if (data) {
                     console.log("Admin zarejestrowany pomyślnie.");
+                    setSuccessMessage("Admin zarejestrowany pomyślnie.");
                 } else {
                     console.error("Nieprawidłowa odpowiedź serwera.");
                     setErrorMessage("Nieprawidłowa odpowiedź serwera.");
@@ -55,13 +64,14 @@ export function RegisterAdmin() {
     return (
         <div className="register-form">
             <form>
-                Adres e-mail: <input type="text" id="email" name="email" className="register-input" value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
-                Hasło: <input type="password" id="password-register" name="password" className="register-input" value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
-                Imię: <input type="text" name="first-name" id="first-name" className="register-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} /> <br />
-                Nazwisko: <input type="text" name="last-name" id="last-name" className="register-input" value={lastName} onChange={(e) => setLastName(e.target.value)} /><br />
+                Adres e-mail: <input type="text" id="email" name="email" className="register-input" required value={email} onChange={(e) => setEmail(e.target.value)}/> <br />
+                Hasło: <input type="password" id="password-register" name="password" required className="register-input" value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
+                Imię: <input type="text" name="first-name" id="first-name" required className="register-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} /> <br />
+                Nazwisko: <input type="text" name="last-name" id="last-name" required className="register-input" value={lastName} onChange={(e) => setLastName(e.target.value)} /><br />
                 Czy aktywny: <input type="checkbox" name="active" id="active"  checked={isActive} onChange={() => setIsActive(!isActive)} />  <br />
                 <input type="button" value="Zapisz" onClick={handleRegister} />
-                {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Wyświetlanie komunikatu o błędzie */}
+                {errorMessage && <div className="error-message">{errorMessage}</div>}
+                {successMessage && <div className="success-message">{successMessage}</div>} {/* Wyświetlanie komunikatu o udanej rejestracji */}
             </form>
         </div>
     );

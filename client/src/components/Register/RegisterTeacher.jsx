@@ -14,6 +14,8 @@ export function RegisterTeacher() {
   const [isActive, setIsActive] = useState(false);
   const [specialization, setSpecialization] = useState('')
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
 
   useEffect(() => {
     fetch('/schools')
@@ -24,6 +26,12 @@ export function RegisterTeacher() {
 
   const handleRegister = () => {
     setErrorMessage('');
+    setSuccessMessage('');
+
+    if (!email || !password || !firstName || !lastName || !schools || !specialization) {
+      setErrorMessage("Wszystkie pola są wymagane."); // Ustaw komunikat o błędzie
+      return;
+  }
 
     const registrationData = {
       email,
@@ -64,12 +72,12 @@ export function RegisterTeacher() {
     return (
       <div className="register-form">
         <form >
-        Adres e-mail: <input type="text" id="email" name="email" className="register-input" value={email} onChange={(e) => setEmail(e.target.value)} /> <br />
-        Hasło: <input type="password" id="password-register" name="password" className="register-input" value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
-        Imię: <input type="text" name="first-name" id="first-name" className="register-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} /> <br />
-        Nazwisko: <input type="text" name="last-name" id="last-name" className="register-input" value={lastName} onChange={(e) => setLastName(e.target.value)} /> <br />
+        Adres e-mail: <input type="text" id="email" name="email" className="register-input" value={email} onChange={(e) => setEmail(e.target.value)} required /> <br />
+        Hasło: <input type="password" id="password-register" name="password" className="register-input" value={password} onChange={(e) => setPassword(e.target.value)} required /> <br />
+        Imię: <input type="text" name="first-name" id="first-name" className="register-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} required /> <br />
+        Nazwisko: <input type="text" name="last-name" id="last-name" className="register-input" value={lastName} onChange={(e) => setLastName(e.target.value)} required /> <br />
         Czy aktywny: <input type="checkbox" name="active" id="active" className="register-input" checked={isActive} onChange={() => setIsActive(!isActive)} /> <br />
-        Szkoła: <select name="school" id="school" className="register-input" onChange={(e) => setSelectedSchool(e.target.value)} value={selectedSchool} >
+        Szkoła: <select name="school" id="school" className="register-input" onChange={(e) => setSelectedSchool(e.target.value)} value={selectedSchool} required >
             <option value="" name='option-school' disabled> Wybierz szkołę</option>
             {schools.map((school) => (
             <option key={school.school_id} value={school.school_id}>
@@ -77,9 +85,10 @@ export function RegisterTeacher() {
             </option>
           ))}
         </select> <br />
-        Specjalizacja: <input type="text" name="specialization" className="register-input" value={specialization} onChange={(e) => setSpecialization(e.target.value)}/> <br />
+        Specjalizacja: <input type="text" name="specialization" className="register-input" value={specialization} onChange={(e) => setSpecialization(e.target.value)} required /> <br />
         <input type="submit" value="Zapisz" onClick={handleRegister}/>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
+        {successMessage && <div className="success-message">{successMessage}</div>} 
         </form>
       </div>
     );

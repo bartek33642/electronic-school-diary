@@ -50,8 +50,17 @@ const schoolEndpoint = (app) => {
     const schoolId = req.params.school_id;
   
     try {
-      const deleteSchoolQuery = 'DELETE FROM gradebook.schools WHERE school_id = $1';
-      await pool.query(deleteSchoolQuery, [schoolId]);
+const checkClassesQuery = 'SELECT * FROM gradebook.classes WHERE school_id = $1';
+const classesResult = await pool.query(checkClassesQuery, [schoolId]);
+
+if (classesResult.rows.length > 0) {
+  const deleteClassesQuery = 'DELETE FROM gradebook.classes WHERE school_id = $1';
+  await pool.query(deleteClassesQuery, [schoolId]);
+  console.log('Usunięto klasy przypisane do szkoły');
+}
+
+const deleteSchoolQuery = 'DELETE FROM gradebook.schools WHERE school_id = $1';
+await pool.query(deleteSchoolQuery, [schoolId]);
   
       console.log('Usunięto szkołę z bazy danych');
       res.status(204).end();
@@ -62,7 +71,5 @@ const schoolEndpoint = (app) => {
   });
   
 }
-
-
 
 export default schoolEndpoint;
