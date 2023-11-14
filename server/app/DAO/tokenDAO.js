@@ -1,6 +1,8 @@
 // tokenDAO.js
-const config = require('../config'); 
-const jwt = require('jsonwebtoken');
+// const config = require('../config'); 
+// const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import config from '../config';
 const momentWrapper = require('../service/momentWrapper');
 const applicationException = require('../service/applicationException');
 
@@ -10,6 +12,7 @@ function createToken(payload) {
   }
 
   const token = jwt.sign(payload, config.JwtSecret, { expiresIn: '1h' });
+  console.log("JwtSecret: ", config.JwtSecret);
   return token;
 }
 
