@@ -12,7 +12,7 @@ function createToken(payload) {
   }
 
   const token = jwt.sign(payload, config.JwtSecret, { expiresIn: '1h' });
-  console.log("JwtSecret: ", config.JwtSecret);
+  console.log("token: ", token);
   return token;
 }
 

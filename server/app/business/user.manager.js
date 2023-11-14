@@ -76,12 +76,13 @@ function create(context) {
     }
 
     const token = await TokenDAO.createToken(userData); // Poprawiona nazwa funkcji
-    return getToken(token);
+    console.log(token);
+    return token;
   }
 
-  function getToken(token) {
-    return { token: token.value };
-  }
+  // function getToken(token) {
+  //   return { token: token };
+  // }
 
   async function createNewOrUpdate(userData) {
     const user = await UserDAO.createNewOrUpdate(userData);

@@ -477,7 +477,7 @@ import { ajax } from "rxjs/ajax";
 import { catchError, map } from "rxjs/operators";
 import { of } from "rxjs";
 import { createBrowserHistory } from "history";
-
+import { useNavigate } from "react-router-dom";
 // Utwórz obiekt historii
 const history = createBrowserHistory();
 
@@ -486,6 +486,8 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  const Navigate = useNavigate ()
 
   const handleShowPasswordChange = () => {
     setShowPassword(!showPassword);
@@ -508,13 +510,13 @@ export function Login() {
         })
       )
       .subscribe((data) => {
+        console.log(data);
         if (data) {
+          
           console.log("Token: ", data.token);
-          if (data.status === 200) {
-            history.push("/role");
-          } else {
-            setError("Nieprawidłowa odpowiedź serwera.");
-          }
+          localStorage.setItem("token", data.token);
+          Navigate("/role");
+          
         }
       });
       
