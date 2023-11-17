@@ -3,11 +3,24 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import './ClassModal.css';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export function ClassModal(props){
   const { open1, handleClose1, schoolData, updateClasses } = props; 
   const [className, setClassName] = useState("");
   const [selectedSchool, setSelectedSchool] = useState("-");
+  // Pobierz identyfikator wybranej szkoły
+  const selectedSchoolId = selectedSchool;
+
+  const [newClassData, setNewClassData] = useState({
+    school_id: selectedSchoolId,
+    class_name: className
+  });
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
     const style = {
       position: "absolute",
@@ -24,13 +37,11 @@ export function ClassModal(props){
     };
 
 
-    const handleSaveClass = () => {
+    const handleSaveClass = (event) => {
       if (selectedSchool === "-" || className === "") {
         return;
       }
-    
-      // Pobierz identyfikator wybranej szkoły
-      const selectedSchoolId = selectedSchool;
+  
 
       // Wyślij dane do serwera, aby dodać klasę do bazy danych
       fetch('http://localhost:3001/add-class', {
@@ -39,8 +50,8 @@ export function ClassModal(props){
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          class_name: className,
           school_id: selectedSchoolId,
+          class_name: className,
         }),
       })
       .then(response => {
@@ -49,19 +60,42 @@ export function ClassModal(props){
           // Tutaj możesz wykonać aktualizację stanu lub innych działań, które są potrzebne
           updateClasses(); // Ta funkcja powinna być przekazana z wyższego poziomu komponentu
           handleClose1(); // Zamknij modal
+          setSnackbarSeverity("success");
+          setSnackbarMessage("Szkoła dodana pomyślnie.");
+          setSnackbarOpen(true);
+          // Wyczyść formularz lub wykonaj inne akcje po dodaniu szkoły
+          setNewClassData({
+            school_id: "",
+            class_name: ""
+          });
+          setSelectedSchool("-");
+          setClassName("");
+
         } else {
           // Obsłuż błąd dodawania klasy
           console.error('Błąd dodawania klasy');
+          setSnackbarOpen(true);
+          setSnackbarSeverity("error");
+          setSnackbarMessage("Błąd podczas dodawania klasy.");
         }
       })
       .catch(error => {
         console.error(error);
+
       });
      };
+
+     const handleSnackbarClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setSnackbarOpen(false);
+    };
 
 
 
     return (
+      <>
       <Modal
         open={open1}
         onClose={handleClose1}
@@ -114,12 +148,28 @@ export function ClassModal(props){
             type="submit"
             value="Zapisz"
             className="class-modal-button-save"
-            onClick={handleSaveClass}
+            onClick={(e) => handleSaveClass(e)}          
           />
 
           <br />
           <Button onClick={handleClose1}>Zamknij</Button>
         </Box>
       </Modal>
+
+      <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleSnackbarClose}
+      >
+      <Alert
+        onClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        sx={{ width: "100%" }}
+      >
+        {snackbarMessage}
+      </Alert>
+      </Snackbar>
+
+      </>
     );
 }

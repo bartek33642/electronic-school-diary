@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import './UserModal.css';
 
 export function UserModal(props) {
-  const { open2, handleClose2, userData} = props;
+  const { open2, handleClose2, userData, fetchUserData} = props;
 
   const [, setUserData] = useState([]); 
 
@@ -26,25 +26,13 @@ export function UserModal(props) {
 
   const handleDeleteUser = (userId) => {
     if (window.confirm('Czy na pewno chcesz usunąć użytkownika?')) {
-      // Wysyłamy żądanie DELETE do serwera
-      console.log('Usuwanie użytkownika o user_id:', userId);
-
       fetch(`http://localhost:3001/users/${userId}`, {
         method: 'DELETE',
       })
         .then(response => {
           if (response.status === 204) {
-
-            fetch('http://localhost:3001/users')
-              .then(response => response.json())
-              .then(data => {
-                setUserData(data);
-              })
-              .catch(error => {
-                console.error(error);
-              });
+            fetchUserData();
           } else {
-            // Obsłuż błąd usuwania szkoły
             console.error('Błąd usuwania użytkownika');
           }
         })
@@ -54,6 +42,22 @@ export function UserModal(props) {
     }
   };
 
+  const getStatusName = (status) => {
+    switch (status) {
+      case 'principal':
+        return 'dyrektor';
+      case 'student':
+        return 'uczeń';
+      case 'teacher':
+        return 'nauczyciel';
+      case 'parent':
+        return 'rodzic';
+      case 'admin':
+        return 'administrator';
+      default:
+        return status;
+    }
+  };
 
   return (
     <Modal
@@ -79,7 +83,7 @@ export function UserModal(props) {
             {userData.map((user) => (
             <tr className="user-modal-tr" key={user.user_id}>
               <td className="user-modal-td">{user.first_name} {user.second_name}</td>
-              <td className="user-modal-td">{user.status}</td>
+              <td className="user-modal-td">{getStatusName(user.status)}</td>
               <td className="user-modal-td">{user.email}</td>
               <td className="user-modal-td">
                 <button type="button">Edytuj</button> 

@@ -5,8 +5,8 @@ import auth from '../middleware/auth';
 import pool from '../../db'; 
 const bcrypt = require("bcrypt");
 
-const parentEndpoint = (router) => {
-  router.post('/register-parent', async(req, res, next) => {
+const parentEndpoint = (app) => {
+  app.post('/register-parent', async(req, res, next) => {
     const { email, password, active, first_name, second_name, student_id, street, building_number, apartment_number, zip_code, town, phone_number, school_id } = req.body;
 
     try {
@@ -32,7 +32,7 @@ const parentEndpoint = (router) => {
     }
   });
 
-router.get('/students/:school_id', async (req, res) => {
+app.get('/students/:school_id', async (req, res) => {
   const schoolId = req.params.school_id;
 
   try {

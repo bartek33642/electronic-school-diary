@@ -3,10 +3,12 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import './SchoolModal.css';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export function SchoolModal(props){
     const { open, handleClose  } = props;
-
+  
     const style = {
       position: "absolute",
       top: "50%",
@@ -30,6 +32,9 @@ export function SchoolModal(props){
       zip_code: "",
     });
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+    const [snackbarMessage, setSnackbarMessage] = useState("");
 
     const handleAddSchool = () => {
       // Wysyłanie żądania POST do serwera
@@ -44,6 +49,9 @@ export function SchoolModal(props){
         .then((data) => {
           // Przetwarzaj odpowiedź od serwera, np. wyświetl komunikat
           console.log(data.message);
+          setSnackbarSeverity("success");
+          setSnackbarMessage("Szkoła dodana pomyślnie.");
+          setSnackbarOpen(true);
           // Wyczyść formularz lub wykonaj inne akcje po dodaniu szkoły
           setNewSchoolData({
             school_name: "",
@@ -56,10 +64,21 @@ export function SchoolModal(props){
         })
         .catch((error) => {
           console.error("Błąd podczas dodawania szkoły:", error);
+          setSnackbarSeverity("error");
+          setSnackbarMessage("Błąd podczas dodawania szkoły.");
+          setSnackbarOpen(true);
         });
     };
 
+    const handleSnackbarClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setSnackbarOpen(false);
+    };
+
     return(
+      <>
         <Modal
         open={open}
         onClose={handleClose}
@@ -146,7 +165,25 @@ export function SchoolModal(props){
           <br />
           <Button onClick={handleClose}>Zamknij</Button>
           </div>
+
         </Box>
       </Modal>
+
+      <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleSnackbarClose}
+      >
+      <Alert
+        onClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        sx={{ width: "100%" }}
+      >
+        {snackbarMessage}
+      </Alert>
+      </Snackbar>
+
+      </>
+
     );
 }

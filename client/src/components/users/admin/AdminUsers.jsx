@@ -84,6 +84,17 @@ export function AdminUsers(){
       setOpen7(false);
     };
 
+    const fetchData = () => {
+      fetch('http://localhost:3001/users')
+        .then(response => response.json())
+        .then(data => {
+          setUserData(data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
+
     useEffect(() => {
       if (open2) {
         // Wywołaj zapytanie HTTP GET na serwer, aby pobrać użytkowników
@@ -98,6 +109,18 @@ export function AdminUsers(){
           });
       }
     }, [open2]);
+
+    useEffect(() => {
+      if (open2) {
+        fetchData();
+      }
+    }, [open2]);
+    
+    useEffect(() => {
+      fetchData();
+    }, []);
+
+
 
 
     useEffect(() => {
@@ -159,7 +182,7 @@ export function AdminUsers(){
               onClick={handleOpen2}
             />
 
-          <UserModal open2={open2} handleClose2={handleClose2} userData={userData} />
+          <UserModal open2={open2} handleClose2={handleClose2} userData={userData} fetchUserData={fetchData} />
 
           </div>
 

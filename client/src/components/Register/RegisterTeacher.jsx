@@ -3,6 +3,8 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export function RegisterTeacher() {
   const [schools, setSchools] = useState([]);
@@ -24,9 +26,11 @@ export function RegisterTeacher() {
       .catch(error => console.error('Błąd pobierania szkół:', error));
   }, []);
 
-  const handleRegister = () => {
+  const handleRegister = (e) => {
     setErrorMessage('');
     setSuccessMessage('');
+    e.preventDefault();
+
 
     if (!email || !password || !firstName || !lastName || !schools || !specialization) {
       setErrorMessage("Wszystkie pola są wymagane."); // Ustaw komunikat o błędzie
@@ -62,16 +66,42 @@ export function RegisterTeacher() {
       )
       .subscribe((data) => {
         if (data) {
-          console.log("Dyrektor zarejestrowany pomyślnie.");
+          console.log("Nauczyciel zarejestrowany pomyślnie.");
+          setSuccessMessage('Nauczyciel zarejestrowany pomyślnie');
+          setOpen(true);
+
+          // Wyczyść formularz po pomyślnej rejestracji
+          setEmail('');
+          setPassword('');
+          setFirstName('');
+          setLastName('');
+          setIsActive(false);
+          setSelectedSchool('');
+          setSpecialization('');
+
         } else {
           console.error("Nieprawidłowa odpowiedź serwera.");
           setErrorMessage("Nieprawidłowa odpowiedź serwera.");
+          setOpen(true);
+
         }
       });
   };
+
+  const [open, setOpen] = React.useState(false);
+
+      
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
     return (
+      <>
       <div className="register-form">
-        <form >
+        <form method="post" onSubmit={handleRegister}>
         Adres e-mail: <input type="text" id="email" name="email" className="register-input" value={email} onChange={(e) => setEmail(e.target.value)} required /> <br />
         Hasło: <input type="password" id="password-register" name="password" className="register-input" value={password} onChange={(e) => setPassword(e.target.value)} required /> <br />
         Imię: <input type="text" name="first-name" id="first-name" className="register-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} required /> <br />
@@ -90,7 +120,20 @@ export function RegisterTeacher() {
         {errorMessage && <div className="error-message">{errorMessage}</div>}
         {successMessage && <div className="success-message">{successMessage}</div>} 
         </form>
+            
       </div>
+      <Snackbar open={successMessage !== ''} autoHideDuration={4000} onClose={() => setSuccessMessage('')}>
+          <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
+          Pomyślnie zarejestrowano użytkownika
+          </Alert>
+      </Snackbar>
+
+      <Snackbar open={errorMessage !== ''} autoHideDuration={4000} onClose={() => setErrorMessage('')}>
+          <Alert onClose={() => setErrorMessage('')} severity="warning" sx={{ width: '100%' }}>
+          Użytkownik nie został zarejestrowany
+          </Alert>
+      </Snackbar>
+      </>
     );
     
 }

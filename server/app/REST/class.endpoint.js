@@ -46,11 +46,27 @@ const classEndpoint = (app) => {
     }
   })
 
+
+  app.put('/edit-class', async(req, res) => {
+    const { class_name, school_id, class_id } = req.body;
+
+    try{
+        const updateClass = `UPDATE gradebook.classes SET class_name=$1, school_id=$2 WHERE class_id=$3`;
+        await pool.query(updateClass, [class_name, school_id, class_id]);
+        console.log("Edytowano klasę w bazie danych");
+
+        res.status(201).json({ message: 'Klasa zedytowana pomyślnie.' });
+    }catch(error){
+        console.error('Błąd edycji klasy:', error);
+        res.status(500).json({ error: 'Błąd edycji klasy' });
+    }
+  })
+
   app.delete('/classes/:class_id', async (req, res) => {
     const classId = req.params.class_id;
   
     try {
-      const deleteCLassQuery = 'DELETE FROM gradebook.classes WHERE class_id = $1';
+      const deleteClassQuery = 'DELETE FROM gradebook.classes WHERE class_id = $1';
       await pool.query(deleteClassQuery, [classId]);
   
       console.log('Usunięto klasę z bazy danych');

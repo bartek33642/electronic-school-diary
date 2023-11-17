@@ -6,8 +6,8 @@ import pool from '../../db';
 const bcrypt = require("bcrypt");
 
 
-const principalEndpoint = (router) => {
-  router.post('/register-principal', async (req, res, next) => {
+const principalEndpoint = (app) => {
+  app.post('/register-principal', async (req, res, next) => {
     const { email, password, active, first_name, second_name, school_id } = req.body;
 
     try {

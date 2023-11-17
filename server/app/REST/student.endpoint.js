@@ -5,9 +5,9 @@ import auth from '../middleware/auth';
 import pool from '../../db'; 
 const bcrypt = require("bcrypt");
 
-const studentEndpoint = (router) => {
-  router.post('/register-student', async(req, res, next) => {
-    const { email, password, active, first_name, second_name, pesel, street, building_number, apartment_number, zip_code, town, phone_number, school_id } = req.body;
+const studentEndpoint = (app) => {
+  app.post('/register-student', async(req, res, next) => {
+    const { email, password, active, first_name, second_name, pesel, street, building_number, apartment_number, zip_code, town, phone_number, school_id, class_id } = req.body;
     
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
@@ -20,8 +20,8 @@ const studentEndpoint = (router) => {
       const userId = studentRegister.rows[0].user_id;
 
       // Dodaj informacje o uczniu do tabeli uczniów
-      const studentInfo = await pool.query('INSERT INTO gradebook.students(user_id, pesel, street, building_number, apartment_number, zip_code, town, phone_number, school_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-        [userId, pesel, street, building_number, apartment_number, zip_code, town, phone_number, school_id]);
+      const studentInfo = await pool.query('INSERT INTO gradebook.students(user_id, pesel, street, building_number, apartment_number, zip_code, town, phone_number, school_id, class_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+        [userId, pesel, street, building_number, apartment_number, zip_code, town, phone_number, school_id, class_id]);
 
       console.log("Dodano nowego ucznia do bazy danych:", studentInfo.rows);
 
@@ -32,7 +32,7 @@ const studentEndpoint = (router) => {
     }
   });
 
-  router.get('/classes/:school_id', async (req, res) => {
+  app.get('/classes/:school_id', async (req, res) => {
     const schoolId = req.params.school_id;
   
     try {

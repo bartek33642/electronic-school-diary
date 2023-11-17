@@ -5,8 +5,8 @@ import auth from '../middleware/auth';
 import pool from '../../db'; 
 const bcrypt = require("bcrypt");
 
-const teacherEndpoint = (router) => {
-  router.post('/register-teacher', async (req, res, next) => {
+const teacherEndpoint = (app) => {
+  app.post('/register-teacher', async (req, res, next) => {
     const { email, password, active, first_name, second_name, specialization, school_id } = req.body;
 
     try {
