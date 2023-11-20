@@ -28,3 +28,13 @@
 .right-fist-container{
     width: calc(60% - 10px);
 }
+
+.users-button-components{
+    display: flex;
+    flex-direction: row;
+    margin-top: 15px;
+    text-align: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+

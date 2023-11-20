@@ -43,6 +43,7 @@ export function Login() {
           
           console.log("Token: ", data.token);
           localStorage.setItem("token", data.token);
+          localStorage.setItem("userEmail", email); // Dodaj to, aby przechować e-mail w Local Storage
           Navigate("/role");
           
         }
