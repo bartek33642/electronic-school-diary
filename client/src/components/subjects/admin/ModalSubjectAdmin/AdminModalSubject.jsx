@@ -2,85 +2,27 @@ import React, { useState }  from "react";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import './SchoolModal.css';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
-export function SchoolModal(props){
-    const { open, handleClose  } = props;
-  
-    
-    const style = {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      width: '60%',
-      bgcolor: "background.paper",
-      border: "2px solid #000",
-      boxShadow: 24,
-      pt: 2,
-      px: 4,
-      pb: 3,
-    };
+export function AdminModalSubject(props){
+    // const { open, handleClose  } = props;
 
-    const [newSchoolData, setNewSchoolData] = useState({
-      school_name: "",
-      town: "",
-      street: "",
-      building_number: "",
-      apartment_number: "",
-      zip_code: "",
-    });
-
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-    const [snackbarMessage, setSnackbarMessage] = useState("");
-
-    const handleAddSchool = () => {
-      // Wysyłanie żądania POST do serwera
-      fetch("/add-school", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newSchoolData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Przetwarzaj odpowiedź od serwera, np. wyświetl komunikat
-          console.log(data.message);
-          setSnackbarSeverity("success");
-          setSnackbarMessage("Szkoła dodana pomyślnie.");
-          setSnackbarOpen(true);
-          // Wyczyść formularz lub wykonaj inne akcje po dodaniu szkoły
-          setNewSchoolData({
-            school_name: "",
-            town: "",
-            street: "",
-            building_number: "",
-            apartment_number: "",
-            zip_code: "",
-          });
-        })
-        .catch((error) => {
-          console.error("Błąd podczas dodawania szkoły:", error);
-          setSnackbarSeverity("error");
-          setSnackbarMessage("Błąd podczas dodawania szkoły.");
-          setSnackbarOpen(true);
-        });
-    };
-
-    const handleSnackbarClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      setSnackbarOpen(false);
-    };
+    // const style = {
+    //     position: "absolute",
+    //     top: "50%",
+    //     left: "50%",
+    //     transform: "translate(-50%, -50%)",
+    //     width: '60%',
+    //     bgcolor: "background.paper",
+    //     border: "2px solid #000",
+    //     boxShadow: 24,
+    //     pt: 2,
+    //     px: 4,
+    //     pb: 3,
+    //   };
 
     return(
-      <>
-        <Modal
+        <>
+        {/* <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
@@ -88,7 +30,7 @@ export function SchoolModal(props){
       >
         <Box sx={{ ...style }} className='modal-content'>
           
-          <h2 id="child-modal-title">Dodaj szkołę </h2>
+          <h2 id="child-modal-title">Dodaj przedmioty </h2>
           <div className="box-modal">
           <div className="modal-text-titles">
           Nazwa szkoły:
@@ -168,23 +110,7 @@ export function SchoolModal(props){
           </div>
 
         </Box>
-      </Modal>
-
-      <Snackbar
-      open={snackbarOpen}
-      autoHideDuration={6000}
-      onClose={handleSnackbarClose}
-      >
-      <Alert
-        onClose={handleSnackbarClose}
-        severity={snackbarSeverity}
-        sx={{ width: "100%" }}
-      >
-        {snackbarMessage}
-      </Alert>
-      </Snackbar>
-
+      </Modal> */}
       </>
-
     );
 }

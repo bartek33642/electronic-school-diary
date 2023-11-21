@@ -29,6 +29,31 @@ const classEndpoint = (app) => {
     }
   });
 
+  app.get('/classes/:school_id', async (req, res) => {
+    try {
+      const classesQuery = `SELECT
+                              s.school_id,
+                              s.school_name,
+                              s.town,
+                              c.class_id,
+                              c.class_name
+                            FROM
+                              gradebook.schools s
+                            JOIN
+                              gradebook.classes c
+                            ON
+                              s.school_id = c.school_id
+                            WHERE school_id = $1`;
+
+      const { rows } = await pool.query(classesQuery);
+      res.send(rows);
+    //   console.log("Classes okay");
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
 
 
   app.post('/add-class', async(req, res) => {

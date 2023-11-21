@@ -11,6 +11,7 @@ import loginEndpoint from './login.endpoint';
 import marksEndpoint from './marks.endpoint';
 import topicsEndpoint from './topics.endpoint';
 import subjectEndpoint from './subject.endpoint';
+import attendanceEnpoint from './attendance.endpoint';
 
 const routes = function (app) {
   userEndpoint(app);
@@ -26,6 +27,7 @@ const routes = function (app) {
   marksEndpoint(app);
   topicsEndpoint(app);
   subjectEndpoint(app);
+  attendanceEnpoint(app);
 };
 
 

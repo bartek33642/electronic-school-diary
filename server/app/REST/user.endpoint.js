@@ -28,7 +28,7 @@ const userEndpoint = (app) => {
           p.parent_id, p.student_id,
           t.teacher_id, t.school_id,
           pr.principal_id, pr.school_id,
-          sc.school_id
+          sc.school_id, sc.school_name
         FROM gradebook.users u
         LEFT JOIN gradebook.students s ON u.user_id = s.user_id
         LEFT JOIN gradebook.parents p ON u.user_id = p.user_id
@@ -64,42 +64,58 @@ const userEndpoint = (app) => {
     }
   });
 
+  // app.delete('/users/:user_id', async (req, res) => {
+  //   const userId = req.params.user_id;
+  
+  //   try {
+  //     const userRoleQuery = 'SELECT role FROM gradebook.users WHERE user_id = $1';
+  //     const { rows } = await pool.query(userRoleQuery, [userId]);
+  //     const userRole = rows[0].role;
+  
+  //     let deleteQueries = 'DELETE FROM gradebook.users WHERE user_id = $1';
+  //     // switch (userRole) {
+  //     //   case 1: // Admin
+  //     //     deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
+  //     //     break;
+  //     //   case 2: // Dyrektor
+  //     //     deleteQueries.push('DELETE FROM gradebook.principal WHERE user_id = $1');
+  //     //     deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
+  //     //     break;
+  //     //   case 3: // Nauczyciel
+  //     //     deleteQueries.push('DELETE FROM gradebook.teachers WHERE user_id = $1');
+  //     //     deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
+  //     //     break;
+  //     //   case 4: // Uczeń
+  //     //     deleteQueries.push('DELETE FROM gradebook.students WHERE user_id = $1');
+  //     //     deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
+  //     //     break;
+  //     //   case 5: // Rodzic
+  //     //     deleteQueries.push('DELETE FROM gradebook.parents WHERE user_id = $1');
+  //     //     deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
+  //     //     break;
+  //     //   default:
+  //     //     deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
+  //     // }
+  
+  //     for (const query of deleteQueries) {
+  //       await pool.query(query, [userId]);
+  //     }
+  
+  //     console.log('Usunięto użytkownika z bazy danych');
+  //     res.status(204).end();
+  //   } catch (error) {
+  //     console.error('Błąd usuwania użytkownika:', error);
+  //     res.status(500).json({ error: 'Błąd usuwania użytkownika' });
+  //   }
+
+  // });
+
   app.delete('/users/:user_id', async (req, res) => {
     const userId = req.params.user_id;
   
     try {
-      const userRoleQuery = 'SELECT role FROM gradebook.users WHERE user_id = $1';
-      const { rows } = await pool.query(userRoleQuery, [userId]);
-      const userRole = rows[0].role;
-  
-      let deleteQueries = [];
-      switch (userRole) {
-        case 1: // Admin
-          deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
-          break;
-        case 2: // Dyrektor
-          deleteQueries.push('DELETE FROM gradebook.principal WHERE user_id = $1');
-          deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
-          break;
-        case 3: // Nauczyciel
-          deleteQueries.push('DELETE FROM gradebook.teachers WHERE user_id = $1');
-          deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
-          break;
-        case 4: // Uczeń
-          deleteQueries.push('DELETE FROM gradebook.students WHERE user_id = $1');
-          deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
-          break;
-        case 5: // Rodzic
-          deleteQueries.push('DELETE FROM gradebook.parents WHERE user_id = $1');
-          deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
-          break;
-        default:
-          deleteQueries.push('DELETE FROM gradebook.users WHERE user_id = $1');
-      }
-  
-      for (const query of deleteQueries) {
-        await pool.query(query, [userId]);
-      }
+      const deleteUserQuery = 'DELETE FROM gradebook.users WHERE user_id = $1';
+      await pool.query(deleteUserQuery, [userId]);
   
       console.log('Usunięto użytkownika z bazy danych');
       res.status(204).end();
@@ -107,9 +123,8 @@ const userEndpoint = (app) => {
       console.error('Błąd usuwania użytkownika:', error);
       res.status(500).json({ error: 'Błąd usuwania użytkownika' });
     }
-
   });
-
+  
 }
 
 export default userEndpoint;

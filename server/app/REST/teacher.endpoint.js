@@ -32,6 +32,41 @@ const teacherEndpoint = (app) => {
       res.status(500).json({ error: 'Błąd rejestracji nauczyciela' });    
     }
   });
+
+  app.get('/all-teachers', async (req, res) => {
+    try {
+      const teachersQuery = `SELECT * FROM gradebook.teachers 
+                              NATURAL JOIN gradebook.users`;
+
+      const { rows } = await pool.query(teachersQuery);
+      res.send(rows);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      }
+    } )
+
+    app.get('/teachers/:school_id', async (req, res) => {
+      const schoolId = req.params.school_id;
+
+      try {
+          const teachersQuery = `
+              SELECT teachers.teacher_id, users.first_name, users.second_name
+              FROM gradebook.teachers
+              INNER JOIN gradebook.users ON teachers.user_id = users.user_id
+              WHERE teachers.school_id = $1;
+          `;
+
+          const { rows } = await pool.query(teachersQuery, [schoolId]);
+          res.send(rows);
+      } catch (error) {
+          console.error('Błąd pobierania nauczycieli:', error);
+          res.status(500).send('Internal Server Error');
+      }
+  });
+
+
 };
 
 export default teacherEndpoint;

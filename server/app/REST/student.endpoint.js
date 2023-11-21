@@ -51,7 +51,19 @@ const studentEndpoint = (app) => {
     }
   });
   
+  app.get('/all-students', async (req, res) => {
+    try {
+      const studentsQuery = `SELECT * FROM gradebook.students 
+                              NATURAL JOIN gradebook.users`;
 
+      const { rows } = await pool.query(studentsQuery);
+      res.send(rows);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      }
+    } )
   
 };
 
