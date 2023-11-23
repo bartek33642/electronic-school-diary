@@ -4,12 +4,11 @@ import { FiHome,  FiBookOpen, FiCalendar, FiClipboard, FiSettings, FiPower, FiUs
 import { Link } from "react-router-dom";
 
 export function ParentMenu(){
-  let imie = "Stanisław";
     return (
 <div className="navbar">
   <nav className="nav-menu">
      <ul className="menu-ul">
-      <p className="welcomeText">Witaj, {imie}</p>
+      <p className="welcomeText">Witaj</p>
       <li className="menu-li"> <FiHome className="Fi"/> <Link to='/role' className="LinkBtn"><span className="nav-item">Strona główna</span></Link></li>
       <li className="menu-li"> <FiBookOpen className="Fi" /><Link to='/parent-grades' className="LinkBtn"> <span className="nav-item">Oceny</span></Link></li>
       <li className="menu-li"> <FiCalendar className="Fi" /><Link to='/parent-schedule' className="LinkBtn">  <span className="nav-item">Plan zajęć</span></Link></li>

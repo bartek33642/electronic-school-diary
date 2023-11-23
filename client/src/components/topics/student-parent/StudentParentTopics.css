@@ -1,0 +1,10 @@
+.student-topics-container, .parent-topics-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.student-topics-elements, .parent-topics-elements{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}

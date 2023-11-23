@@ -31,6 +31,19 @@ const subjectEndpoint = (app) => {
   });
 
 
+  app.get('/subjects/class/:class_id', async (req, res) => {
+    const classId = req.params.class_id;
+
+    try {
+      const subjectsQuery = `SELECT * FROM gradebook.subjects WHERE class_id = $1`;
+      const { rows } = await pool.query(subjectsQuery, [classId]);
+      res.send(rows);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+
 
 //   app.get('/subjects/:school_id/:class_id/:student_id', async (req, res) => {
 //     try {
@@ -57,7 +70,7 @@ const subjectEndpoint = (app) => {
 
     try{
         const addSubjects = `INSERT INTO gradebook.subjects(subject_name, school_id, class_id) VALUES ($1, $2, $3)`;
-        await pool.query(addSubjects, [ subject_name, school_id, class_id]);
+        await pool.query(addSubjects, [subject_name, school_id, class_id]);
         console.log("Dodano przedmiot do bazy danych");
 
         res.status(201).json({ message: 'Przedmiot dodany pomyślnie.' });

@@ -32,7 +32,10 @@ import { AdminAttendance } from './components/attendance/admin/AdminAttendance';
 import { AdminRemarks } from './components/remarks/admin/AdminRemarks';
 import { AdminSubjects } from './components/subjects/admin/AdminSubjects';
 import { AdminPolls } from './components/polls/admin/AdminPolls';
-
+import { StudentAttendance } from './components/attendance/student-parent/StudentAttendance';
+import { ParentAttendance } from './components/attendance/student-parent/ParentAttendance';
+import { ParentTopics } from './components/topics/student-parent/ParentTopics';
+import { StudentTopics } from './components/topics/student-parent/StudentTopics';
 
 
 function App() {
@@ -71,6 +74,14 @@ function App() {
           <Route path='/admin-remarks' element={<AdminRemarks />}/>
           <Route path='/admin-subjects' element={<AdminSubjects />} />
           <Route path='/admin-polls' element={<AdminPolls />} />
+          <Route path='/student-attendance' element={<StudentAttendance/>}/>
+          <Route path='/parent-attendance' element={<ParentAttendance/>}/>
+          <Route path='/parent-topics' element={<ParentTopics/>}/>
+          <Route path='/student-topics' element={<StudentTopics/>}/>
+
+
+
+
          
         </Routes>
       </BrowserRouter>

@@ -31,6 +31,23 @@ const marksEndpoint = (app) => {
             }
           })
 
+          app.get('/marks/:student_id', async (req, res) => {
+            const { student_id } = req.params;
+        
+            try {
+                const marksQuery = `
+                SELECT * FROM gradebook.grades
+                INNER JOIN gradebook.subjects ON grades.subject_id = subjects.subject_id
+                WHERE student_id = $1;`;
+        
+                const { rows } = await pool.query(marksQuery, [student_id]);
+                res.send(rows);
+            } catch (error) {
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+            }
+        });
+
           app.get('/marks/:student_id/:subject_id', async (req, res) => {
             const { student_id, subject_id } = req.params;
         
@@ -63,6 +80,23 @@ const marksEndpoint = (app) => {
                 res.send(rows);
             } catch (error) {
                 console.error('Błąd pobierania uczniów:', error);
+                res.status(500).send('Internal Server Error');
+            }
+        });
+
+        app.get('/subjects/:subject_id', async (req, res) => {
+            const subjectId = req.params.subject_id;
+    
+            try {
+                const subjectsQuery = `
+                    SELECT * FROM gradebook.subjects
+                    WHERE subjects.subject_id = $1;
+                `;
+    
+                const { rows } = await pool.query(subjectsQuery, [subjectId]);
+                res.send(rows);
+            } catch (error) {
+                console.error('Błąd pobierania przedmiotów:', error);
                 res.status(500).send('Internal Server Error');
             }
         });

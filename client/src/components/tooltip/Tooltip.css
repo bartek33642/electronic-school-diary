@@ -1,37 +1,3 @@
-@import '../../../App.css';
-.student-marks-conatiner{
-    display: flex;
-    flex-direction: row;
-}
-.student-marks-elements{
-    display: flex;
-    flex-direction: column;
-    margin-left: 20px;
-    margin-top: 20px;
-}
-
-.student-marks-table{
-    border: solid 1px black;
-    min-width: 100px;
-    text-align: center;
-    border-collapse: collapse;
-
-}
-
-
-.student-marks-table th{
-    background-color: var(--blue);
-    color: var(--white);
-    border: solid 1px black;
-
-}
-
-.student-marks-table td{
-    border: solid 1px black;
-
-}
-
-
 .tooltip {
     position: relative;
     display: inline-block;

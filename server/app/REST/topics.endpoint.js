@@ -35,6 +35,29 @@ const topicsEndpoint = (app) => {
               res.status(500).send('Internal Server Error');
             }
           } )
+
+          app.get('/topics-all-student/:classId', async (req, res) => {
+            try {
+              // const userId = req.params.userId;
+              const classId = req.params.classId;
+          
+              const topicsQuery = `
+                SELECT * FROM gradebook.topics
+                NATURAL JOIN gradebook.schools
+                NATURAL JOIN gradebook.teachers
+                NATURAL JOIN gradebook.classes
+                NATURAL JOIN gradebook.subjects
+                NATURAL JOIN gradebook.users
+                WHERE class_id = $1;
+              `;
+          
+              const { rows } = await pool.query(topicsQuery, [classId]);
+              res.send(rows);
+            } catch (error) {
+              console.error(error);
+              res.status(500).send('Internal Server Error');
+            }
+          });
         
 
         app.post('/add-topics', async(req, res) => {
