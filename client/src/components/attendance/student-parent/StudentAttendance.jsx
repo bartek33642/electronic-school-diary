@@ -10,7 +10,7 @@ export function StudentAttendance() {
         <StudentMenu />
         
         <div className="student-attendance-elements">
-        <h2>Student Attendance</h2>
+        <h2>Obecność ucznia</h2>
       
         <table >
 <thead>

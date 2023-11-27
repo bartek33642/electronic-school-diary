@@ -1,0 +1,12 @@
+.student-subjects-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.student-subjects-elements{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+}

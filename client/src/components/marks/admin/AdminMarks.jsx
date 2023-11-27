@@ -295,38 +295,61 @@ export function AdminMarks(){
 
     const handleSchoolChange = (event) => {
         const schoolId = event.target.value;
+        const classId = event.target.value;
 
         // Pobierz listę klas w danej szkole
         fetch(`/classes/${schoolId}`)
             .then(response => response.json())
             .then(data => setClasses(data))
             .catch(error => console.error('Błąd pobierania klas:', error));
-
+    
         // Pobierz listę uczniów w danej szkole
-        fetch(`/students/${schoolId}`)
+        fetch(`/students/${schoolId}/${selectedClass}`)
             .then(response => response.json())
             .then(data => setStudents(data))
             .catch(error => console.error('Błąd pobierania uczniów:', error));
-
         // Pobierz listę nauczycieli w danej szkole
         fetch(`/teachers/${schoolId}`)
             .then(response => response.json())
             .then(data => setTeachers(data))
             .catch(error => console.error('Błąd pobierania nauczycieli:', error));
-
-        // Pobierz listę przedmiotów w danej szkole
-        fetch(`/subjects/${schoolId}`)
-            .then(response => response.json())
-            .then(data => setSubjects(data))
-            .catch(error => console.error('Błąd pobierania przedmiotów:', error));
-
-        setSelectedSchool(schoolId);
+    
+        // Poczekaj na zakończenie pobierania szkoły przed ustawieniem selectedSchool
+        // i pobraniem listy przedmiotów
+        Promise.all([
+            fetch(`/subjects/${classId}`)
+                .then(response => response.json())
+                .then(data => setSubjects(data))
+                .catch(error => console.error('Błąd pobierania przedmiotów:', error)),
+            setSelectedSchool(classId)
+        ]);
+        
     };
 
     const handleClassChange = (event) => {
-        setSelectedClass(event.target.value);
+        const classId = event.target.value;
+        // const classId = userData[0].class_id;
+        
+    
+        // Pobierz listę uczniów w danej klasie
+        fetch(`/students/${selectedSchool}/${classId}`)
+            .then(response => response.json())
+            .then(data => setStudents(data))
+            .catch(error => console.error('Błąd pobierania uczniów:', error));
+    
+        // Pobierz listę przedmiotów w danej klasie
+        fetch(`/subjects/${classId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Pobrane przedmioty:', data);
+                setSubjects(data);
+            })
+            .catch(error => console.error('Błąd pobierania przedmiotów:', error));
+    
+        setSelectedClass(classId);
+        console.log("ClassId: ", classId);
     };
-
+    
     const handleStudentChange = (event) => {
         setSelectedStudent(event.target.value);
     };
@@ -395,109 +418,172 @@ export function AdminMarks(){
     };
 
 
-    return(
-        <>
-        
+    return (
+      <>
         <div className="marks-container">
-            <AdminMenu />
-            
-         
-            <div className="admin-marks-elements">
-                    <h2 className="admin-marks-header">Oceny</h2>
-                    <form>
-                        <p className="marks-title">Szkoła</p>
-                        <select value={selectedSchool} onChange={handleSchoolChange} className="marks-selection">
-                            <option value="-" >Wybierz szkołę</option>
-                            {schools.map(school => (
-                                <option key={school.school_id} value={school.school_id}>{school.school_name}</option>
-                            ))}
-                        </select>
+          <AdminMenu />
 
-                        <p className="marks-title">Klasa</p>
-                        <select value={selectedClass} onChange={handleClassChange} className="marks-selection">
-                            <option value="-" disabled>Wybierz klasę</option>
-                            {classes.map(classItem => (
-                                <option key={classItem.class_id} value={classItem.class_id}>{classItem.class_name}</option>
-                            ))}
-                        </select>
+          <div className="admin-marks-elements">
+            <h2 className="admin-marks-header">Oceny</h2>
+            <form>
+              <p className="marks-title">Szkoła</p>
+              <select
+                value={selectedSchool}
+                onChange={handleSchoolChange}
+                className="marks-selection"
+              >
+                <option value="-">Wybierz szkołę</option>
+                {schools.map((school) => (
+                  <option key={school.school_id} value={school.school_id}>
+                    {school.school_name}
+                  </option>
+                ))}
+              </select>
 
-                        <p className="marks-title">Uczeń</p>
-                        <select value={selectedStudent} onChange={handleStudentChange} className="marks-selection">
-                            <option value="-" disabled>Wybierz ucznia</option>
-                            {students.map(student => (
-                                <option key={student.student_id} value={student.student_id}>{`${student.first_name} ${student.second_name}`}</option>
-                            ))}
-                        </select>
+              <p className="marks-title">Klasa</p>
+              <select
+                value={selectedClass}
+                onChange={handleClassChange}
+                className="marks-selection"
+              >
+                <option value="-">Wybierz klasę</option>
+                {classes.map((classItem) => (
+                  <option key={classItem.class_id} value={classItem.class_id}>
+                    {classItem.class_name}
+                  </option>
+                ))}
+              </select>
 
-                        <p className="marks-title">Nauczyciel</p>
-                        <select value={selectedTeacher} onChange={handleTeacherChange} className="marks-selection">
-                            <option value="-" disabled>Wybierz nauczyciela</option>
-                            {teachers.map(teacher => (
-                                <option key={teacher.teacher_id} value={teacher.teacher_id}>{`${teacher.first_name} ${teacher.second_name}`}</option>
-                            ))}
-                        </select>
+              <p className="marks-title">Uczeń</p>
+              <select
+                value={selectedStudent}
+                onChange={handleStudentChange}
+                className="marks-selection"
+              >
+                <option value="-">Wybierz ucznia</option>
+                {students.map((student) => (
+                  <option
+                    key={student.student_id}
+                    value={student.student_id}
+                  >{`${student.first_name} ${student.second_name}`}</option>
+                ))}
+              </select>
 
-                        <p className="marks-title">Przedmiot</p> {/* Dodane */}
-                        <select value={selectedSubject} onChange={handleSubjectChange} className="marks-selection">
-                            <option value="-" disabled>Wybierz przedmiot</option>
-                            {subjects.map(subject => (
-                                <option key={subject.subject_id} value={subject.subject_id}>{subject.subject_name}</option>
-                            ))}
-                        </select>
+              <p className="marks-title">Nauczyciel</p>
+              <select
+                value={selectedTeacher}
+                onChange={handleTeacherChange}
+                className="marks-selection"
+              >
+                <option value="-">Wybierz nauczyciela</option>
+                {teachers.map((teacher) => (
+                  <option
+                    key={teacher.teacher_id}
+                    value={teacher.teacher_id}
+                  >{`${teacher.first_name} ${teacher.second_name}`}</option>
+                ))}
+              </select>
 
-                        <input type="button" value="Wyszukaj" className="admin-marks-saveBtn" onClick={handleSearch} />
-                    </form>
+              <p className="marks-title">Przedmiot</p>
+              <select
+                value={selectedSubject}
+                onChange={handleSubjectChange}
+                className="marks-selection"
+              >
+                <option value="-">Wybierz przedmiot</option>
+                {subjects.map((subject) => (
+                  <option key={subject.subject_id} value={subject.subject_id}>
+                    {subject.subject_name}
+                  </option>
+                ))}
+              </select><br />
 
-                    <table className="marks-table">
-                    <tr >
-                    <th className="header-table">
-                        Przedmiot
-                    </th>
-                    <th className="header-table">
-                        Oceny
-                    </th>
-                    <th className="header-table">
-                        Średnia
-                    </th>
-                    <th className="header-table">
-                        Średnia ważona
-                    </th>
-                    </tr>
-                    <tr>
-                        <td>{subjects.subject_name}</td>
-                        <td><input type="button" value="+" onClick={handleOpen} className="admin-marks-button"/>
-                        
-                            <Modal
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="parent-modal-title"
-                                aria-describedby="parent-modal-description"
-                                >
-                                    <Box sx={{ ...style, width: 200 }}>
-                                        <h2>Ocena</h2>
-                                        Ocena: <input type="number" name="grade" id="grade" min="0.01" max="6.0" value={gradeData.grade}
-                                                onChange={handleInputChange}/><br />
-                                        Typ: <input type="text" name='type' value={gradeData.type}
-                                                onChange={handleInputChange}></input>
-                                        Waga: <input type="number" name="weight" id="" value={gradeData.weight}
-                                                onChange={handleInputChange}/>
-                                        Komentarz: <input type="text" name="comment" id=""  value={gradeData.comment}
-                                                onChange={handleInputChange}/>
-                                        <Button onClick={handleSaveGrade}>Zapisz</Button>
-                                        <Button onClick={handleClose}>Zamknij</Button>
-                                    </Box>
-                            </Modal>
-                        </td>
-                    </tr>
+              <input
+                type="button"
+                value="Wyszukaj"
+                className="admin-marks-saveBtn"
+                onClick={handleSearch}
+              />
+            </form>
 
-                    {/* Pozostałe wiersze dla innych przedmiotów */}
+            <table className="marks-table">
+              <tr>
+                <th className="header-table">Przedmiot</th>
+                <th className="header-table">Oceny</th>
+                <th className="header-table">Średnia</th>
+                <th className="header-table">Średnia ważona</th>
+              </tr>
+              <tr>
+                <td>{subjects.subject_name}</td>
+                <td>
+                  <input
+                    type="button"
+                    value="+"
+                    onClick={handleOpen}
+                    className="admin-marks-button"
+                  />
 
-                </table>
-                
-                <input type="button" value="Zapisz" onClick={handleSaveGrade} className='admin-marks-saveBtn' id='admin-button-save'/>
-                </div>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="parent-modal-title"
+                    aria-describedby="parent-modal-description"
+                  >
+                    <Box sx={{ ...style, width: 200 }}>
+                      <h2>Ocena</h2>
+                      Ocena:{" "}
+                      <input
+                        type="number"
+                        name="grade"
+                        id="grade"
+                        min="0.01"
+                        max="6.0"
+                        value={gradeData.grade}
+                        onChange={handleInputChange}
+                      />
+                      <br />
+                      Typ:{" "}
+                      <input
+                        type="text"
+                        name="type"
+                        value={gradeData.type}
+                        onChange={handleInputChange}
+                      ></input>
+                      Waga:{" "}
+                      <input
+                        type="number"
+                        name="weight"
+                        id=""
+                        value={gradeData.weight}
+                        onChange={handleInputChange}
+                      />
+                      Komentarz:{" "}
+                      <input
+                        type="text"
+                        name="comment"
+                        id=""
+                        value={gradeData.comment}
+                        onChange={handleInputChange}
+                      />
+                      <Button onClick={handleSaveGrade}>Zapisz</Button>
+                      <Button onClick={handleClose}>Zamknij</Button>
+                    </Box>
+                  </Modal>
+                </td>
+              </tr>
 
+              {/* Pozostałe wiersze dla innych przedmiotów */}
+            </table>
+
+            <input
+              type="button"
+              value="Zapisz"
+              onClick={handleSaveGrade}
+              className="admin-marks-saveBtn"
+              id="admin-button-save"
+            />
+          </div>
         </div>
-        </>
+      </>
     );
 }

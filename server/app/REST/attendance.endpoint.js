@@ -52,11 +52,11 @@ const attendanceEnpoint = (app) => {
       });
 
       app.post('/add-attendance', async(req, res) => {
-        const { date, status, student_id, teacher_id} = req.body;
+        const { date, status, student_id, teacher_id, class_id, schedule_id} = req.body;
     
         try{
-            const addAtenndance = `INSERT INTO gradebook.attendance(date, status, student_id, teacher_id) VALUES ($1, $2, $3, $4)`;
-            await pool.query(addAtenndance, [ date, status, student_id, teacher_id]);
+            const addAtenndance = `INSERT INTO gradebook.attendance(date, status, student_id, teacher_id, class_id, schedule_id) VALUES ($1, $2, $3, $4, $5, $6)`;
+            await pool.query(addAtenndance, [ date, status, student_id, teacher_id, class_id, schedule_id]);
             console.log("Dodano frekwencję do bazy danych");
     
             res.status(201).json({ message: 'frekwencja dodany pomyślnie.' });

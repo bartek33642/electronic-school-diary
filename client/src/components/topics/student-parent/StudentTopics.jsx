@@ -242,12 +242,12 @@ export function StudentTopics() {
   }, []);
 
   const columns = [
-    { field: 'topicId', headerName: 'ID', width: 100 },
+    // { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
     { field: 'date', headerName: 'Data', width: 100},
     { field: 'subject', headerName: 'Przedmiot', width: 130 },
     { field: 'topic', headerName: 'Temat', width: 130 },
     { field: 'description', headerName: 'Opis tematu', width: 250},
-    { field: 'teacher', headerName: 'Nauczyciel', width: 100},
+    { field: 'teacher', headerName: 'Nauczyciel', width: 130},
 
   ];
 
@@ -256,7 +256,7 @@ export function StudentTopics() {
   // console.log(formatDate);
 
   const rows = topics.map(topic => ({
-    topicId: topic.topic_id,
+    // topicId: topic.topic_id,
     date: new Date(topic.date).toLocaleDateString(),
     subject: topic.subject_name,
     topic: topic.topic_text,
@@ -274,7 +274,7 @@ export function StudentTopics() {
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.topicId}
+            getRowId={(row) => row.date}
             pageSize={8}
             initialState={{
               pagination: {
@@ -282,7 +282,7 @@ export function StudentTopics() {
               },
             }}
             pageSizeOptions={[7, 10]}
-            checkboxSelection
+            // checkboxSelection
           />
         </div>
       </div>

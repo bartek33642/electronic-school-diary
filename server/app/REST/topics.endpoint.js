@@ -108,6 +108,26 @@ const topicsEndpoint = (app) => {
                 }
               })
 
+              app.get('/topics-all-classes/:school_id', async(req, res) => {
+                const schoolId = req.params.school_id;
+
+                  try{
+                    const topicsClassesQuery = `	 SELECT * FROM gradebook.topics t
+                             LEFT JOIN gradebook.subjects su ON t.subject_id = su.subject_id
+                             LEFT JOIN gradebook.schools sc ON su.school_id = sc.school_id
+                             LEFT JOIN gradebook.classes cl ON t.class_id = cl.class_id
+                             LEFT JOIN gradebook.teachers te ON t.teacher_id = te.teacher_id
+                             LEFT JOIN gradebook.users u ON te.user_id = u.user_id
+                             WHERE sc.school_id = $1`;
+                    const { rows } = await pool.query(topicsClassesQuery, [schoolId]);
+                    res.send(rows);
+                  }
+                  catch (error){
+                    console.error(error);
+                    res.status(500).send('Internal Server Error');
+                  }
+              })
+
 
         };
 export default topicsEndpoint;

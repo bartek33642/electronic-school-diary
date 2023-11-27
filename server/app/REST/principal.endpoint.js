@@ -34,7 +34,53 @@ const principalEndpoint = (app) => {
       res.status(500).json({ error: 'Błąd rejestracji dyrektora' });
     }
   });
+
+
+
+app.get('/principal-users/:schoolId', async (req, res) => {
+  try {
+    const schoolId = req.params.schoolId;
+
+    const userQuery = `
+	  SELECT * FROM gradebook.users u
+      LEFT JOIN gradebook.students s ON u.user_id = s.user_id
+      LEFT JOIN gradebook.teachers t ON u.user_id = t.user_id
+	    LEFT JOIN gradebook.parents p ON u.user_id = p.user_id
+      WHERE u.school_id = $1;
+    `;
+    
+const { rows } = await pool.query(userQuery, [schoolId]);
+    if (rows.length > 0) {
+      res.send(rows);
+    } else {
+      res.status(404).send('User not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/principal-classes/:schoolId', async (req, res) => {
+  try {
+    const schoolId = req.params.schoolId;
+
+    const classQuery = `
+	  SELECT * FROM gradebook.classes
+      WHERE school_id = $1;
+    `;
+    
+const { rows } = await pool.query(classQuery, [schoolId]);
+    if (rows.length > 0) {
+      res.send(rows);
+    } else {
+      res.status(404).send('Class not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 };
-
-
 export default principalEndpoint;

@@ -1,0 +1,12 @@
+.student-parent-remarks-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.student-parent-remarks-elements{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+}

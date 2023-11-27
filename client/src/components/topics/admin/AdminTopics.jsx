@@ -91,7 +91,7 @@ export function AdminTopics(){
                             <td className="schools-table-td">{topic.subject_name}</td>
                             <td className="schools-table-td">{topic.school_name} {topic.town}</td>
                             <td className="schools-table-td">{topic.class_name}</td>
-                            <td className="schools-table-td">{topic.first_name}{topic.second_name}</td>
+                            <td className="schools-table-td">{topic.first_name} {topic.second_name}</td>
                             <td className="schools-table-td">{topic.topic_text}</td>
                             <td className="schools-table-td">{topic.description}</td>
                             <td className="schools-table-td">{topic.date}</td>

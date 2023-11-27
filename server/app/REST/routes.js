@@ -12,6 +12,7 @@ import marksEndpoint from './marks.endpoint';
 import topicsEndpoint from './topics.endpoint';
 import subjectEndpoint from './subject.endpoint';
 import attendanceEnpoint from './attendance.endpoint';
+import remarksEndpoint from './remarks.endpoint';
 
 const routes = function (app) {
   userEndpoint(app);
@@ -28,6 +29,7 @@ const routes = function (app) {
   topicsEndpoint(app);
   subjectEndpoint(app);
   attendanceEnpoint(app);
+  remarksEndpoint(app);
 };
 
 

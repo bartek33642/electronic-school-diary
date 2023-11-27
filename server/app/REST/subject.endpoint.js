@@ -35,7 +35,8 @@ const subjectEndpoint = (app) => {
     const classId = req.params.class_id;
 
     try {
-      const subjectsQuery = `SELECT * FROM gradebook.subjects WHERE class_id = $1`;
+      const subjectsQuery = `SELECT * FROM gradebook.subjects
+      WHERE class_id = $1`;
       const { rows } = await pool.query(subjectsQuery, [classId]);
       res.send(rows);
     } catch (error) {
@@ -43,6 +44,21 @@ const subjectEndpoint = (app) => {
       res.status(500).send('Internal Server Error');
     }
   });
+
+  app.get('/subjects-all-classes/:school_id', async (req, res) => {
+    const schoolId = req.params.school_id;
+
+    try{
+      const subjectsAllClassesQuery = `SELECT * FROM gradebook.subjects
+      NATURAL JOIN gradebook.classes
+      WHERE school_id = $1`;
+      const { rows } = await pool.query(subjectsAllClassesQuery, [schoolId]);
+      res.send(rows);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  })
 
 
 //   app.get('/subjects/:school_id/:class_id/:student_id', async (req, res) => {

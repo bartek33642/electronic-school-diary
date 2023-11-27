@@ -65,24 +65,25 @@ const marksEndpoint = (app) => {
             }
         });
 
-          app.get('/students/:school_id', async (req, res) => {
-            const schoolId = req.params.school_id;
-    
+        app.get('/students/:school_id/:class_id', async (req, res) => {
+            const { school_id, class_id } = req.params;
+        
             try {
                 const studentsQuery = `
                     SELECT students.student_id, users.first_name, users.second_name
                     FROM gradebook.students
                     INNER JOIN gradebook.users ON students.user_id = users.user_id
-                    WHERE students.school_id = $1;
+                    WHERE students.class_id = $1;
                 `;
-    
-                const { rows } = await pool.query(studentsQuery, [schoolId]);
+        
+                const { rows } = await pool.query(studentsQuery, [class_id]);
                 res.send(rows);
             } catch (error) {
                 console.error('Błąd pobierania uczniów:', error);
                 res.status(500).send('Internal Server Error');
             }
         });
+        
 
         app.get('/subjects/:subject_id', async (req, res) => {
             const subjectId = req.params.subject_id;
@@ -100,11 +101,10 @@ const marksEndpoint = (app) => {
                 res.status(500).send('Internal Server Error');
             }
         });
-    
-        // Pobierz listę nauczycieli w danej szkole
+
         app.get('/teachers/:school_id', async (req, res) => {
             const schoolId = req.params.school_id;
-    
+        
             try {
                 const teachersQuery = `
                     SELECT teachers.teacher_id, users.first_name, users.second_name
@@ -112,7 +112,7 @@ const marksEndpoint = (app) => {
                     INNER JOIN gradebook.users ON teachers.user_id = users.user_id
                     WHERE teachers.school_id = $1;
                 `;
-    
+        
                 const { rows } = await pool.query(teachersQuery, [schoolId]);
                 res.send(rows);
             } catch (error) {
@@ -120,22 +120,28 @@ const marksEndpoint = (app) => {
                 res.status(500).send('Internal Server Error');
             }
         });
+        
 
-        app.get('/subjects/:school_id', async (req, res) => {
-          const schoolId = req.params.school_id;
-
-          try {
-            const subjectsQuery = `SELECT * FROM gradebook.subjects 
-                                    NATURAL JOIN gradebook.schools
-                                    WHERE school_id=$1`;
-            const { rows } = await pool.query(subjectsQuery, [schoolId]);
-            res.send(rows);
-      
-          } catch (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error');
-          }
+        app.get('/subjects/:class_id', async (req, res) => {
+            const classId = req.params.class_id;
+            console.log('Requested class ID:', classId);
+        
+            try {
+                const subjectsQuery = `
+                    SELECT * FROM gradebook.subjects 
+                    NATURAL JOIN gradebook.classes
+                    WHERE class_id = $1;
+                `;
+        
+                const { rows } = await pool.query(subjectsQuery, [classId]);
+                res.send(rows);
+            } catch (error) {
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+            }
         });
+        
+        
 
         };
 export default marksEndpoint;

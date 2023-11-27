@@ -1,9 +1,9 @@
-.principal-users-container{
+.principal-remarks-container{
     display: flex;
     flex-direction: row;
 }
 
-.principal-users-elements{
+.principal-remarks-elements{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;

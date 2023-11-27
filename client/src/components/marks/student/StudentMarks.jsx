@@ -1,128 +1,6 @@
-// import React, { useState, useEffect } from "react";
-// import { StudentMenu } from "../../menu/student/StudentMenu";
-// import "./StudentMarks.css";
-// import { DataGrid } from '@mui/x-data-grid';
-
-// export function StudentMarks() {
-//   const [userData, setUserData] = useState([]);
-//   const [schoolClassSubjectData, setSchoolClassSubjectData] = useState([]);
-//   const [userMarksData, setUserMarksData] = useState([]);
-//   const [marks, setMarks] = useState([]);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     const fetchUserData = async () => {
-//       try {
-//         const userEmail = localStorage.getItem("userEmail");
-
-//         if (userEmail) {
-//           const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
-//           const result = await fetch(userQuery);
-//           const userData = await result.json();
-//           console.log("userData: ", userData);
-
-//           if (result.ok && userData.length > 0) {
-//             const studentId = userData[0].student_id;
-
-//             // Pobierz tematy dla danego studenta i klasy
-//             const userMarksQuery = `http://localhost:3001/marks/${studentId}`;
-//             const userMarksResult = await fetch(userMarksQuery);
-//             const userMarksData = await userMarksResult.json();
-//             console.log("userMarksData: ", userMarksData);
-
-//             if (userMarksResult.ok && userMarksData.length > 0) {
-//               const classId = userMarksData[0].class_id;
-
-//               const schoolClassSubjectQuery = `http://localhost:3001/subjects/class/${classId}`;
-//               const result2 = await fetch(schoolClassSubjectQuery);
-//               const schoolClassSubjectData = await result2.json();
-//               console.log("schoolClassSubjectData: ", schoolClassSubjectData);
-
-//               if (result.ok) {
-//                 setUserData(userData);
-//                 setSchoolClassSubjectData(schoolClassSubjectData);
-//                 setUserMarksData(userMarksData);
-
-//                 if (userMarksResult.ok) {
-//                   setMarks(userMarksData);
-//                 } else {
-//                   setError("Błąd pobierania danych z tematami.");
-//                 }
-//               } else {
-//                 setError("Błąd pobierania danych przedmiotu.");
-//               }
-//             } else {
-//               setError("Błąd pobierania danych użytkownika.");
-//             }
-//           } else {
-//             setError("Błąd pobierania danych użytkownika: brak danych.");
-//           }
-//         } else {
-//           setError("Brak dostępu do adresu e-mail zalogowanego użytkownika.");
-//         }
-//       } catch (error) {
-//         console.error(error);
-//         setError("Wystąpił błąd podczas pobierania danych użytkownika.");
-//       }
-//     };
-
-//     fetchUserData();
-//   }, []);
-
-//   const columns = [
-//       { field: 'marksId', headerName: 'ID', width: 100 },
-//       { field: 'subject', headerName: 'Przedmiot', width: 100 },
-//       { field: 'grade', headerName: 'Oceny', width: 130 },
-//       { field: 'aritmeticAverage', headerName: 'Średnia arytemtyczna', width: 90 },
-//       { field: 'weightedAverage', headerName: 'Średnia ważona', width: 90},
-//       { field: 'expectedGrade', headerName: 'Ocena przewidywana', width: 90},
-//       { field: 'finalGrade', headerName: 'Ocena końcowa', width: 90},
-
-//   ];
-
-//   const rows = marks.map((mark) => ({
-//       marksId: mark.grade_id,
-//       subject: mark.subject_name,
-//       grade: mark.grade_value,
-//       aritmeticAverage: mark.aritmeticAverage, // Tu umieść wartość średniej arytmetycznej
-//       weightedAverage: mark.weightedAverage, // Tu umieść wartość średniej ważonej
-//       expectedGrade: mark.expectedGrade,
-//       finalGrade: mark.finalGrade,
-//     })
-//     );
-
-//   return (
-//     <div className="student-marks-conatiner">
-//       <StudentMenu />
-//       <div className="student-marks-elements">
-//         <h3>Oceny: </h3>
-//         <div>
-//           <DataGrid
-//             rows={rows}
-//             columns={columns}
-//             getRowId={(row) => row.marksId}
-//             pageSize={8}
-//             initialState={{
-//               pagination: {
-//                 paginationModel: { page: 0, pageSize: 7 },
-//               },
-//             }}
-//             pageSizeOptions={[7, 10]}
-//             checkboxSelection
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-//------------------------------------------------------
-
 import React, { useState, useEffect } from "react";
 import { StudentMenu } from "../../menu/student/StudentMenu";
 import "./StudentMarks.css";
-// import Tooltip from "@mui/material/Tooltip";
-// import Button from "@mui/material/Button";
 import { calculateAritmeticAverage } from "../../../dependenciesAndRequirements/aritmeticAverage";
 import { calculateWeightedAverage } from "../../../dependenciesAndRequirements/weightedAverage";
 import { expectedGrades } from "../../../dependenciesAndRequirements/expectedGrade";
@@ -133,7 +11,10 @@ export function StudentMarks() {
   const [userMarksData, setUserMarksData] = useState([]);
   const [marks, setMarks] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedGradeIndex, setSelectedGradeIndex] = useState(null);
 
+  let DataOfWeightMarks = [];
+  let DataOfDescriptionMarks = [];
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -195,47 +76,59 @@ export function StudentMarks() {
   // Przygotuj dane do tabeli
   const prepareTableData = (userMarksData, schoolClassSubjectData, weight) => {
     const tableData = [];
-    // const tableData = prepareTableData(userMarksData, schoolClassSubjectData, weight);
-
   
     schoolClassSubjectData.forEach((subject) => {
       const matchingMarks = userMarksData.filter((mark) => mark.subject_id === subject.subject_id);
+          // Reset arrays for each subject
+    DataOfWeightMarks = [];
+    DataOfDescriptionMarks = [];
   
       if (matchingMarks.length > 0) {
         const grades = matchingMarks.map((mark) => parseInt(mark.grade_value, 10));
         const aritmeticAverage = calculateAritmeticAverage(grades);
-        // console.log("aritmeticAverage ", aritmeticAverage);
-        const weights = matchingMarks.map((mark) => parseInt(mark.weight)); // Extract weights
+        const weights = matchingMarks.map((mark) => parseInt(mark.weight));
         const weightedAverage = calculateWeightedAverage(grades, weights);
         console.log("weightedAverage ", weightedAverage);
-
-        const expectedGrade = expectedGrades(weightedAverage);
-
-        tableData.push({
-          subject: subject.subject_name,
-          grade: grades,
-          gradeDescription: matchingMarks[0].grade_description, // Add grade description
-          aritmeticAverage: aritmeticAverage.toFixed(2),
-          weightedAverage: weightedAverage.toFixed(2),
-          expectedGrade: expectedGrade,
-          finalGrade: matchingMarks[0].finalGrade,
-        });
-      } else {
-        // Dodaj wiersz z pustymi danymi, jeśli brak ocen dla przedmiotu
-        tableData.push({
-          subject: subject.subject_name,
-          grade: "",
-          gradeDescription: "", 
-          aritmeticAverage: "",
-          weightedAverage: "",
-          expectedGrade: "",
-          finalGrade: "",
-        });
-      }
-    });
   
-    return tableData;
-  };
+        const expectedGrade = expectedGrades(weightedAverage);
+  
+// Assign values to the variables defined in the outer scope
+DataOfWeightMarks = matchingMarks.map(mark => mark.weight);
+DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
+  
+       // Assign values to the variables defined in the outer scope
+      DataOfWeightMarks = matchingMarks.map(mark => mark.weight);
+      DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
+
+      tableData.push({
+        subject: subject.subject_name,
+        grade: grades,
+        gradeDescription: matchingMarks[0].grade_description,
+        aritmeticAverage: aritmeticAverage.toFixed(2),
+        weightedAverage: weightedAverage.toFixed(2),
+        expectedGrade: expectedGrade,
+        finalGrade: matchingMarks[0].finalGrade,
+        DataOfWeightMarks: DataOfWeightMarks,
+        DataOfDescriptionMarks: DataOfDescriptionMarks,
+      });
+    } else {
+      tableData.push({
+        subject: subject.subject_name,
+        grade: "",
+        gradeDescription: "",
+        aritmeticAverage: "",
+        weightedAverage: "",
+        expectedGrade: "",
+        finalGrade: "",
+        DataOfWeightMarks: [],
+        DataOfDescriptionMarks: [],
+      });
+    }
+  });
+
+  return tableData;
+};
+  
 
   return (
     <div className="student-marks-conatiner">
@@ -258,7 +151,7 @@ export function StudentMarks() {
                {marks.map((row, index) => (
                 <tr key={index}>
                   <td>{row.subject}</td>
-                  <td>
+                  {/* <td> */}
              {/*{Array.isArray(row.grade) ? (
       row.grade.map((singleGrade, idx) => (
         <button key={idx}>{singleGrade} </button>
@@ -270,7 +163,7 @@ export function StudentMarks() {
     )}
              */}
 
- {Array.isArray(row.grade) ? (
+ {/* {Array.isArray(row.grade) ? (
   <div className="tooltip">
 {row.grade.map((singleGrade, idx) => {
   const markData = userMarksData.find(mark => mark.grade_value === singleGrade);
@@ -284,9 +177,9 @@ export function StudentMarks() {
   console.log("DataOfDescriptionMarks: ", DataOfDescriptionMarks);
 
       return (
-        <button key={idx}>
+        <button key={idx} className="bttn-student-marks">
           {markData && (
-            <span className="tooltiptext">Waga: {DataOfWeightMarks[idx]}, Opis: {DataOfDescriptionMarks[idx]}</span>
+            <div> Waga: {DataOfWeightMarks[idx]}, Opis: {DataOfDescriptionMarks[idx]}</div>
           )}
           {singleGrade}
         </button>
@@ -313,6 +206,36 @@ export function StudentMarks() {
 
 
 
+</td> */}
+<td>
+  {Array.isArray(row.grade) ? (
+    <div className="tooltip">
+      {row.grade.map((singleGrade, idx) => (
+        
+        <button
+          key={idx}
+          className="bttn-student-marks"
+          onClick={() => setSelectedGradeIndex(idx)}
+        >
+          {singleGrade}
+        </button>
+      ))}
+    </div>
+  ) : (
+    <div className="tooltip">
+      <button
+        onClick={() => setSelectedGradeIndex(0)}
+      >
+        {row.grade}
+      </button>
+    </div>
+  )}
+  {selectedGradeIndex !== null && (
+    <div>
+      <div>Waga: {DataOfWeightMarks[selectedGradeIndex]}</div>
+      <div>Opis: {DataOfDescriptionMarks[selectedGradeIndex]}</div>
+    </div>
+  )}
 </td>
 
                   <td>{row.aritmeticAverage}</td>

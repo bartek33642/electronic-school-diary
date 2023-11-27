@@ -106,7 +106,7 @@ app.get('/users-school-student/:email', async (req, res) => {
 
     const userQuery = `
       SELECT 
-        u.user_id, u.role, u.active, u.status, u.first_name, u.second_name, u.email, 
+        u.user_id, u.role, u.active, u.status, u.first_name, u.second_name, u.email, u.school_id,
         s.student_id, s.class_id, s.school_id,
         p.parent_id, p.student_id,
         t.teacher_id, t.school_id,
@@ -147,6 +147,33 @@ app.get('/users-count', async (req, res) => {
   }
 });
 
+
+app.get('/users/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const userQuery = `
+      SELECT 
+        u.user_id, u.role, u.active, u.status, u.first_name, u.second_name, u.email,
+        s.student_id, s.class_id, s.school_id, s.phone_number, s.street, s.building_number, s.apartment_number, s.zip_code, s.town, 
+        p.student_id, s.phone_number, s.street, s.building_number, s.apartment_number, s.zip_code, s.town
+      FROM gradebook.users u
+      LEFT JOIN gradebook.students s ON u.user_id = s.user_id
+      LEFT JOIN gradebook.parents p ON u.user_id = p.user_id
+      WHERE u.user_id = $1
+    `;
+    
+    const { rows } = await pool.query(userQuery, [userId]);
+    if (rows.length > 0) {
+      res.send(rows);
+    } else {
+        res.status(404).send('User not found'); // Użytkownik nie został znaleziony
+      }
+} catch (error) {
+  console.error(error);
+  res.status(500).send('Internal Server Error');
+}
+});
 
   // app.delete('/users/:user_id', async (req, res) => {
   //   const userId = req.params.user_id;

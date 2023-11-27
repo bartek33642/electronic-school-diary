@@ -36,7 +36,18 @@ import { StudentAttendance } from './components/attendance/student-parent/Studen
 import { ParentAttendance } from './components/attendance/student-parent/ParentAttendance';
 import { ParentTopics } from './components/topics/student-parent/ParentTopics';
 import { StudentTopics } from './components/topics/student-parent/StudentTopics';
-
+import { StudentSubjects } from './components/subjects/student-parent/StudentSubjects';
+import { StudentRemarks } from './components/remarks/student-parent/StudentRemarks';
+import { ParentRemarks } from './components/remarks/student-parent/ParentRemarks';
+import { StudentSettings } from './components/settings/student/StudentSettings';
+import { ParentSettings } from './components/settings/parent/ParentSettings';
+import { PrincipalSettings } from './components/settings/principal/PrincipalSettings';
+import { TeacherSettings } from './components/settings/teacher/TeacherSettings';
+import { PrincipalUsers } from './components/users/principal/PrincipalUsers';
+import { PrincipalClasses } from './components/classes/principal/PrincipalClasses';
+import { PrincipalTopics } from './components/topics/principal/PrincipalTopics';
+import { PrincipalRemarks } from './components/remarks/principal/PrincipalRemarks';
+import { PrincipalSubjects } from './components/subjects/principal/PrincipalSubjects';
 
 function App() {
   return (
@@ -78,6 +89,19 @@ function App() {
           <Route path='/parent-attendance' element={<ParentAttendance/>}/>
           <Route path='/parent-topics' element={<ParentTopics/>}/>
           <Route path='/student-topics' element={<StudentTopics/>}/>
+          <Route path='/student-subjects' element={<StudentSubjects/>}/>
+          <Route path='/student-remarks' element={<StudentRemarks />}/>
+          <Route path='/parent-remarks' element={<ParentRemarks />}/>
+          <Route path='/student-settings' element={<StudentSettings />}/>
+          <Route path='/parent-settings' element={<ParentSettings />}/>
+          <Route path='/principal-settings' element={<PrincipalSettings />}/>
+          <Route path='/teacher-settings' element={<TeacherSettings />}/>
+          <Route path='/principal-users' element={<PrincipalUsers />}/>
+          <Route path='/principal-classes' element={<PrincipalClasses />}/>
+          <Route path='/principal-topics' element={<PrincipalTopics />}/>
+          <Route path='/principal-remarks' element={<PrincipalRemarks />}/>
+          <Route path='/principal-subjects' element={<PrincipalSubjects />}/>
+
 
 
 
