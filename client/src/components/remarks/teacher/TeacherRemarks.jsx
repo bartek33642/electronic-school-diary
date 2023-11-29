@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import './StudentParentTopics.css';
-import { ParentMenu } from "../../menu/parent/ParentMenu";
+import './TeacherRemarks.css';
 import { DataGrid } from '@mui/x-data-grid';
+import { TeacherMenu } from '../../menu/teacher/TeacherMenu';
 
-export function ParentTopics(){
+export function TeacherRemarks() {
+
     const [userData, setUserData] = useState([]);
-    const [topics, setTopics] = useState([]);
+    const [remarks, setRemarks] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -22,16 +23,17 @@ export function ParentTopics(){
                 setUserData(userData);
               
                 if (userData.length > 0) {
-                  const studentId = userData[0].student_id;
+                  const schoolId = userData[0].school_id;
               
                   // Pobierz tematy dla danego studenta i klasy
-                  const topicsQuery = `http://localhost:3001/topics-parents/${studentId}`;
-                  const topicsResult = await fetch(topicsQuery);
-                  const topicsData = await topicsResult.json();
-                  console.log("topicsData: ", topicsData)
+                  const remarksQuery = `http://localhost:3001/remarks-all-classes/${schoolId}`;
+                  const remarksResult = await fetch(remarksQuery);
+                  console.log("remarksResult: ",remarksResult)
+                  const remarksData = await remarksResult.json();
+                  console.log("topicsData: ", remarksData)
                   
-                  if (topicsResult.ok) {
-                    setTopics(topicsData);
+                  if (remarksResult.ok) {
+                    setRemarks(remarksData);
                   } else {
                     setError("Błąd pobierania danych z tematami.");
                   }
@@ -53,13 +55,17 @@ export function ParentTopics(){
     
         fetchUserData();
       }, []);
+
+      const getIsPosstive = (is_possitive) => (is_possitive ? 'Tak' : 'Nie');
     
       const columns = [
         // { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
-        { field: 'date', headerName: 'Data', width: 100},
-        { field: 'subject', headerName: 'Przedmiot', width: 130 },
-        { field: 'topic', headerName: 'Temat', width: 130 },
-        { field: 'description', headerName: 'Opis tematu', width: 250},
+        
+        { field: 'studentId', headerName: 'Student ID', width: 100},
+        { field: 'class', headerName: 'Klasa', width: 100},
+        { field: 'remark_text', headerName: 'Opis uwagi', width: 130 },
+        { field: 'is_possitive', headerName: 'Pozytywna?', width: 130 },
+        { field: 'date', headerName: 'Data', width: 250},
         { field: 'teacher', headerName: 'Nauczyciel', width: 130},
     
       ];
@@ -68,23 +74,21 @@ export function ParentTopics(){
       // let formatDate = topics.date.toISOString().substring(0, 10);
       // console.log(formatDate);
     
-      const rows = topics.map(topic => ({
-        // topicId: topic.topic_id,
-        date: new Date(topic.date).toLocaleDateString(),
-        subject: topic.subject_name,
-        topic: topic.topic_text,
-        description: topic.description,
-        teacher: topic.first_name + ' ' + topic.second_name,
+      const rows = remarks.map(remark => ({
+        studentId: remark.student_id,
+        class: remark.class_name,
+        remark_text: remark.remark_text,
+        is_possitive: getIsPosstive(remark.is_possitive),
+        date: new Date(remark.date).toLocaleDateString(),
+        teacher: remark.first_name + ' ' + remark.second_name,
     
       }));
 
-      
     return(
-        <>
-        <div className="parent-topics-container">
-            <ParentMenu />
-            <div className="parent-topics-elements">
-                <h2>Tematy</h2>
+        <div className="teacher-remarks-container">
+            <TeacherMenu />
+            <div className="teacher-remarks-elements">
+                <h2>Uwagi</h2>
 
                 <div>
           <DataGrid
@@ -101,10 +105,8 @@ export function ParentTopics(){
             // checkboxSelection
           />
         </div>
-
             </div>
         </div>
-        </>
     );
-
 }
+

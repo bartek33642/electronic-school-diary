@@ -113,7 +113,7 @@ export function ParentSettings() {
       Adres: {settings.length > 0 ? (
         <>
           {settings[0].street} {settings[0].building_number}
-          {settings[0].apartment_number && ` / ${settings[0].apartment_number } `}  
+          {settings[0].apartment_number  && ` / ${settings[0].apartment_number } `}   
           {settings[0].town}
         </>
       ) : ''}

@@ -68,5 +68,24 @@ const remarksEndpoint = (app) => {
               }
           })
 
+          app.get('/remarks-parent/:student_id', async (req, res) => {
+            const studentId = req.params.student_id;
+
+            try {
+                const remarksQuery = `SELECT * FROM gradebook.remarks
+                                        INNER JOIN gradebook.teachers ON remarks.teacher_id = teachers.teacher_id
+                                        INNER JOIN gradebook.users on teachers.user_id = users.user_id
+                                        WHERE student_id = $1
+                                        `;
+        
+                const { rows } = await pool.query(remarksQuery, [studentId]);
+                res.send(rows);
+            }
+            catch (error) {
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+                }
+            } )
+
 }
 export default remarksEndpoint;

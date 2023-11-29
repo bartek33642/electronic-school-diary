@@ -94,7 +94,7 @@ export function AdminTopics(){
                             <td className="schools-table-td">{topic.first_name} {topic.second_name}</td>
                             <td className="schools-table-td">{topic.topic_text}</td>
                             <td className="schools-table-td">{topic.description}</td>
-                            <td className="schools-table-td">{topic.date}</td>
+                            <td className="schools-table-td">{new Date(topic.date).toLocaleDateString()}</td>
 
 
                             <td className="schools-table-td">

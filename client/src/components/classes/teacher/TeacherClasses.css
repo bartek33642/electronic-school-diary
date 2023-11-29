@@ -1,0 +1,13 @@
+.teacher-classes-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.teacher-classes-elements{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding-left: 10px;
+    padding-top: 10px;
+    width: 100%;
+}

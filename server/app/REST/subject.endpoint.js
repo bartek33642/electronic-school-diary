@@ -111,6 +111,38 @@ const subjectEndpoint = (app) => {
     }
   });
 
+  app.get('/subjects-parent/:student_id', async (req, res) => {
+    const studentId = req.params.student_id;
+
+    try{
+      const subjectsParentQuery = `SELECT * FROM gradebook.subjects
+      NATURAL JOIN gradebook.classes
+      NATURAL JOIN gradebook.students
+      WHERE student_id = $1`;
+      const { rows } = await pool.query(subjectsParentQuery, [studentId]);
+      res.send(rows);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  })
+
+  app.get('/subjects-all-classes-teacher/:school_id', async (req, res) => {
+    const schoolId = req.params.school_id;
+
+    try{
+      const subjectsAllClassesTeacherQuery = `SELECT * FROM gradebook.subjects
+      NATURAL JOIN gradebook.classes
+      WHERE school_id = $1`;
+      const { rows } = await pool.query(subjectsAllClassesTeacherQuery, [schoolId]);
+      res.send(rows);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  })
+
+
 }
 
 export default subjectEndpoint;

@@ -1,7 +1,6 @@
 const pool = require('../../db');
 const bcrypt = require('bcrypt');
 
-
 // Tworzenie nowego hasła
 async function createPassword(userId, hashedPassword) {
   const query = 'INSERT INTO gradebook.users (user_id, password) VALUES ($1, $2) RETURNING *';

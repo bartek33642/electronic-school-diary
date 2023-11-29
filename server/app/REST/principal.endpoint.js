@@ -61,26 +61,7 @@ const { rows } = await pool.query(userQuery, [schoolId]);
   }
 });
 
-app.get('/principal-classes/:schoolId', async (req, res) => {
-  try {
-    const schoolId = req.params.schoolId;
 
-    const classQuery = `
-	  SELECT * FROM gradebook.classes
-      WHERE school_id = $1;
-    `;
-    
-const { rows } = await pool.query(classQuery, [schoolId]);
-    if (rows.length > 0) {
-      res.send(rows);
-    } else {
-      res.status(404).send('Class not found');
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-});
 
 };
 export default principalEndpoint;

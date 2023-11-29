@@ -156,7 +156,7 @@ app.get('/users/:userId', async (req, res) => {
       SELECT 
         u.user_id, u.role, u.active, u.status, u.first_name, u.second_name, u.email,
         s.student_id, s.class_id, s.school_id, s.phone_number, s.street, s.building_number, s.apartment_number, s.zip_code, s.town, 
-        p.student_id, s.phone_number, s.street, s.building_number, s.apartment_number, s.zip_code, s.town
+        p.student_id, p.phone_number, p.street, p.building_number, p.apartment_number, p.zip_code, p.town
       FROM gradebook.users u
       LEFT JOIN gradebook.students s ON u.user_id = s.user_id
       LEFT JOIN gradebook.parents p ON u.user_id = p.user_id

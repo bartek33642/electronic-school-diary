@@ -48,6 +48,12 @@ import { PrincipalClasses } from './components/classes/principal/PrincipalClasse
 import { PrincipalTopics } from './components/topics/principal/PrincipalTopics';
 import { PrincipalRemarks } from './components/remarks/principal/PrincipalRemarks';
 import { PrincipalSubjects } from './components/subjects/principal/PrincipalSubjects';
+import { ParentSubjects } from './components/subjects/student-parent/ParentSubjects';
+import { ParentMarks } from './components/marks/parent/ParentMarks';
+import { TeacherRemarks } from './components/remarks/teacher/TeacherRemarks';
+import { TeacherClasses } from './components/classes/teacher/TeacherClasses';
+import { TeacherTopics } from './components/topics/teacher/TeacherTopics';
+import { TeacherSubjects } from './components/subjects/teacher/TeacherSubjects';
 
 function App() {
   return (
@@ -101,10 +107,12 @@ function App() {
           <Route path='/principal-topics' element={<PrincipalTopics />}/>
           <Route path='/principal-remarks' element={<PrincipalRemarks />}/>
           <Route path='/principal-subjects' element={<PrincipalSubjects />}/>
-
-
-
-
+          <Route path='/parent-subjects' element={<ParentSubjects />}/>
+          <Route path='/parent-grades' element={<ParentMarks />}/>
+          <Route path='/teacher-remarks' element={<TeacherRemarks />}/>
+          <Route path='/teacher-classes' element={<TeacherClasses />} />
+          <Route path='/teacher-topics' element={<TeacherTopics />} />
+          <Route path='/teacher-subjects' element={<TeacherSubjects />} />
 
          
         </Routes>

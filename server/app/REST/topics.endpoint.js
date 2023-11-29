@@ -128,6 +128,26 @@ const topicsEndpoint = (app) => {
                   }
               })
 
+            app.get('/topics-parents/:student_id', async(req, res) => {
+              const studentId = req.params.student_id;
+
+              try{
+                const topicsParentQuery = `
+                  SELECT * FROM gradebook.topics t
+                  LEFT JOIN gradebook.students s ON t.class_id = s.class_id
+                  LEFT JOIN gradebook.parents p ON s.student_id = p.student_id
+                  LEFT JOIN gradebook.subjects su ON t.subject_id = su.subject_id
+                  LEFT JOIN gradebook.teachers te ON t.teacher_id = te.teacher_id
+                  LEFT JOIN gradebook.users u ON te.user_id = u.user_id
+                  WHERE p.student_id = $1`;
+                  const { rows } = await pool.query(topicsParentQuery, [studentId]);
+                  res.send(rows);
+              }catch (error){
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+              }
+            })
+
 
         };
 export default topicsEndpoint;

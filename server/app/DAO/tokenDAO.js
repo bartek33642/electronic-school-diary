@@ -37,8 +37,24 @@ function generateToken(payload) {
   return token;
 }
 
+const storedTokens = [];  // Przykład: zakładam, że tokeny są przechowywane w tej tablicy
+
+function remove(token) {
+  // Sprawdź, czy token istnieje w przechowywaniu
+  const tokenIndex = storedTokens.indexOf(token);
+
+  if (tokenIndex !== -1) {
+    // Jeśli token istnieje, usuń go z przechowywania
+    storedTokens.splice(tokenIndex, 1);
+    console.log("Token removed:", token);
+  } else {
+    console.log("Token not found:", token);
+  }
+}
+
 module.exports = {
   createToken,
   verifyToken,
-  generateToken
+  generateToken,
+  remove
 };

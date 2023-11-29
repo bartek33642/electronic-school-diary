@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import './StudentParentTopics.css';
-import { ParentMenu } from "../../menu/parent/ParentMenu";
+import './TeacherSubjects.css';
 import { DataGrid } from '@mui/x-data-grid';
+import { TeacherMenu } from "../../menu/teacher/TeacherMenu";
 
-export function ParentTopics(){
+
+export function TeacherSubjects(){
+
     const [userData, setUserData] = useState([]);
-    const [topics, setTopics] = useState([]);
+    const [subjects, setSubjects] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -22,16 +24,17 @@ export function ParentTopics(){
                 setUserData(userData);
               
                 if (userData.length > 0) {
-                  const studentId = userData[0].student_id;
+                  const schoolId = userData[0].school_id;
               
                   // Pobierz tematy dla danego studenta i klasy
-                  const topicsQuery = `http://localhost:3001/topics-parents/${studentId}`;
-                  const topicsResult = await fetch(topicsQuery);
-                  const topicsData = await topicsResult.json();
-                  console.log("topicsData: ", topicsData)
+                  const subjectsQuery = `http://localhost:3001/subjects-all-classes-teacher/${schoolId}`;
+                  const subjectsResult = await fetch(subjectsQuery);
+                  console.log("subjectsResult: ",subjectsResult)
+                  const subjectsData = await subjectsResult.json();
+                  console.log("subjectsData: ", subjectsData)
                   
-                  if (topicsResult.ok) {
-                    setTopics(topicsData);
+                  if (subjectsResult.ok) {
+                    setSubjects(subjectsData);
                   } else {
                     setError("Błąd pobierania danych z tematami.");
                   }
@@ -53,44 +56,32 @@ export function ParentTopics(){
     
         fetchUserData();
       }, []);
-    
+
       const columns = [
-        // { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
-        { field: 'date', headerName: 'Data', width: 100},
-        { field: 'subject', headerName: 'Przedmiot', width: 130 },
-        { field: 'topic', headerName: 'Temat', width: 130 },
-        { field: 'description', headerName: 'Opis tematu', width: 250},
-        { field: 'teacher', headerName: 'Nauczyciel', width: 130},
+     
+        { field: 'subject_name', headerName: 'Nazwa przedmiotu', width: 160},
+        { field: 'class_name', headerName: 'Nazwa klasy', width: 130 },
+
     
       ];
     
     
-      // let formatDate = topics.date.toISOString().substring(0, 10);
-      // console.log(formatDate);
-    
-      const rows = topics.map(topic => ({
-        // topicId: topic.topic_id,
-        date: new Date(topic.date).toLocaleDateString(),
-        subject: topic.subject_name,
-        topic: topic.topic_text,
-        description: topic.description,
-        teacher: topic.first_name + ' ' + topic.second_name,
-    
+      const rows = subjects.map(subject => ({
+        subject_name: subject.subject_name,
+        class_name: subject.class_name,
       }));
 
-      
     return(
-        <>
-        <div className="parent-topics-container">
-            <ParentMenu />
-            <div className="parent-topics-elements">
-                <h2>Tematy</h2>
+        <div className="teacher-subjects-container">
+            <TeacherMenu />
+            <div className="teacher-subjects-elements">
+                <h2>Przedmioty</h2>
 
                 <div>
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.date}
+            getRowId={(row) => row.subject_name}
             pageSize={8}
             initialState={{
               pagination: {
@@ -104,7 +95,5 @@ export function ParentTopics(){
 
             </div>
         </div>
-        </>
     );
-
 }

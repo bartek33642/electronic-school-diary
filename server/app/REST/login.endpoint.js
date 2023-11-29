@@ -22,13 +22,17 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.delete('/logout', async (req, res) => {
+app.delete('/logout/:user_id', async (req, res) => {
+  const user_id = req.params.user_id;
+  console.log("logout endpoint, user_id: ", user_id);
+
   try {
     // Pobierz dane użytkownika z żądania, na przykład email i hasło
     const { email, password } = req.body;
 
     // Wywołaj funkcję removeHashSession z userManager, aby usunąć sesję użytkownika
-    const result = await userManager.removeHashSession(email, password);
+    const result = await userManager.removeHashSession(user_id);
+    console.log("result server: ", result);
 
     // Odpowiedź sukcesem
     res.status(200).json({ message: 'Wylogowano pomyślnie' });
