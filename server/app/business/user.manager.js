@@ -58,6 +58,8 @@ import PasswordDAO from '../DAO/passwordDAO';
 import TokenDAO from '../DAO/tokenDAO';
 import applicationException from '../service/applicationException';
 import bcrypt from 'bcrypt';
+import config from '../config';
+const jwt = require('jsonwebtoken');
 
 function create(context) {
   async function authenticate(email, password) {
@@ -94,9 +96,28 @@ function create(context) {
     return user;
   }
 
-  async function removeHashSession(userId) {
-    return await TokenDAO.remove(userId);
-  }
+  // async function removeHashSession(userId) {
+  //   return await TokenDAO.remove(userId);
+  // }
+
+  async function removeHashSession(token) {
+    try {
+        // Weryfikacja tokenu
+        const decodedToken = jwt.verify(token, config.JwtSecret);
+
+        // Usunięcie sesji użytkownika
+        const result = await TokenDAO.remove(decodedToken.user_id);
+        console.log("result server: ", result);
+
+        // Odpowiedź sukcesem
+        return { message: 'Wylogowano pomyślnie' };
+    } catch (error) {
+        console.error('Błąd wylogowania:', error);
+        // Odpowiedź błędem
+        throw applicationException.new(applicationException.UNAUTHORIZED, 'Błąd z wylogowaniem');
+    }
+}
+
 
   return {
     authenticate: authenticate,

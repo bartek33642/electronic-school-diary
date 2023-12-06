@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import '../admin/AdminSettings';
 import { ParentMenu } from "../../menu/parent/ParentMenu";
+import packageJson from '../../../../package.json';
 
 export function ParentSettings() {
   const [selectedTab, setSelectedTab] = useState("UserData");
   const [userData, setUserData] = useState([]);
   const [error, setError] = useState(null);
   const [settings, setSettings] = useState([]);
+  const version = packageJson.version;
 
 
   useEffect(() => {
@@ -122,8 +124,8 @@ export function ParentSettings() {
 
         <div id="About" className="tabcontent">
           <h3>O aplikacji</h3>
-          <p>Aplikacja elektroniczny dziennik dla szkoły</p>
-          <p>Wersja aplikacji: 1.0.0.</p>
+          <p>Aplikacja elektroniczny dziennik dla szkół.</p>
+          <p>Wersja aplikacji: {version} </p>
         </div>
 
       </div>

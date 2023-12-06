@@ -25,3 +25,12 @@
     margin: 20px;
     cursor: pointer;
 }
+
+.admin-remarks-form{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+}
+.admin-remarks-checkbox{
+    height: 20px !important;
+}

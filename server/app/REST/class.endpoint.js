@@ -45,7 +45,7 @@ const classEndpoint = (app) => {
                               s.school_id = c.school_id
                             WHERE school_id = $1`;
 
-      const { rows } = await pool.query(classesQuery);
+      const { rows } = await pool.query(classesQuery, [school_id]);
       res.send(rows);
     //   console.log("Classes okay");
 
@@ -54,6 +54,8 @@ const classEndpoint = (app) => {
       res.status(500).send('Internal Server Error');
     }
   });
+
+  
 
 
   app.post('/add-class', async(req, res) => {

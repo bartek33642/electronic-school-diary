@@ -3,6 +3,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import './UserModal.css';
+import { DataGrid } from '@mui/x-data-grid';
 
 export function UserModal(props) {
   const { open2, handleClose2, userData, fetchUserData} = props;
@@ -59,6 +60,37 @@ export function UserModal(props) {
     }
   };
 
+  const columns = [
+    { field: 'userId', headerName: 'ID', width: 100 },
+    { field: 'user_name', headerName: 'Imię i nazwisko', width: 180 },
+    { field: 'status', headerName: 'Status', width: 110 },
+    { field: 'email', headerName: 'Adres e-mail', width: 220 },
+    { field: 'actions', headerName: ' - ', width: 180,
+    renderCell: (params) => (
+        <button
+          type="button"
+          onClick={() => handleDeleteUser(params.row.userId)}
+        >
+          Usuń
+        </button>
+      ), },
+
+  ];
+
+  const rows = userData.map(user => ({
+    userId: user.user_id,
+    user_name: user.first_name + ' ' + user.second_name,
+    status: getStatusName(user.status),
+    email: user.email,
+    actions: (
+        <button
+          type="button"
+          onClick={() => handleDeleteUser(user.user_id)}
+        >
+          Usuń
+        </button>),
+
+  }));
   return (
     <Modal
       open={open2}
@@ -69,7 +101,7 @@ export function UserModal(props) {
       <Box sx={{ ...style }} className="modal-content">
         <h2 id="user-modal-title">Użytkownicy</h2>
         <p>
-            <>
+            {/* <>
             <table className="table-user-modal" >
             <thead>
               <tr className="user-modal-tr">
@@ -86,14 +118,30 @@ export function UserModal(props) {
               <td className="user-modal-td">{getStatusName(user.status)}</td>
               <td className="user-modal-td">{user.email}</td>
               <td className="user-modal-td">
-                <button type="button">Edytuj</button> 
-                <button type='button' onClick={() => handleDeleteUser(user.user_id)}>Usuń</button>
-              </td>
-            </tr>
-            ))}
-            </tbody>
-            </table>
-            </>
+                {/* <button type="button">Edytuj</button>  */}
+                {/* <button type='button' onClick={() => handleDeleteUser(user.user_id)}>Usuń</button> */}
+              {/* </td> */}
+            {/* </tr> */}
+            {/* ))} */}
+            {/* </tbody> */}
+            {/* </table> */} 
+                        {/* </> */}
+
+            <div>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            getRowId={(row) => row.userId}
+            pageSize={8}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 7 },
+              },
+            }}
+            pageSizeOptions={[7, 10]}
+            // checkboxSelection
+          />
+        </div>
 
         </p>
         <Button onClick={handleClose2}>Zamknij</Button>

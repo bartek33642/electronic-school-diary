@@ -15,7 +15,7 @@ export function Home(){
             <h2 className="h2-home-first">E-DZIENNIK</h2>
             <p className="p-home-first">
               Aplikacja webowa elektroniczny dziennik dla szkoły<br />
-              <a href="/login"><button id="btnLogin">Zaloguj się</button></a>
+              <a href="/login"><button id="btnLogin" onClick={() => window.location.reload()}>Zaloguj się</button></a>
 
 
             </p>

@@ -36,51 +36,14 @@ export function AdminMenu(){
         fetchUserData();
       }, []);
 
-    // const handleLogout = async () => {
-    //     try {
-    //       let decodedToken = '';
-    //       const token = localStorage.getItem('token'); // Fix: use getItem instead of setItem
-      
-    //       if (token) {
-    //         decodedToken = jwtDecode(token);
-    //         setUserData(decodedToken);
-    //         console.log("Zdekodowany token", decodedToken);
-    //       }
-    //       console.log("Token", token);
-      
-    //       const user_id = decodedToken.user_id;
-    //       console.log("user_id", user_id);
-      
-    //       if (user_id) {
-    //         const tokenQuery = `http://localhost:3001/logout/${user_id}`;
-    //         const result = await fetch(tokenQuery, {
-    //             method: 'DELETE',
-    //           });            
-    //         console.log("result: ", result);
-    //         if (result.status === 202) {
-    //           console.log('Logout successful');
-    //           localStorage.removeItem('token');
-    //           Navigate('/');
-    //         } else {
-    //           console.error('Logout failed', error);
-    //         }
-    //       } else {
-    //         console.error('User_id not found');
-    //       }
-    //     } catch (error) {
-    //       console.error("Error: ", error);
-    //     }
-    //   }
-
-
     const handleLogout = async () => {
         try {
           const token = localStorage.getItem('token');
+
           if (!token) {
             console.error('Token not found');
             return;
           }
-      
           const decodedToken = jwtDecode(token);
           const user_id = decodedToken.user_id;
 
@@ -91,18 +54,20 @@ export function AdminMenu(){
       
           if (result.status === 202) {
             console.log('Logout successful');
+            console.log('Before token removal:', localStorage.getItem('token'));
             localStorage.removeItem('token');
-            Navigate('/');
+            console.log('After token removal:', localStorage.getItem('token'));
+            return <Navigate to='/' />;
           } else {
             console.error('Logout failed', error);
           }
         } catch (error) {
           console.error("Error: ", error);
         }
+        window.location.reload();
       }
       
       
-
     return (
 <div className="navbar">
   <nav className="nav-menu">

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { AdminMenu } from "../menu/admin/AdminMenu";
 import './Schools.css';
 import { SchoolModal } from "./schoolModal/SchoolModal";
+import { DataGrid } from '@mui/x-data-grid';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -89,6 +90,44 @@ export function Schools(props) {
             });
         }
       };
+
+      const columns = [
+        { field: 'schoolId', headerName: 'ID', width: 100 },
+        { field: 'school_name', headerName: 'Nazwa szkoły', width: 130 },
+        { field: 'town', headerName: 'Miejscowość', width: 130 },
+        { field: 'street', headerName: 'Ulica', width: 130 },
+        { field: 'building_number', headerName: 'Nr budynku', width: 130 },
+        { field: 'apartment_number', headerName: 'Nr lokalu', width: 130 },
+        { field: 'zip_code', headerName: 'Kod pocztowy ', width: 100 },
+        { field: 'actions', headerName: ' - ', width: 180,
+        renderCell: (params) => (
+            <button
+              type="button"
+              onClick={() => handleDeleteSchool(params.row.schoolId)}
+            >
+              Usuń
+            </button>
+          ), },
+
+      ];
+    
+      const rows = schoolData.map(school => ({
+        schoolId: school.school_id,
+        school_name: school.school_name,
+        town: school.town,
+        street: school.street,
+        building_number: school.building_number,
+        apartment_number: school.apartment_number,
+        zip_code: school.zip_code,
+        actions: (
+            <button
+              type="button"
+              onClick={() => handleDeleteSchool(school.school_id)}
+            >
+              Usuń
+            </button>),
+
+      }));
       
     return(
         <div className="schools-container">
@@ -110,36 +149,20 @@ export function Schools(props) {
                 <Box sx={{ ...style }} className='modal-content'>
                 <h2>Szkoły:</h2>
 
-                <table>
-                    <thead>
-                    <tr>
-                        <th className="schools-table-th">Nazwa szkoły</th>
-                        <th className="schools-table-th">Miejscowość</th>
-                        <th className="schools-table-th">Ulica</th>
-                        <th className="schools-table-th">Nr budynku</th>
-                        <th className="schools-table-th">Nr lokalu</th>
-                        <th className="schools-table-th">Kod pocztowy</th>
-                        <th className="schools-table-th"> </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {schoolData.map((school) => (
-                        <tr key={school.school_id}>
-                            <td className="schools-table-td">{school.school_name}</td>
-                            <td className="schools-table-td">{school.town}</td>
-                            <td className="schools-table-td">{school.street}</td>
-                            <td className="schools-table-td">{school.building_number}</td>
-                            <td className="schools-table-td">{school.apartment_number}</td>
-                            <td className="schools-table-td">{school.zip_code}</td>
-                            <td className="schools-table-td">
-                                <button type="button" value="">Edytuj</button>
-                                <button type="button" value="" onClick={() => handleDeleteSchool(school.school_id)}>Usuń</button>
-                            </td>
-                        </tr>
-                    ))}
-
-                    </tbody>
-                </table>
+              <div>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  getRowId={(row) => row.schoolId}
+                  pageSize={8}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 7 },
+                    },
+                  }}
+                  pageSizeOptions={[7, 10]}
+                />
+              </div>
 
                 <Button onClick={handleClose8}>Zamknij</Button>
                 </Box>

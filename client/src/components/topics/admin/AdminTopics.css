@@ -23,3 +23,13 @@
     margin: 20px;
     cursor: pointer;
 }
+
+.admin-topics-add-topic{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    gap: 10px;
+}
+.admin-topics-add-topic input, select, textarea{
+    border-radius: 10px;
+}

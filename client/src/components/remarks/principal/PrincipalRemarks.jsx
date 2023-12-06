@@ -63,11 +63,12 @@ export function PrincipalRemarks() {
         // { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
         
         { field: 'studentId', headerName: 'Student ID', width: 100},
-        { field: 'class', headerName: 'Klasa', width: 100},
-        { field: 'remark_text', headerName: 'Opis uwagi', width: 130 },
+        { field: 'remark_text', headerName: 'Opis uwagi', width: 230 },
         { field: 'is_possitive', headerName: 'Pozytywna?', width: 130 },
-        { field: 'date', headerName: 'Data', width: 250},
+        { field: 'date', headerName: 'Data', width: 130},
         { field: 'teacher', headerName: 'Nauczyciel', width: 130},
+        { field: 'student', headerName: 'Uczeń', width: 130},
+
     
       ];
     
@@ -77,11 +78,12 @@ export function PrincipalRemarks() {
     
       const rows = remarks.map(remark => ({
         studentId: remark.student_id,
-        class: remark.class_name,
         remark_text: remark.remark_text,
         is_possitive: getIsPosstive(remark.is_possitive),
         date: new Date(remark.date).toLocaleDateString(),
-        teacher: remark.first_name + ' ' + remark.second_name,
+        teacher: remark.teacher_first_name + ' ' + remark.teacher_second_name,
+        student: remark.student_first_name + ' ' + remark.student_second_name,
+
     
       }));
 

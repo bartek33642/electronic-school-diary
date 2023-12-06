@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { AdminMenu } from "../../menu/admin/AdminMenu";
 import './AdminSettings.css';
+import packageJson from '../../../../package.json';
+
 
 export function AdminSettings() {
   const [selectedTab, setSelectedTab] = useState("UserData");
   const [userData, setUserData] = useState([]);
   const [error, setError] = useState(null);
   const [settings, setSettings] = useState([]);
+
+  const version = packageJson.version;
 
   useEffect(() => {
     openPage(selectedTab);
@@ -131,8 +135,8 @@ export function AdminSettings() {
 
         <div id="About" className="tabcontent">
           <h3>O aplikacji</h3>
-          <p>Aplikacja elektroniczny dziennik dla szkoły</p>
-          <p>Wersja aplikacji: 1.0.0.</p>
+          <p>Aplikacja elektroniczny dziennik dla szkół.</p>
+          <p>Wersja aplikacji: {version}</p>
         </div>
 
       </div>
