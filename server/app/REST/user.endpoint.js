@@ -235,6 +235,21 @@ app.get('/users/:userId', async (req, res) => {
       res.status(500).json({ error: 'Błąd usuwania użytkownika' });
     }
   });
+
+
+  app.put('/users/:user_id', async (req, res) => {
+    const userId = req.params.user_id;
+    const { first_name, second_name } = req.body;
+  
+    try {
+      const editUserQuery = 'UPDATE gradebook.users SET first_name = $1, second_name = $2 WHERE user_id = $3';
+      await pool.query(editUserQuery, [first_name, second_name, userId]);
+      res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+      console.error('Błąd edycji użytkownika:', error);
+      res.status(500).json({ error: 'Błąd edycji użytkownika' });
+    }
+  });
   
 }
 

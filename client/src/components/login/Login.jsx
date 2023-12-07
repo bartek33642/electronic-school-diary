@@ -9,11 +9,18 @@ import { of } from "rxjs";
 import { useNavigate } from "react-router-dom";
 // Utwórz obiekt historii
 
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const Navigate = useNavigate ()
 
@@ -33,7 +40,10 @@ export function Login() {
         map((response) => response.response),
         catchError((error) => {
           console.error("Błąd logowania: ", error);
-          setError("Nieprawidłowa odpowiedź serwera.");
+          // setError("Nieprawidłowa odpowiedź serwera.");
+          setSnackbarSeverity("error");
+          setSnackbarMessage("Błąd logowania");
+          setSnackbarOpen(true);
           return of(null);
         })
       )
@@ -45,10 +55,17 @@ export function Login() {
           localStorage.setItem("token", data.token);
           localStorage.setItem("userEmail", email); // Dodaj to, aby przechować e-mail w Local Storage
           Navigate("/role");
-          window.location.reload(); 
+          setSnackbarSeverity("success");
+          setSnackbarMessage("Pomyślnie zalogowano.");
+          setSnackbarOpen(true); 
+          window.location.reload();
         }
       });
       
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -102,10 +119,30 @@ export function Login() {
             <br />
           </div>
           {error && <div className="error-message">{error}</div>}
-          <button onClick={handleLogin} type="button" className="loginBttn">
+          <button onClick={handleLogin} onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleLogin();
+            }
+          }} 
+          type="button" className="loginBttn">
             Zaloguj się
           </button>
         </div>
+
+        <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleSnackbarClose}
+      >
+      <Alert
+        onClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        sx={{ width: "100%" }}
+      >
+        {snackbarMessage}
+      </Alert>
+      </Snackbar>
+
       </div>
     </div>
   );

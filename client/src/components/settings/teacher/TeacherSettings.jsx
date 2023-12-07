@@ -9,6 +9,42 @@ export function TeacherSettings() {
   const [error, setError] = useState(null);
   const [settings, setSettings] = useState([]);
   const version = packageJson.version;
+  const [editMode, setEditMode] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
+  const handleEditClick = () => {
+    setEditMode(true);
+    setFirstName(userData.length > 0 ? userData[0].first_name : '');
+    setLastName(userData.length > 0 ? userData[0].second_name : '');
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      const userId = userData.length > 0 ? userData[0].user_id : '';
+      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          second_name: lastName
+        })
+      });
+
+      if (!response.ok) {
+        setError("Błąd podczas zapisywania danych użytkownika.");
+        return;
+      }
+
+      setEditMode(false);
+      setUserData([{ ...userData[0], first_name: firstName, second_name: lastName }]);
+    } catch (error) {
+      console.error(error);
+      setError("Wystąpił błąd podczas zapisywania danych użytkownika.");
+    }
+  };
 
   useEffect(() => {
     openPage(selectedTab);
@@ -105,10 +141,9 @@ export function TeacherSettings() {
 
         <div id="UserData" className="tabcontent">
           <h3>Dane użytkownika</h3>
-          <p>Imię: {userData.length > 0 ? userData[0].first_name : ''}</p>
-          <p>Nazwisko: {userData.length > 0 ? userData[0].second_name : ''}</p>
+          {/* <p>Imię: {userData.length > 0 ? userData[0].first_name : ''}</p>
+          <p>Nazwisko: {userData.length > 0 ? userData[0].second_name : ''}</p> */}
           <p>Adres e-mail: {userData.length > 0 ? userData[0].email : ''}</p>
-          <p>Numer telefonu: {settings.length > 0 ? settings[0].phone_number : ''}</p>
           {userData.length > 0 && (userData[0].status === 'student' || userData[0].status === 'parent') && (
     <p>
       Adres: {settings.length > 0 ? (
@@ -119,7 +154,26 @@ export function TeacherSettings() {
         </>
       ) : ''}
     </p>
-  )}        </div>
+  )}        
+  
+  {editMode ? (
+            <>
+              <label>Imię:</label>
+              <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+              <br />
+              <label>Nazwisko:</label>
+              <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+              <br />
+              <button onClick={handleSaveClick}>Zapisz</button>
+            </>
+          ) : (
+            <>
+              <p>Imię: {userData.length > 0 ? userData[0].first_name : ''}</p>
+              <p>Nazwisko: {userData.length > 0 ? userData[0].second_name : ''}</p>
+              <button onClick={handleEditClick}>Edytuj</button>
+            </>
+          )}
+  </div>
 
         <div id="About" className="tabcontent">
           <h3>O aplikacji</h3>
