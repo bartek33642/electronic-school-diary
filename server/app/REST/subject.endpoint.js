@@ -31,19 +31,40 @@ const subjectEndpoint = (app) => {
   });
 
 
+  // app.get('/subjects/class/:class_id', async (req, res) => {
+  //   const classId = req.params.class_id;
+
+  //   try {
+  //     const subjectsQuery = `SELECT * FROM gradebook.subjects
+  //     WHERE class_id = $1`;
+  //     const { rows } = await pool.query(subjectsQuery, [classId]);
+  //     res.send(rows);
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).send('Internal Server Error');
+  //   }
+  // });
+
   app.get('/subjects/class/:class_id', async (req, res) => {
-    const classId = req.params.class_id;
+    const classId = parseInt(req.params.class_id, 10);
 
     try {
       const subjectsQuery = `SELECT * FROM gradebook.subjects
       WHERE class_id = $1`;
       const { rows } = await pool.query(subjectsQuery, [classId]);
-      res.send(rows);
+      
+      // Check if any rows were returned
+      if (rows.length === 0) {
+        res.status(404).send('No subjects found for the given class ID');
+      } else {
+        res.json(rows);
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching subjects:', error);
       res.status(500).send('Internal Server Error');
     }
-  });
+});
+
 
   app.get('/subjects-all-classes/:school_id', async (req, res) => {
     const schoolId = req.params.school_id;

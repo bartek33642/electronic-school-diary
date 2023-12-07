@@ -80,7 +80,7 @@ export function AdminRemarks() {
 
                         Wybierz nauczyciela: 
                         <select name="" id="admin-remark-teacher">
-                            <option value="admin-remark-teacher-option">Wybierz ucznia</option>
+                            <option value="admin-remark-teacher-option">Wybierz nauczyciela</option>
                             <option value="admin-remark-teacher-option">{}</option>
                         </select>
 

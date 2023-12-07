@@ -3,10 +3,8 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
-export function RegisterParent() {
+export function RegisterParent(props) {
   const [schools, setSchools] = useState([]);
   const [students, setStudents] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState('');
@@ -92,6 +90,8 @@ export function RegisterParent() {
           setSuccessMessage('Rodzic zarejestrowany pomyślnie');
           setOpen(true);
 
+          props.onRegistrationResult("Rodzic zarejestrowany pomyślnie.", null);
+
           // Wyczyść formularz po pomyślnej rejestracji
           setEmail('');
           setPassword('');
@@ -108,8 +108,10 @@ export function RegisterParent() {
           setPhoneNumber('');
 
         } else {
-          console.error("Nieprawidłowa odpowiedź serwera.");
+          // console.error("Nieprawidłowa odpowiedź serwera.");
           setErrorMessage("Nieprawidłowa odpowiedź serwera.");
+          props.onRegistrationResult(null, "Nieprawidłowa odpowiedź serwera.");
+
           setOpen(true);
 
         }
@@ -168,17 +170,6 @@ export function RegisterParent() {
 
 
       </div>
-      <Snackbar open={successMessage !== ''} autoHideDuration={4000} onClose={() => setSuccessMessage('')}>
-                <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-                Pomyślnie zarejestrowano użytkownika
-                </Alert>
-            </Snackbar>
-
-            <Snackbar open={errorMessage !== ''} autoHideDuration={4000} onClose={() => setErrorMessage('')}>
-                <Alert onClose={() => setErrorMessage('')} severity="warning" sx={{ width: '100%' }}>
-                Użytkownik nie został zarejestrowany
-                </Alert>
-            </Snackbar>
 
 </>
     );

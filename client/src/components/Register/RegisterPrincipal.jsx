@@ -3,10 +3,8 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
-export function RegisterPrincipal() {
+export function RegisterPrincipal(props) {
   const [schools, setSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState('');
   const [email, setEmail] = useState('');
@@ -68,6 +66,9 @@ export function RegisterPrincipal() {
           setSuccessMessage('Dyrektor zarejestrowany pomyślnie')
           setOpen(true);
 
+          props.onRegistrationResult("Dyrektor zarejestrowany pomyślnie.", null);
+
+        
           // Wyczyść formularz po pomyślnej rejestracji
           setEmail('');
           setPassword('');
@@ -77,8 +78,10 @@ export function RegisterPrincipal() {
           setSelectedSchool('');
 
         } else {
-          console.error("Nieprawidłowa odpowiedź serwera.");
+          // console.error("Nieprawidłowa odpowiedź serwera.");
           setErrorMessage("Nieprawidłowa odpowiedź serwera.");
+          props.onRegistrationResult(null, "Nieprawidłowa odpowiedź serwera.");
+
           setOpen(true);
 
         }
@@ -119,17 +122,6 @@ export function RegisterPrincipal() {
 
       </form>
 
-      <Snackbar open={successMessage !== ''} autoHideDuration={4000} onClose={() => setSuccessMessage('')}>
-                <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-                Pomyślnie zarejestrowano użytkownika
-                </Alert>
-            </Snackbar>
-
-            <Snackbar open={errorMessage !== ''} autoHideDuration={4000} onClose={() => setErrorMessage('')}>
-                <Alert onClose={() => setErrorMessage('')} severity="warning" sx={{ width: '100%' }}>
-                Użytkownik nie został zarejestrowany
-                </Alert>
-            </Snackbar>
             
     </div>
   );

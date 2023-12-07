@@ -38,7 +38,6 @@ const topicsEndpoint = (app) => {
 
           app.get('/topics-all-student/:classId', async (req, res) => {
             try {
-              // const userId = req.params.userId;
               const classId = req.params.classId;
           
               const topicsQuery = `
@@ -48,7 +47,7 @@ const topicsEndpoint = (app) => {
                 NATURAL JOIN gradebook.classes
                 NATURAL JOIN gradebook.subjects
                 NATURAL JOIN gradebook.users
-                WHERE class_id = $1;
+                WHERE topics.class_id = $1;
               `;
           
               const { rows } = await pool.query(topicsQuery, [classId]);
@@ -76,7 +75,7 @@ const topicsEndpoint = (app) => {
         //   })
 
         app.post('/add-topic', async (req, res) => {
-          const { teacher_id, class_id, topic_text, description, date, subject_id } = req.body;
+          const { teacher_id, class_id, topic_text, description, date, subject_id, school_id } = req.body;
       
           try {
               // Sprawdź, czy nauczyciel, klasa i szkoła istnieją i są powiązane
@@ -84,9 +83,9 @@ const topicsEndpoint = (app) => {
                   SELECT *
                   FROM gradebook.teachers te
                   LEFT JOIN gradebook.classes cl ON te.school_id = cl.school_id
-                  WHERE te.teacher_id = $1 AND cl.class_id = $2
+                  WHERE te.teacher_id = $1 AND cl.class_id = $2 AND cl.school_id = $3
               `;
-              const checkResult = await pool.query(checkQuery, [teacher_id, class_id]);
+              const checkResult = await pool.query(checkQuery, [teacher_id, class_id, school_id]);
       
               if (checkResult.rows.length === 0) {
                   return res.status(400).json({ error: 'Nieprawidłowe dane nauczyciela lub klasy.' });

@@ -3,10 +3,8 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
-export function RegisterAdmin() {
+export function RegisterAdmin(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -16,28 +14,26 @@ export function RegisterAdmin() {
     const [successMessage, setSuccessMessage] = useState(''); // Dodane pole na komunikat o udanej rejestracji
     const [open, setOpen] = useState(false);
 
-
     const handleRegister = (e) => {
         setErrorMessage('');
-        setSuccessMessage(''); // Wyczyść komunikat o udanej rejestracji przed próbą rejestracji
+        setSuccessMessage('');
         e.preventDefault();
-
-        // Sprawdź, czy wszystkie pola są wypełnione
+      
         if (!email || !password || !firstName || !lastName) {
-            setErrorMessage("Wszystkie pola są wymagane."); // Ustaw komunikat o błędzie
-            return;
+          setErrorMessage("Wszystkie pola są wymagane.");
+          return;
         }
-
+      
         const registrationData = {
-            email,
-            password,
-            role: '1',
-            active: isActive,
-            status: 'admin',
-            first_name: firstName,
-            second_name: lastName,
+          email,
+          password,
+          role: '1',
+          active: isActive,
+          status: 'admin',
+          first_name: firstName,
+          second_name: lastName,
         };
-
+      
         const registration$ = ajax.post(
           "http://localhost:3001/register-admin",
           registrationData,
@@ -45,37 +41,37 @@ export function RegisterAdmin() {
             "Content-Type": "application/json",
           }
         );
-
+      
         registration$
-            .pipe(
-                map((response) => response.response),
-                catchError((error) => {
-                    console.error("Błąd rejestracji: ", error);
-                    setErrorMessage("Błąd rejestracji. Spróbuj ponownie.");
-                    return of(null);
-                })
-            )
-            .subscribe((data) => {
-                if (data) {
-                    console.log("Admin zarejestrowany pomyślnie.");
-                    setSuccessMessage("Admin zarejestrowany pomyślnie.");
-                    setOpen(true);
-
-                    // Wyczyść formularz po pomyślnej rejestracji
-                    setEmail('');
-                    setPassword('');
-                    setFirstName('');
-                    setLastName('');
-                    setIsActive(false);
-
-                } else {
-                    console.error("Nieprawidłowa odpowiedź serwera.");
-                    setErrorMessage("Nieprawidłowa odpowiedź serwera.");
-                    setOpen(true);
-                }
-            });
-    };
-
+          .pipe(
+            map((response) => response.response),
+            catchError((error) => {
+              console.error("Błąd rejestracji: ", error);
+              setErrorMessage("Błąd rejestracji. Spróbuj ponownie.");
+              return of(null);
+            })
+          )
+          .subscribe((data) => {
+            if (data) {
+            //   console.log("Admin zarejestrowany pomyślnie.");
+              setSuccessMessage("Admin zarejestrowany pomyślnie.");
+              setOpen(true);
+              // Tutaj użyj callbacka, aby przekazać komunikat o sukcesie do komponentu AdminUsers
+              props.onRegistrationResult("Admin zarejestrowany pomyślnie.", null);
+              setEmail('');
+              setPassword('');
+              setFirstName('');
+              setLastName('');
+              setIsActive(false);
+            } else {
+            //   console.error("Nieprawidłowa odpowiedź serwera.");
+              setErrorMessage("Nieprawidłowa odpowiedź serwera.");
+              setOpen(true);
+              // Tutaj użyj callbacka, aby przekazać komunikat o błędzie do komponentu AdminUsers
+              props.onRegistrationResult(null, "Nieprawidłowa odpowiedź serwera.");
+            }
+          });
+      };
       
         const handleClose = (event, reason) => {
           if (reason === 'clickaway') {
@@ -104,18 +100,6 @@ export function RegisterAdmin() {
 
 
         </div>
-
-        <Snackbar open={successMessage !== ''} autoHideDuration={4000} onClose={() => setSuccessMessage('')}>
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-        Pomyślnie zarejestrowano użytkownika
-        </Alert>
-        </Snackbar>
-
-        <Snackbar open={errorMessage !== ''} autoHideDuration={4000} onClose={() => setErrorMessage('')}>
-        <Alert onClose={() => setErrorMessage('')} severity="warning" sx={{ width: '100%' }}>
-        Użytkownik nie został zarejestrowany
-        </Alert>
-        </Snackbar>
 </>
     );
 }

@@ -13,6 +13,9 @@ import { UserModal } from "../userModal/UserModal";
 import { SchoolModal } from "../../schools/schoolModal/SchoolModal";
 import { ClassModal } from "../../classes/classesModal/ClassModal";
 
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 export function AdminUsers(){
     const [open, setOpen] = useState(false);
@@ -23,6 +26,9 @@ export function AdminUsers(){
     const [open5, setOpen5] = useState(false);
     const [open6, setOpen6] = useState(false);
     const [open7, setOpen7] = useState(false);
+
+    const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
     const [userData, setUserData] = useState([]);
     const [schoolData, setSchoolData] = useState([]);
@@ -149,6 +155,23 @@ export function AdminUsers(){
       pb: 3,
     };
 
+
+const handleRegistrationResult = (successMessage, errorMessage) => {
+  if (successMessage) {
+    console.log(successMessage);
+    setSuccessMessage(successMessage);
+  }
+  if (errorMessage) {
+    console.error(errorMessage);
+    setErrorMessage(errorMessage);
+  }
+};
+
+    const handleCloseSnackbar = () => {
+      setSuccessMessage('');
+      setErrorMessage('');
+    };
+
     return (
       <div className="users-admin-container">
         <AdminMenu />
@@ -156,8 +179,8 @@ export function AdminUsers(){
         <div className="admin-users-elements">
           <h2 className="admin-users-header">Użytkownicy</h2>
 
-          <div className="admin-users-addButtons">
-            <input
+          {/* <div className="admin-users-addButtons"> */}
+            {/* <input
               type="button"
               value="Dodaj szkołę"
               className="admin-users-btns"
@@ -173,20 +196,25 @@ export function AdminUsers(){
               onClick={handleOpen1}
             />
             
-            <ClassModal open1={open1} handleClose1={handleClose1} schoolData={schoolData}/>
+            <ClassModal open1={open1} handleClose1={handleClose1} schoolData={schoolData}/> */}
 
-            <input
-              type="button"
-              value="Przeglądaj użytkowników"
-              className="admin-users-btns"
-              onClick={handleOpen2}
-            />
 
-          <UserModal open2={open2} handleClose2={handleClose2} userData={userData} fetchUserData={fetchData} />
 
-          </div>
+          {/* </div> */}
 
           <div className="users-admin-create-accounts">
+          <button
+              type="button"
+              value="Przeglądaj użytkowników"
+              className="create-accounts-admin-btn"
+              onClick={handleOpen2}
+            >
+                        Przeglądaj użytkowników 
+          </button>
+
+          <UserModal open2={open2} handleClose2={handleClose2} userData={userData} fetchUserData={fetchData} onRegistrationResult={handleRegistrationResult} />
+
+
             <button
               type="button"
               name="button-create-account-admin"
@@ -203,7 +231,7 @@ export function AdminUsers(){
             >
               <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj Administratora </h2>
-                <RegisterAdmin />
+                <RegisterAdmin onRegistrationResult={handleRegistrationResult} />
 
                 <Button onClick={handleClose3}>Zamknij</Button>
               </Box>
@@ -225,7 +253,7 @@ export function AdminUsers(){
             >
               <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj dyrektora </h2>
-                <RegisterPrincipal />
+                <RegisterPrincipal onRegistrationResult={handleRegistrationResult}/>
 
                 <Button onClick={handleClose4}>Zamknij</Button>
               </Box>
@@ -247,7 +275,7 @@ export function AdminUsers(){
             >
               <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj nauczyciela </h2>
-                <RegisterTeacher />
+                <RegisterTeacher onRegistrationResult={handleRegistrationResult}/>
 
                 <Button onClick={handleClose5}>Zamknij</Button>
               </Box>
@@ -269,7 +297,7 @@ export function AdminUsers(){
             >
               <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj rodzica </h2>
-                <RegisterParent />
+                <RegisterParent onRegistrationResult={handleRegistrationResult}/>
 
                 <Button onClick={handleClose6}>Zamknij</Button>
               </Box>
@@ -291,12 +319,25 @@ export function AdminUsers(){
             >
               <Box sx={{ ...style }} className='modal-content'>
                 <h2 id="child-modal-title">Dodaj ucznia </h2>
-                <RegisterStudent />
+                <RegisterStudent onRegistrationResult={handleRegistrationResult}/>
 
                 <Button onClick={handleClose7}>Zamknij</Button>
               </Box>
             </Modal>
           </div>
+
+        <Snackbar open={successMessage !== ''} autoHideDuration={6000} onClose={() => setSuccessMessage('')}>
+        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
+        Pomyślnie zarejestrowano użytkownika
+        </Alert>
+        </Snackbar>
+
+        <Snackbar open={errorMessage !== ''} autoHideDuration={6000} onClose={() => setErrorMessage('')}>
+        <Alert onClose={() => setErrorMessage('')} severity="warning" sx={{ width: '100%' }}>
+        Użytkownik nie został zarejestrowany
+        </Alert>
+        </Snackbar>
+
         </div>
       </div>
     );

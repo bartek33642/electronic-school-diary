@@ -3,10 +3,8 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
-export function RegisterTeacher() {
+export function RegisterTeacher(props) {
   const [schools, setSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState('');
   const [email, setEmail] = useState('');
@@ -66,9 +64,12 @@ export function RegisterTeacher() {
       )
       .subscribe((data) => {
         if (data) {
-          console.log("Nauczyciel zarejestrowany pomyślnie.");
+          // console.log("Nauczyciel zarejestrowany pomyślnie.");
           setSuccessMessage('Nauczyciel zarejestrowany pomyślnie');
           setOpen(true);
+
+          props.onRegistrationResult("Nauczyciel zarejestrowany pomyślnie.", null);
+
 
           // Wyczyść formularz po pomyślnej rejestracji
           setEmail('');
@@ -80,8 +81,10 @@ export function RegisterTeacher() {
           setSpecialization('');
 
         } else {
-          console.error("Nieprawidłowa odpowiedź serwera.");
+          // console.error("Nieprawidłowa odpowiedź serwera.");
           setErrorMessage("Nieprawidłowa odpowiedź serwera.");
+          props.onRegistrationResult(null, "Nieprawidłowa odpowiedź serwera.");
+
           setOpen(true);
 
         }
@@ -122,17 +125,7 @@ export function RegisterTeacher() {
         </form>
             
       </div>
-      <Snackbar open={successMessage !== ''} autoHideDuration={4000} onClose={() => setSuccessMessage('')}>
-          <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          Pomyślnie zarejestrowano użytkownika
-          </Alert>
-      </Snackbar>
 
-      <Snackbar open={errorMessage !== ''} autoHideDuration={4000} onClose={() => setErrorMessage('')}>
-          <Alert onClose={() => setErrorMessage('')} severity="warning" sx={{ width: '100%' }}>
-          Użytkownik nie został zarejestrowany
-          </Alert>
-      </Snackbar>
       </>
     );
     
