@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
+import { backendServer } from '../../../config';
 
 export function AdminTopics() {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ export function AdminTopics() {
   console.log("topicData: ", topicData);
 
   useEffect(() => {
-    fetch("/topics-all")
+    fetch(`${backendServer}/topics-all`)
       .then((response) => response.json())
       .then((data) => {
         setTopicData(data);
@@ -36,7 +37,7 @@ export function AdminTopics() {
   }, []);
 
   useEffect(() => {
-    fetch("/schools")
+    fetch(`${backendServer}/schools`)
       .then((response) => response.json())
       .then((data) => {
         setSchoolData(data);
@@ -50,7 +51,7 @@ export function AdminTopics() {
     // Fetch classes based on selected school
     if (selectedSchool) {
       console.log('selectedSchool: ', selectedSchool );
-      fetch(`/classes/${selectedSchool}`)
+      fetch(`${backendServer}/classes/${selectedSchool}`)
         .then((response) => response.json())
         .then((data) => {
           setClassData(data);
@@ -62,7 +63,7 @@ export function AdminTopics() {
   }, [selectedSchool]);
 
   useEffect(() => {
-    fetch("/classes")
+    fetch(`${backendServer}/classes`)
       .then((response) => response.json())
       .then((data) => {
         setClassData(data);
@@ -73,7 +74,7 @@ export function AdminTopics() {
   }, []);
 
   useEffect(() => {
-    fetch(`/all-teachers/${schoolId}`)
+    fetch(`${backendServer}/all-teachers/${schoolId}`)
       .then((response) => response.json())
       .then((data) => {
         setTeacherData(data);
@@ -91,7 +92,7 @@ export function AdminTopics() {
     // Fetch subjects based on selected class
     if (selectedClass) {
       console.log('selectedClass: ', selectedClass );
-      fetch(`/subjects/class/${parseInt(selectedClass, 10)}`)
+      fetch(`${backendServer}/subjects/class/${parseInt(selectedClass, 10)}`)
         .then((response) => response.json())
         .then((data) => {
           setSubjectData(data);
@@ -110,6 +111,12 @@ export function AdminTopics() {
   console.log("teacherData: ", teacherData);
   console.log("subjectData: ", subjectData);
 
+  const setTest = (data) => {
+    console.log("Test" , data);
+    setNewTopic(data);
+
+  }
+
   const [newTopic, setNewTopic] = useState({
     teacher_id: "",
     class_id: "",
@@ -122,28 +129,26 @@ export function AdminTopics() {
 
 
   const handleAddTopic = async () => {
-      // Ustawianie wartości stanu i czekanie na zakończenie operacji
-      setNewTopic((prevTopic) => ({
-        ...prevTopic,
-        class_id: parseInt(selectedClass, 10) || null,
-        teacher_id: parseInt(selectedTeacher, 10) || null
-      }));
-    
+
+          console.log('TEEEEEST1', newTopic);
+
       // Pobieranie zaktualizowanego stanu
       const updatedTopic = newTopic;
     
       const newTopicWithNumbers = {
         ...updatedTopic,
-        teacher_id: parseInt(updatedTopic.teacher_id, 10) || null,
-        class_id: parseInt(updatedTopic.class_id, 10) || null,
+        teacher_id: parseInt(selectedTeacher, 10) || null,
+        class_id: parseInt(selectedClass, 10) || null,
         subject_id: parseInt(updatedTopic.subject_id, 10) || null,
         school_id: parseInt(selectedSchool, 10) || null,
       };
+
+      setNewTopic(newTopicWithNumbers);
     
       console.log("newTopicWithNumbers:", newTopicWithNumbers);
   
     // Wysyłanie żądania POST do serwera
-    fetch("http://localhost:3001/add-topic", {
+    fetch(`${backendServer}/add-topic`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -197,12 +202,12 @@ export function AdminTopics() {
       // Wysyłamy żądanie DELETE do serwera
       console.log("Usuwanie szkoły o topic_id:", topicId);
 
-      fetch(`http://localhost:3001/topics/${topicId}`, {
+      fetch(`${backendServer}/topics/${topicId}`, {
         method: "DELETE",
       })
         .then((response) => {
           if (response.status === 204) {
-            fetch("http://localhost:3001/topics")
+            fetch(`${backendServer}/topics`)
               .then((response) => response.json())
               .then((data) => {
                 setTopicData(data);
@@ -269,8 +274,6 @@ export function AdminTopics() {
         <div className="buttons-admin-topics">
           <input type="button" value="Sprawdź tematy" onClick={handleOpen} />
 
-          {/* <input type="button" value="Dodaj tematy" /> */}
-
           <Modal
             open={open}
             onClose={handleClose}
@@ -306,9 +309,10 @@ export function AdminTopics() {
             name="add_topic_school"
             id=""
             onChange={(e) => {
+              console.log("Event ", e.target.value);
               setSelectedSchool(e.target.value);
-              setSelectedClass(""); // Resetuje wybraną klasę po zmianie szkoły
-              setSelectedTeacher(""); // Resetuje wybranego nauczyciela po zmianie szkoły
+              setSelectedClass(""); 
+              setSelectedTeacher(""); 
             }}
           >
             <option value="select_school">Wybierz szkołę</option>
@@ -363,7 +367,7 @@ export function AdminTopics() {
               name="add_topic_subject"
               id=""
               onChange={(e) =>
-                setNewTopic({ ...newTopic, subject_id: e.target.value })
+                setTest({ ...newTopic, subject_id: e.target.value })
               }
             >
               <option value="select_subject">Wybierz przedmiot</option>
@@ -378,7 +382,7 @@ export function AdminTopics() {
           <input
             type="text"
             onChange={(e) =>
-              setNewTopic({ ...newTopic, topic_text: e.target.value })
+              setTest({ ...newTopic, topic_text: e.target.value })
             }
           />
           Opis:{" "}
@@ -388,13 +392,13 @@ export function AdminTopics() {
             cols="60"
             rows="5"
             onChange={(e) =>
-              setNewTopic({ ...newTopic, description: e.target.value })
+              setTest({ ...newTopic, description: e.target.value })
             }
           ></textarea>
           Data:{" "}
           <input
             type="date"
-            onChange={(e) => setNewTopic({ ...newTopic, date: e.target.value })}
+            onChange={(e) => setTest({ ...newTopic, date: e.target.value })}
           />
           <input type="button" value="Dodaj temat" onClick={handleAddTopic} />
         </div>

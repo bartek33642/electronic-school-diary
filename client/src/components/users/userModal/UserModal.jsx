@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import './UserModal.css';
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from '../../../config';
 
 export function UserModal(props) {
   const { open2, handleClose2, userData, fetchUserData} = props;
@@ -27,7 +28,7 @@ export function UserModal(props) {
 
   const handleDeleteUser = (userId) => {
     if (window.confirm('Czy na pewno chcesz usunąć użytkownika?')) {
-      fetch(`http://localhost:3001/users/${userId}`, {
+      fetch(`${backendServer}/users/${userId}`, {
         method: 'DELETE',
       })
         .then(response => {

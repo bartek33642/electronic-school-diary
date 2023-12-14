@@ -19,7 +19,8 @@ import { TeacherDashboard } from './components/dashboard/teacher/TeacherDashboar
 import { PrincipalDashboard } from './components/dashboard/principal/PrincipalDashboard';
 import { AdminUsers } from './components/users/admin/AdminUsers';
 import { AdminSettings } from './components/settings/admin/AdminSettings';
-import { ParentStudentTimetable } from './components/timetable/ParentStudentTimetable/ParentStudentTimetable';
+import { ParentTimetable } from './components/timetable/ParentStudentTimetable/ParentTimetable';
+import { StudentTimetable } from './components/timetable/ParentStudentTimetable/StudentTimetable';
 import { Schools } from './components/schools/Schools';
 import { AdminClasses } from './components/classes/admin/AdminClasses';
 import { AdminTopics } from './components/topics/admin/AdminTopics';
@@ -57,8 +58,8 @@ import { TeacherClasses } from './components/classes/teacher/TeacherClasses';
 import { TeacherTopics } from './components/topics/teacher/TeacherTopics';
 import { TeacherSubjects } from './components/subjects/teacher/TeacherSubjects';
 
-
 import { isExpired } from 'react-jwt';
+import { TeacherMarks } from './components/marks/teacher/TeacherMarks';
 
 
 function App() {
@@ -173,7 +174,14 @@ function App() {
             <Route path="/student-timetable" element={
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/login' /> 
-                ) : ( <ParentStudentTimetable />)
+                ) : ( <StudentTimetable />)
+              }/>
+
+              {/* <Route path="/parent-timetable" element={<ParentStudentTimetable />} />*/}
+              <Route path="/parent-timetable" element={
+                isExpired(localStorage.getItem("token")) ? (
+                <Navigate replace to='/login' /> 
+                ) : ( <ParentTimetable />)
               }/>
 
             {/* <Route path="/schools" element={<Schools />} /> */}
@@ -400,6 +408,14 @@ function App() {
                 ) : ( <TeacherSubjects/>)
               
               }/>
+
+            <Route path='/teacher-marks' element={<TeacherMarks />} /> 
+            {/* <Route path="/teacher-marks" element={
+                isExpired(localStorage.getItem("token")) ? (
+                <Navigate replace to='/login' /> 
+                ) : ( <TeacherMarks/>)
+              
+              }/> */}
          
         </Routes>
       </BrowserRouter>

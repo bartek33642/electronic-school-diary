@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StudentMenu } from "../../menu/student/StudentMenu";
 import './StudentSubjects.css';
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from "../../../config";
 
 export function StudentSubjects() {
   const [userData, setUserData] = useState([]);
@@ -14,7 +15,7 @@ export function StudentSubjects() {
         const userEmail = localStorage.getItem("userEmail");
 
         if (userEmail) {
-          const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+          const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
           console.log("userData: ", userData);
@@ -24,7 +25,7 @@ export function StudentSubjects() {
 
             if (userData.length > 0) {
               const classId = userData[0].class_id;
-              const subjectsQuery = `http://localhost:3001/subjects/class/${classId}`;
+              const subjectsQuery = `${backendServer}/subjects/class/${classId}`;
               const subjectsResult = await fetch(subjectsQuery);
               const subjectsData = await subjectsResult.json();
               console.log("subjectsData: ", subjectsData);

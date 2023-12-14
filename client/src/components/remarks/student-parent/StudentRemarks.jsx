@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './StudentParentRemarks.css';
 import { StudentMenu } from "../../menu/student/StudentMenu";
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from "../../../config";
 
 export function StudentRemarks () {
     const [userData, setUserData] = useState([]);
@@ -14,7 +15,7 @@ export function StudentRemarks () {
             const userEmail = localStorage.getItem("userEmail");
     
             if (userEmail) {
-              const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+              const userQuery = `${backendServer}/users-school-student/${userEmail}`;
               const result = await fetch(userQuery);
               const userData = await result.json();
               console.log("userData: ", userData);
@@ -34,7 +35,7 @@ export function StudentRemarks () {
 
                 if (userData.length > 0) {
                   const studentId = userData[0].student_id;
-                  const remarksQuery = `http://localhost:3001/remarks/${studentId}`;
+                  const remarksQuery = `${backendServer}/remarks/${studentId}`;
                   const remarksResult = await fetch(remarksQuery);
                   const remarksData = await remarksResult.json();
                   console.log("remarksData: ", remarksData);

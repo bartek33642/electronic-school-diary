@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { PrincipalMenu } from "../../menu/prncipal/PrincipalMenu";
 import './PrincipalUsers.css';
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from "../../../config";
 
 export function PrincipalUsers() {
     const [userData, setUserData] = useState([]);
@@ -15,7 +16,7 @@ export function PrincipalUsers() {
   
           if (userEmail) {
             
-            const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+            const userQuery = `${backendServer}/users-school-student/${userEmail}`;
             const result = await fetch(userQuery);
             const userData = await result.json();
             console.log("userData: ", userData);
@@ -25,7 +26,7 @@ export function PrincipalUsers() {
   
               if (userData.length > 0) {
                 const schoolId = userData[0].school_id;
-                const userPrincipalQuery = `http://localhost:3001/principal-users/${schoolId}`;
+                const userPrincipalQuery = `${backendServer}/principal-users/${schoolId}`;
                 const userPrincipalResult = await fetch(userPrincipalQuery);
                 const userPrincipal = await userPrincipalResult.json();
                 console.log("userPrincipal: ", userPrincipal);

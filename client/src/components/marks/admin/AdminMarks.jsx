@@ -233,6 +233,7 @@ import { AdminMenu } from "../../menu/admin/AdminMenu";
 import Modal from '@mui/material/Modal';
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
+import { backendServer } from "../../../config";
 
 export function AdminMarks(){
     const [open, setOpen] = useState(false);
@@ -240,13 +241,13 @@ export function AdminMarks(){
     const [classes, setClasses] = useState([]);
     const [students, setStudents] = useState([]);
     const [teachers, setTeachers] = useState([]);
-    const [subjects, setSubjects] = useState([]); // Dodane
+    const [subjects, setSubjects] = useState([]); 
 
     const [selectedSchool, setSelectedSchool] = useState("");
     const [selectedClass, setSelectedClass] = useState("");
     const [selectedStudent, setSelectedStudent] = useState("");
     const [selectedTeacher, setSelectedTeacher] = useState("");
-    const [selectedSubject, setSelectedSubject] = useState(""); // Dodane
+    const [selectedSubject, setSelectedSubject] = useState(""); 
 
     const [gradeData, setGradeData] = useState({
         grade: "",
@@ -287,7 +288,7 @@ export function AdminMarks(){
 
     useEffect(() => {
         // Pobierz listę szkół
-        fetch('/schools')
+        fetch(`${backendServer}/schools`)
             .then(response => response.json())
             .then(data => setSchools(data))
             .catch(error => console.error('Błąd pobierania szkół:', error));
@@ -295,59 +296,59 @@ export function AdminMarks(){
 
     const handleSchoolChange = (event) => {
         const schoolId = event.target.value;
-        const classId = event.target.value;
-
+        const selectedClass = event.target.value;
+        
         // Pobierz listę klas w danej szkole
-        fetch(`/classes/${schoolId}`)
+        fetch(`${backendServer}/classes/${schoolId}`)
             .then(response => response.json())
             .then(data => setClasses(data))
             .catch(error => console.error('Błąd pobierania klas:', error));
     
         // Pobierz listę uczniów w danej szkole
-        fetch(`/students/${schoolId}/${selectedClass}`)
+        fetch(`${backendServer}/students/${schoolId}/${selectedClass}`)
             .then(response => response.json())
             .then(data => setStudents(data))
             .catch(error => console.error('Błąd pobierania uczniów:', error));
         // Pobierz listę nauczycieli w danej szkole
-        fetch(`/teachers/${schoolId}`)
+        fetch(`${backendServer}/teachers/${schoolId}`)
             .then(response => response.json())
             .then(data => setTeachers(data))
             .catch(error => console.error('Błąd pobierania nauczycieli:', error));
-    
+        
         // Poczekaj na zakończenie pobierania szkoły przed ustawieniem selectedSchool
         // i pobraniem listy przedmiotów
+        console.log('przed pobraniem listy przedmiotów schoolId', schoolId);
         Promise.all([
-            fetch(`/subjects/${classId}`)
+            fetch(`${backendServer}/subjects/class/${selectedClass}`)
                 .then(response => response.json())
                 .then(data => setSubjects(data))
                 .catch(error => console.error('Błąd pobierania przedmiotów:', error)),
-            setSelectedSchool(classId)
+            setSelectedSchool(selectedClass)
         ]);
         
     };
 
     const handleClassChange = (event) => {
-        const classId = event.target.value;
-        // const classId = userData[0].class_id;
-        
-    
+
+      const selectedClass = event.target.value;
+        console.log("handleClassChange selectedSchool", selectedSchool);
         // Pobierz listę uczniów w danej klasie
-        fetch(`/students/${selectedSchool}/${classId}`)
+        fetch(`${backendServer}/students/${selectedSchool}/${selectedClass}`)
             .then(response => response.json())
             .then(data => setStudents(data))
             .catch(error => console.error('Błąd pobierania uczniów:', error));
     
         // Pobierz listę przedmiotów w danej klasie
-        fetch(`/subjects/${classId}`)
+        fetch(`${backendServer}/subjects/${selectedClass}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Pobrane przedmioty:', data);
                 setSubjects(data);
             })
             .catch(error => console.error('Błąd pobierania przedmiotów:', error));
-    
-        setSelectedClass(classId);
-        console.log("ClassId: ", classId);
+            console.log("ClassId: ", selectedClass);
+        setSelectedClass(selectedClass);
+        
     };
     
     const handleStudentChange = (event) => {
@@ -364,7 +365,7 @@ export function AdminMarks(){
 
     const fetchGrades = (studentId, subjectId) => {
         // Wysyłaj zapytanie do serwera, aby pobrać oceny dla danego ucznia i przedmiotu
-        fetch(`/marks/${studentId}/${subjectId}`)
+        fetch(`${backendServer}/marks/${studentId}/${subjectId}`)
             .then(response => response.json())
             .then(data => {
                 // Tutaj możesz przetworzyć pobrane oceny i zaktualizować stan lub cokolwiek innego
@@ -386,7 +387,7 @@ export function AdminMarks(){
             grade_value: gradeData.grade,
             weight: gradeData.weight,
             description: gradeData.comment,
-            teacher_id: selectedTeacher,  // Dodaj odpowiednie ID nauczyciela
+            teacher_id: selectedTeacher,  
             date: new Date().toISOString()  // Dodaj datę oceny, możesz dostosować format daty do własnych potrzeb
         };
 
@@ -395,7 +396,7 @@ export function AdminMarks(){
         handleOpen(); // Otwórz modal
 
         // Poniżej dodaj fragment kodu do wysyłania oceny na serwer
-        fetch('/add-marks', {
+        fetch(`${backendServer}/add-marks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -523,7 +524,7 @@ export function AdminMarks(){
                     className="admin-marks-button"
                   />
 
-                  <Modal
+                  {/* <Modal
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="parent-modal-title"
@@ -568,7 +569,7 @@ export function AdminMarks(){
                       <Button onClick={handleSaveGrade}>Zapisz</Button>
                       <Button onClick={handleClose}>Zamknij</Button>
                     </Box>
-                  </Modal>
+                  </Modal> */}
                 </td>
               </tr>
 

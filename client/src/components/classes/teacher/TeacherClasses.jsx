@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './TeacherClasses.css';
 import { TeacherMenu } from '../../menu/teacher/TeacherMenu';
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from "../../../config";
 
 export function TeacherClasses() {
 
@@ -16,7 +17,7 @@ export function TeacherClasses() {
       
               if (userEmail) {
                 
-                const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+                const userQuery = `${backendServer}/users-school-student/${userEmail}`;
                 const result = await fetch(userQuery);
                 const userData = await result.json();
                 console.log("userData: ", userData);
@@ -26,7 +27,7 @@ export function TeacherClasses() {
       
                   if (userData.length > 0) {
                     const schoolId = userData[0].school_id;
-                    const classesTeacherQuery = `http://localhost:3001/teacher-classes/${schoolId}`;
+                    const classesTeacherQuery = `${backendServer}/teacher-classes/${schoolId}`;
                     const classesTeacherResult = await fetch(classesTeacherQuery);
                     const classesTeacher = await classesTeacherResult.json();
                     console.log("classesTeacher: ", classesTeacher);

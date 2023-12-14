@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './StudentParentTopics.css';
 import { ParentMenu } from "../../menu/parent/ParentMenu";
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from "../../../config";
 
 export function ParentTopics(){
     const [userData, setUserData] = useState([]);
@@ -14,7 +15,7 @@ export function ParentTopics(){
             const userEmail = localStorage.getItem("userEmail");
     
             if (userEmail) {
-              const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+              const userQuery = `${backendServer}/users-school-student/${userEmail}`;
               const result = await fetch(userQuery);
               const userData = await result.json();
               console.log("userData: ", userData);
@@ -25,7 +26,7 @@ export function ParentTopics(){
                   const studentId = userData[0].student_id;
               
                   // Pobierz tematy dla danego studenta i klasy
-                  const topicsQuery = `http://localhost:3001/topics-parents/${studentId}`;
+                  const topicsQuery = `${backendServer}/topics-parents/${studentId}`;
                   const topicsResult = await fetch(topicsQuery);
                   const topicsData = await topicsResult.json();
                   console.log("topicsData: ", topicsData)
@@ -55,7 +56,7 @@ export function ParentTopics(){
       }, []);
     
       const columns = [
-        // { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
+        { field: 'topicId', headerName: 'ID', width: 100},
         { field: 'date', headerName: 'Data', width: 100},
         { field: 'subject', headerName: 'Przedmiot', width: 130 },
         { field: 'topic', headerName: 'Temat', width: 130 },
@@ -69,7 +70,7 @@ export function ParentTopics(){
       // console.log(formatDate);
     
       const rows = topics.map(topic => ({
-        // topicId: topic.topic_id,
+        topicId: topic.topic_id,
         date: new Date(topic.date).toLocaleDateString(),
         subject: topic.subject_name,
         topic: topic.topic_text,
@@ -90,7 +91,7 @@ export function ParentTopics(){
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.date}
+            getRowId={(row) => row.topicId}
             pageSize={8}
             initialState={{
               pagination: {

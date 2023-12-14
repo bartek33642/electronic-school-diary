@@ -3,6 +3,7 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { backendServer } from "../../config";
 
 export function RegisterAdmin(props) {
     const [email, setEmail] = useState('');
@@ -35,7 +36,7 @@ export function RegisterAdmin(props) {
         };
       
         const registration$ = ajax.post(
-          "http://localhost:3001/register-admin",
+          `${backendServer}/register-admin`,
           registrationData,
           {
             "Content-Type": "application/json",

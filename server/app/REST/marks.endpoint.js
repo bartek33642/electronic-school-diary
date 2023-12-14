@@ -36,9 +36,12 @@ const marksEndpoint = (app) => {
         
             try {
                 const marksQuery = `
-                SELECT * FROM gradebook.grades
-                INNER JOIN gradebook.subjects ON grades.subject_id = subjects.subject_id
-                WHERE student_id = $1;`;
+                SELECT gr.*, su.*, us.first_name, us.second_name
+                    FROM gradebook.grades gr
+                INNER JOIN gradebook.subjects su ON gr.subject_id = su.subject_id
+				INNER JOIN gradebook.teachers te ON gr.teacher_id = te.teacher_id
+				INNER JOIN gradebook.users us ON te.user_id = us.user_id
+                    WHERE student_id = $1;`;
         
                 const { rows } = await pool.query(marksQuery, [student_id]);
                 res.send(rows);
@@ -73,10 +76,11 @@ const marksEndpoint = (app) => {
                     SELECT students.student_id, users.first_name, users.second_name
                     FROM gradebook.students
                     INNER JOIN gradebook.users ON students.user_id = users.user_id
-                    WHERE students.class_id = $1;
+                    WHERE students.school_id = $1 AND students.class_id = $2;
                 `;
         
-                const { rows } = await pool.query(studentsQuery, [class_id]);
+                const { rows } = await pool.query(studentsQuery, [school_id, class_id]);
+                // console.log(' school_id + class_id', school_id, ' + ' ,class_id);
                 res.send(rows);
             } catch (error) {
                 console.error('Błąd pobierania uczniów:', error);
@@ -140,7 +144,6 @@ const marksEndpoint = (app) => {
                 res.status(500).send('Internal Server Error');
             }
         });
-        
         
 
         };

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import './SchoolModal.css';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { backendServer } from "../../../config";
 
 export function SchoolModal(props){
     const { open, handleClose  } = props;
@@ -39,7 +40,7 @@ export function SchoolModal(props){
 
     const handleAddSchool = () => {
       // Wysyłanie żądania POST do serwera
-      fetch("/add-school", {
+      fetch(`${backendServer}/add-school`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

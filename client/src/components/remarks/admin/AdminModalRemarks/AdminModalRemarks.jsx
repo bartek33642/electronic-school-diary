@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from "../../../../config";
 
 export function AdminModalRemarks() {
 const [remarkData, setRemarkData] = useState([]);
@@ -9,7 +10,7 @@ const [open, setOpen] = useState(true);
 
 useEffect(() => {
     if (open) {
-      fetch('/remarks-all-classes')
+      fetch(`${backendServer}/remarks-all-classes`)
         .then(response => response.json())
         .then(data => {
           setRemarkData(data);
@@ -26,13 +27,13 @@ useEffect(() => {
             // Wysyłamy żądanie DELETE do serwera
             console.log('Usuwanie uwagi o remarkId:', remarkId);
   
-            fetch(`http://localhost:3001/remarks/${remarkId}`, {
+            fetch(`${backendServer}/remarks/${remarkId}`, {
               method: 'DELETE',
             })
               .then(response => {
                 if (response.status === 204) {
   
-                  fetch('http://localhost:3001/remarks-all-classes')
+                  fetch(`${backendServer}/remarks-all-classes`)
                     .then(response => response.json())
                     .then(data => {
                         setRemarkData(data);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './TeacherRemarks.css';
 import { DataGrid } from '@mui/x-data-grid';
 import { TeacherMenu } from '../../menu/teacher/TeacherMenu';
+import { backendServer } from '../../../config';
 
 export function TeacherRemarks() {
 
@@ -15,7 +16,7 @@ export function TeacherRemarks() {
             const userEmail = localStorage.getItem("userEmail");
     
             if (userEmail) {
-              const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+              const userQuery = `${backendServer}/users-school-student/${userEmail}`;
               const result = await fetch(userQuery);
               const userData = await result.json();
               console.log("userData: ", userData);
@@ -26,11 +27,11 @@ export function TeacherRemarks() {
                   const schoolId = userData[0].school_id;
               
                   // Pobierz tematy dla danego studenta i klasy
-                  const remarksQuery = `http://localhost:3001/remarks-all-classes/${schoolId}`;
+                  const remarksQuery = `${backendServer}/remarks-all-classes/${schoolId}`;
                   const remarksResult = await fetch(remarksQuery);
                   console.log("remarksResult: ",remarksResult)
                   const remarksData = await remarksResult.json();
-                  console.log("topicsData: ", remarksData)
+                  console.log("remarksData: ", remarksData)
                   
                   if (remarksResult.ok) {
                     setRemarks(remarksData);
@@ -80,7 +81,7 @@ export function TeacherRemarks() {
         remark_text: remark.remark_text,
         is_possitive: getIsPosstive(remark.is_possitive),
         date: new Date(remark.date).toLocaleDateString(),
-        teacher: remark.first_name + ' ' + remark.second_name,
+        teacher: remark.teacher_first_name + ' ' + remark.teacher_second_name,
     
       }));
 

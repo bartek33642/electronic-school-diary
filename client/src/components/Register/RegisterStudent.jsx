@@ -3,6 +3,7 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { backendServer } from "../../config";
 
 export function RegisterStudent(props) {
   const [schools, setSchools] = useState([]);
@@ -26,7 +27,7 @@ export function RegisterStudent(props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fetch('/schools')
+    fetch(`${backendServer}/schools`)
       .then(response => response.json())
       .then(data => setSchools(data))
       .catch(error => console.error('Błąd pobierania szkół:', error));
@@ -34,7 +35,7 @@ export function RegisterStudent(props) {
 
   useEffect(() => {
     if (selectedSchool) {
-      fetch(`/classes/${selectedSchool}`)
+      fetch(`${backendServer}/classes/${selectedSchool}`)
         .then(response => response.json())
         .then(data => setClasses(data))
         .catch(error => console.error('Błąd pobierania klas:', error));
@@ -69,7 +70,7 @@ export function RegisterStudent(props) {
   };
 
     const registration$ = ajax.post(
-      "http://localhost:3001/register-student",
+      `${backendServer}/register-student`,
       registrationData,
       {
         "Content-Type": "application/json",

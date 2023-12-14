@@ -395,6 +395,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Role.css";
 import { ajax } from "rxjs/ajax";
+import { backendServer } from "../../config";
 
 const mapStatusToPolish = (status) => {
   switch (status) {
@@ -424,7 +425,7 @@ export function Role() {
 
         // Sprawdź czy userEmail jest dostępny
         if (userEmail) {
-          const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+          const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
           if (result.ok) {

@@ -189,6 +189,7 @@ import React, { useState, useEffect } from "react";
 import { StudentMenu } from "../../menu/student/StudentMenu";
 import './StudentParentTopics.css';
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from '../../../config';
 
 export function StudentTopics() {
   const [userData, setUserData] = useState([]);
@@ -201,7 +202,7 @@ export function StudentTopics() {
         const userEmail = localStorage.getItem("userEmail");
 
         if (userEmail) {
-          const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+          const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
           console.log("userData: ", userData);
@@ -212,7 +213,7 @@ export function StudentTopics() {
               const classId = userData[0].class_id;
           
               // Pobierz tematy dla danego studenta i klasy
-              const topicsQuery = `http://localhost:3001/topics-all-student/${classId}`;
+              const topicsQuery = `${backendServer}/topics-all-student/${classId}`;
               const topicsResult = await fetch(topicsQuery);
               const topicsData = await topicsResult.json();
               console.log("topicsData: ", topicsData)

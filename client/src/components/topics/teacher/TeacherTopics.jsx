@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './TeacherTopics.css';
 import { DataGrid } from '@mui/x-data-grid';
 import { TeacherMenu } from "../../menu/teacher/TeacherMenu";
+import { backendServer } from '../../../config';
 
 export function TeacherTopics() {
   const [userData, setUserData] = useState([]);
@@ -14,7 +15,7 @@ export function TeacherTopics() {
         const userEmail = localStorage.getItem("userEmail");
 
         if (userEmail) {
-          const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+          const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
           console.log("userData: ", userData);
@@ -25,7 +26,7 @@ export function TeacherTopics() {
               const schoolId = userData[0].school_id;
           
               // Pobierz tematy dla danego studenta i klasy
-              const topicsQuery = `http://localhost:3001/topics-all-classes/${schoolId}`;
+              const topicsQuery = `${backendServer}/topics-all-classes/${schoolId}`;
               const topicsResult = await fetch(topicsQuery);
               console.log("topicsResult: ",topicsResult)
               const topicsData = await topicsResult.json();
@@ -56,8 +57,7 @@ export function TeacherTopics() {
   }, []);
 
   const columns = [
-    // { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
-    
+    { field: 'topicId', headerName: 'ID', width: 100},
     { field: 'date', headerName: 'Data', width: 100},
     { field: 'class', headerName: 'Klasa', width: 100},
     { field: 'subject', headerName: 'Przedmiot', width: 130 },
@@ -72,7 +72,7 @@ export function TeacherTopics() {
   // console.log(formatDate);
 
   const rows = topics.map(topic => ({
-    // topicId: topic.topic_id,
+    topicId: topic.topic_id,
     date: new Date(topic.date).toLocaleDateString(),
     class: topic.class_name,
     subject: topic.subject_name,
@@ -91,7 +91,7 @@ export function TeacherTopics() {
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.date}
+            getRowId={(row) => row.topicId}
             pageSize={8}
             initialState={{
               pagination: {

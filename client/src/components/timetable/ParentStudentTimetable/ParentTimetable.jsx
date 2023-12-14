@@ -76,6 +76,7 @@ import React from "react";
 
 import './ParentStudentTimetable.css';
 import Paper from '@mui/material/Paper';
+import { backendServer } from "../../../config";
 
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import {
@@ -83,7 +84,8 @@ import {
   WeekView,
   Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { StudentMenu } from "../../menu/student/StudentMenu";
+import { ParentMenu } from "../../menu/parent/ParentMenu";
+
 const today = new Date();
 const year = today.getFullYear();
 const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -91,17 +93,22 @@ const day = String(today.getDate()).padStart(2, '0');
 const date = `${year}-${month}-${day}`;
 const currentDate = date;
 const schedulerData = [
-  { startDate: '2023-10-25T08:55', endDate: '2023-10-25T09:40', title: 'Matematyka' },
-  { startDate: '2023-10-25T09:45', endDate: '2023-10-25T10:30', title: 'W-F' },
-  { startDate: '2023-10-25T10:45', endDate: '2023-10-25T11:30', title: 'W-F' },
-  { startDate: '2023-10-26T09:45', endDate: '2023-10-26T10:30', title: 'Przyroda' },
-  { startDate: '2023-10-26T10:45', endDate: '2023-10-26T11:30', title: 'Muzyka' },
+  { startDate: '2023-10-24T08:00', endDate: '2023-10-24T08:45', title: 'Język polski', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-24T08:55', endDate: '2023-10-24T09:40', title: 'Język polski', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-25T08:55', endDate: '2023-10-25T09:40', title: 'Matematyka', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-25T09:45', endDate: '2023-10-25T10:30', title: 'W-F', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-25T10:45', endDate: '2023-10-25T11:30', title: 'W-F', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-26T09:45', endDate: '2023-10-26T10:30', title: 'Przyroda', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-26T10:45', endDate: '2023-10-26T11:30', title: 'Muzyka', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-27T08:55', endDate: '2023-10-27T09:40', title: 'Wychowanie do życia w rodzinie', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-27T09:45', endDate: '2023-10-27T10:30', title: 'Przyroda', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
+  { startDate: '2023-10-27T10:45', endDate: '2023-10-27T11:30', title: 'Muzyka', rRule: 'FREQ=WEEKLY;UNTIL=20240228' },
 ];
 
-export function ParentStudentTimetable(){
+export function ParentTimetable(){
   return(
     <div className="partent-student-timetable-container">
-    <StudentMenu />
+    <ParentMenu />
     <div className="parent-student-timetable-view">
       <h3>Plan zajęć: </h3>
     <Paper>
@@ -118,9 +125,6 @@ export function ParentStudentTimetable(){
       <Appointments />
     </Scheduler>
   </Paper>
-
-
-
  
   </div>
   </div>

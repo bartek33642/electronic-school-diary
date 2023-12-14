@@ -7,7 +7,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-
+import { backendServer } from "../../config";
 
 export function Schools(props) {
 
@@ -20,7 +20,7 @@ export function Schools(props) {
 
     useEffect(() => {
         if (open8) {
-          fetch('/schools')
+          fetch(`${backendServer}/schools`)
             .then(response => response.json())
             .then(data => {
               setSchoolsData(data);
@@ -66,13 +66,13 @@ export function Schools(props) {
           // Wysyłamy żądanie DELETE do serwera
           console.log('Usuwanie szkoły o school_id:', schoolId);
 
-          fetch(`http://localhost:3001/schools/${schoolId}`, {
+          fetch(`${backendServer}/schools/${schoolId}`, {
             method: 'DELETE',
           })
             .then(response => {
               if (response.status === 204) {
 
-                fetch('http://localhost:3001/schools')
+                fetch(`${backendServer}/schools`)
                   .then(response => response.json())
                   .then(data => {
                     setSchoolsData(data);

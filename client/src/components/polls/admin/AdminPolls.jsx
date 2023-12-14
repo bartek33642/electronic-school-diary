@@ -1,6 +1,7 @@
 import React from "react";
 import './AdminPolls.css';
 import { AdminMenu } from '../../menu/admin/AdminMenu';
+import { backendServer } from "../../../config";
 
 export function AdminPolls() {
     return(

@@ -3,6 +3,7 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { backendServer } from "../../config";
 
 export function RegisterPrincipal(props) {
   const [schools, setSchools] = useState([]);
@@ -17,7 +18,7 @@ export function RegisterPrincipal(props) {
   
 
   useEffect(() => {
-    fetch('/schools')
+    fetch(`${backendServer}/schools`)
       .then(response => response.json())
       .then(data => setSchools(data))
       .catch(error => console.error('Błąd pobierania szkół:', error));
@@ -44,7 +45,7 @@ export function RegisterPrincipal(props) {
     }
 
     const registration$ = ajax.post(
-      "http://localhost:3001/register-principal",
+      `${backendServer}/register-principal`,
       registrationData,
       {
         "Content-Type": "application/json",
@@ -88,7 +89,7 @@ export function RegisterPrincipal(props) {
       });
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
       
   const handleClose = (event, reason) => {

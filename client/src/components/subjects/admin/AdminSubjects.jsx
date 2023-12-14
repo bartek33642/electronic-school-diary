@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { backendServer } from "../../../config";
 
 export function AdminSubjects() {
     const [open, setOpen] = useState(false);
@@ -27,7 +28,7 @@ export function AdminSubjects() {
 
     useEffect(() => {
       // Tutaj wykonaj zapytanie HTTP GET na serwer, aby pobrać dane o szkołach
-      fetch('/schools')
+      fetch(`${backendServer}/schools`)
         .then(response => response.json())
         .then(data => {
           setSchoolData(data); // Ustaw dane w stanie
@@ -39,7 +40,7 @@ export function AdminSubjects() {
 
   useEffect(() => {
       // Tutaj wykonaj zapytanie HTTP GET na serwer, aby pobrać dane o szkołach
-      fetch('/classes')
+      fetch(`${backendServer}/classes`)
         .then(response => response.json())
         .then(data => {
           setClassData(data); // Ustaw dane w stanie
@@ -54,13 +55,13 @@ export function AdminSubjects() {
             // Wysyłamy żądanie DELETE do serwera
             console.log('Usuwanie przedmiotu o subject_id:', subjectId);
   
-            fetch(`http://localhost:3001/subject/${subjectId}`, {
+            fetch(`${backendServer}/subject/${subjectId}`, {
               method: 'DELETE',
             })
               .then(response => {
                 if (response.status === 204) {
   
-                  fetch('http://localhost:3001/subjects')
+                  fetch(`${backendServer}/subjects`)
                     .then(response => response.json())
                     .then(data => {
                       setSubjectData(data);
@@ -81,7 +82,7 @@ export function AdminSubjects() {
     
 
     useEffect(() => {
-        fetch('/subjects-all')
+        fetch(`${backendServer}/subjects-all`)
             .then(response => response.json())
             .then(data => {
                 setSubjectData(data);
@@ -108,7 +109,7 @@ export function AdminSubjects() {
     
     const handleAddSubject = () => {
       // Wyślij dane do serwera za pomocą zapytania POST
-      fetch('http://localhost:3001/add-subjects', {
+      fetch(`${backendServer}/add-subjects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,0 +1,29 @@
+.teacher-marks-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.teacher-marks-elements{
+    display: flex;    
+    flex-direction: column;    
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+}
+
+.teacher-marks-form{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    gap: 5px;
+}
+
+.teacher-marks-elements input, button {
+    border-radius: 10px;
+}
+
+.teacher-marks-elements button {
+    min-height: 40px;
+    min-height: 45px;
+
+}

@@ -13,6 +13,7 @@ import topicsEndpoint from './topics.endpoint';
 import subjectEndpoint from './subject.endpoint';
 import attendanceEnpoint from './attendance.endpoint';
 import remarksEndpoint from './remarks.endpoint';
+import timetableEndpoint from './timetable.endpoint';
 
 const routes = function (app) {
   userEndpoint(app);
@@ -30,6 +31,7 @@ const routes = function (app) {
   subjectEndpoint(app);
   attendanceEnpoint(app);
   remarksEndpoint(app);
+  timetableEndpoint(app);
 };
 
 

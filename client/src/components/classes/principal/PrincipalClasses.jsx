@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './PrincipalClasses.css';
 import { PrincipalMenu } from "../../menu/prncipal/PrincipalMenu";
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from "../../../config";
 
 export function PrincipalClasses(){
     const [userData, setUserData] = useState([]);
@@ -15,7 +16,7 @@ useEffect(() => {
   
           if (userEmail) {
             
-            const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+            const userQuery = `${backendServer}/users-school-student/${userEmail}`;
             const result = await fetch(userQuery);
             const userData = await result.json();
             console.log("userData: ", userData);
@@ -25,7 +26,7 @@ useEffect(() => {
   
               if (userData.length > 0) {
                 const schoolId = userData[0].school_id;
-                const classesPrincipalQuery = `http://localhost:3001/principal-classes/${schoolId}`;
+                const classesPrincipalQuery = `${backendServer}/principal-classes/${schoolId}`;
                 const classesPrincipalResult = await fetch(classesPrincipalQuery);
                 const classesPrincipal = await classesPrincipalResult.json();
                 console.log("classesPrincipal: ", classesPrincipal);

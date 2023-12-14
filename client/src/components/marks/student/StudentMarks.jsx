@@ -4,6 +4,7 @@ import "./StudentMarks.css";
 import { calculateAritmeticAverage } from "../../../dependenciesAndRequirements/aritmeticAverage";
 import { calculateWeightedAverage } from "../../../dependenciesAndRequirements/weightedAverage";
 import { expectedGrades } from "../../../dependenciesAndRequirements/expectedGrade";
+import { backendServer } from "../../../config";
 
 export function StudentMarks() {
   const [userData, setUserData] = useState([]);
@@ -15,13 +16,15 @@ export function StudentMarks() {
 
   let DataOfWeightMarks = [];
   let DataOfDescriptionMarks = [];
+  let DataOfDescriptionTeacher = [];
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userEmail = localStorage.getItem("userEmail");
 
         if (userEmail) {
-          const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+          const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
           console.log("userData: ", userData);
@@ -30,7 +33,7 @@ export function StudentMarks() {
             const studentId = userData[0].student_id;
 
             // Pobierz tematy dla danego studenta i klasy
-            const userMarksQuery = `http://localhost:3001/marks/${studentId}`;
+            const userMarksQuery = `${backendServer}/marks/${studentId}`;
             const userMarksResult = await fetch(userMarksQuery);
             const userMarksData = await userMarksResult.json();
             console.log("userMarksData: ", userMarksData);
@@ -38,7 +41,7 @@ export function StudentMarks() {
             if (userMarksResult.ok && userMarksData.length > 0) {
               const classId = userMarksData[0].class_id;
 
-              const schoolClassSubjectQuery = `http://localhost:3001/subjects/class/${classId}`;
+              const schoolClassSubjectQuery = `${backendServer}/subjects/class/${classId}`;
               const result2 = await fetch(schoolClassSubjectQuery);
               const schoolClassSubjectData = await result2.json();
               console.log("schoolClassSubjectData: ", schoolClassSubjectData);
@@ -82,9 +85,10 @@ export function StudentMarks() {
           // Reset arrays for each subject
     DataOfWeightMarks = [];
     DataOfDescriptionMarks = [];
+    DataOfDescriptionTeacher = [];
   
       if (matchingMarks.length > 0) {
-        const grades = matchingMarks.map((mark) => parseInt(mark.grade_value, 10));
+        const grades = matchingMarks.map((mark) => parseFloat(mark.grade_value));
         const aritmeticAverage = calculateAritmeticAverage(grades);
         const weights = matchingMarks.map((mark) => parseInt(mark.weight));
         const weightedAverage = calculateWeightedAverage(grades, weights);
@@ -93,12 +97,14 @@ export function StudentMarks() {
         const expectedGrade = expectedGrades(weightedAverage);
   
 // Assign values to the variables defined in the outer scope
-DataOfWeightMarks = matchingMarks.map(mark => mark.weight);
-DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
+// DataOfWeightMarks = matchingMarks.map(mark => mark.weight);
+// DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
   
        // Assign values to the variables defined in the outer scope
       DataOfWeightMarks = matchingMarks.map(mark => mark.weight);
       DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
+      DataOfDescriptionTeacher = matchingMarks.map(mark => mark.first_name + " " + mark.second_name);
+
 
       tableData.push({
         subject: subject.subject_name,
@@ -110,6 +116,7 @@ DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
         finalGrade: matchingMarks[0].finalGrade,
         DataOfWeightMarks: DataOfWeightMarks,
         DataOfDescriptionMarks: DataOfDescriptionMarks,
+        DataOfDescriptionTeacher: DataOfDescriptionTeacher,
       });
     } else {
       tableData.push({
@@ -122,6 +129,7 @@ DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
         finalGrade: "",
         DataOfWeightMarks: [],
         DataOfDescriptionMarks: [],
+        DataOfDescriptionTeacher: [],
       });
     }
   });
@@ -151,89 +159,32 @@ DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
                {marks.map((row, index) => (
                 <tr key={index}>
                   <td>{row.subject}</td>
-                  {/* <td> */}
-             {/*{Array.isArray(row.grade) ? (
-      row.grade.map((singleGrade, idx) => (
-        <button key={idx}>{singleGrade} </button>
-      ))
-    ) : (
-      row.grade.split(',').map((singleGrade, idx) => (
-        <button key={idx}>{singleGrade}</button>
-      ))
-    )}
-             */}
-
- {/* {Array.isArray(row.grade) ? (
-  <div className="tooltip">
-{row.grade.map((singleGrade, idx) => {
-  const markData = userMarksData.find(mark => mark.grade_value === singleGrade);
-  const DataOfWeightMarks = userMarksData.map(mark => mark.weight);
-  const DataOfDescriptionMarks = userMarksData.map(mark => mark.description);
-  
-
-  console.log("DataOfMarks: ", DataOfWeightMarks);
-  console.log("singleGrade:", singleGrade);
-//   console.log("markData:", markData);
-  console.log("DataOfDescriptionMarks: ", DataOfDescriptionMarks);
-
-      return (
-        <button key={idx} className="bttn-student-marks">
-          {markData && (
-            <div> Waga: {DataOfWeightMarks[idx]}, Opis: {DataOfDescriptionMarks[idx]}</div>
-          )}
-          {singleGrade}
-        </button>
-      );
-    })}
-  </div>
-) : (
-  <div className="tooltip">
-    <button>
-      {row.grade.split(',').map((singleGrade, idx) => {
-          const DataOfWeightMarks = userMarksData.map(mark => mark.weight);
-          const DataOfDescriptionMarks = userMarksData.map(mark => mark.description);
-
-        const markData = userMarksData.find(mark => mark.grade_value === singleGrade);
-        return (
-          markData && (
-            <span key={idx} className="tooltiptext">Waga: {DataOfWeightMarks[idx]}, Opis: {DataOfDescriptionMarks[idx]}</span>
-          )
-        );
-      })}
-    </button>
-  </div>
-)} 
-
-
-
-</td> */}
-<td>
+                 <td className="student-marks-td-grades">
   {Array.isArray(row.grade) ? (
     <div className="tooltip">
       {row.grade.map((singleGrade, idx) => (
-        
-        <button
-          key={idx}
-          className="bttn-student-marks"
-          onClick={() => setSelectedGradeIndex(idx)}
-        >
-          {singleGrade}
-        </button>
+        <div key={idx} className="grade-container">
+          <button className="bttn-student-marks">
+            {singleGrade}
+            <div className="tooltiptext">
+              <span>Waga: {row.DataOfWeightMarks[idx]}</span>
+              <span>Opis: {row.DataOfDescriptionMarks[idx]}</span>
+              <span>Nauczyciel: {row.DataOfDescriptionTeacher[idx]}</span>
+            </div>
+          </button>
+        </div>
       ))}
     </div>
   ) : (
     <div className="tooltip">
-      <button
-        onClick={() => setSelectedGradeIndex(0)}
-      >
+      <button className="bttn-student-marks">
         {row.grade}
+        <div className="tooltiptext">
+          <span>Waga: {row.DataOfWeightMarks[0]}</span>
+          <span>Opis: {row.DataOfDescriptionMarks[0]}</span>
+          <span>Nauczyciel: {row.DataOfDescriptionTeacher[0]}</span>
+        </div>
       </button>
-    </div>
-  )}
-  {selectedGradeIndex !== null && (
-    <div>
-      <div>Waga: {DataOfWeightMarks[selectedGradeIndex]}</div>
-      <div>Opis: {DataOfDescriptionMarks[selectedGradeIndex]}</div>
     </div>
   )}
 </td>
@@ -253,5 +204,3 @@ DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
   
 }
 
-
-//--------------

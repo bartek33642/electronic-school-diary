@@ -3,6 +3,7 @@ import './Register.css';
 import { ajax } from 'rxjs/ajax';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { backendServer } from "../../config";
 
 export function RegisterParent(props) {
   const [schools, setSchools] = useState([]);
@@ -25,7 +26,7 @@ export function RegisterParent(props) {
 
 
   useEffect(() => {
-    fetch('/schools')
+    fetch(`${backendServer}/schools`)
       .then(response => response.json())
       .then(data => setSchools(data))
       .catch(error => console.error('Błąd pobierania szkół:', error));
@@ -33,7 +34,7 @@ export function RegisterParent(props) {
 
   useEffect(() => {
     if (selectedSchool) {
-      fetch(`/students/${selectedSchool}`)
+      fetch(`${backendServer}/students/${selectedSchool}`)
         .then(response => response.json())
         .then(data => setStudents(data))
         .catch(error => console.error('Błąd pobierania studentów:', error));
@@ -68,7 +69,7 @@ export function RegisterParent(props) {
     }
 
     const registration$ = ajax.post(
-      "http://localhost:3001/register-parent",
+      `${backendServer}/register-parent`,
       registrationData,
       {
         "Content-Type": "application/json",
@@ -117,7 +118,7 @@ export function RegisterParent(props) {
         }
       });
   };
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
       
   const handleClose = (event, reason) => {

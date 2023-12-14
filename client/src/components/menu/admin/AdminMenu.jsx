@@ -3,6 +3,7 @@ import "./AdminMenu.css";
 import { FiHome, FiUser, FiMap, FiBookOpen, FiCalendar, FiClipboard, FiSettings, FiPower, FiUserPlus, FiUserMinus, FiLayers, FiGrid, FiCheckSquare } from "react-icons/fi";
 import { Link, Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { backendServer } from "../../../config";
 
 export function AdminMenu(){
     const [userData, setUserData] = useState([]);
@@ -14,7 +15,7 @@ export function AdminMenu(){
             const userEmail = localStorage.getItem("userEmail");
     
             if (userEmail) {
-              const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+              const userQuery = `${backendServer}/users-school-student/${userEmail}`;
               const result = await fetch(userQuery);
               const userData = await result.json();
               console.log("userData: ", userData);
@@ -47,7 +48,7 @@ export function AdminMenu(){
           const decodedToken = jwtDecode(token);
           const user_id = decodedToken.user_id;
 
-          const tokenQuery = `http://localhost:3001/logout/${user_id}`;
+          const tokenQuery = `${backendServer}/logout/${user_id}`;
           const result = await fetch(tokenQuery, {
             method: 'DELETE',
           });

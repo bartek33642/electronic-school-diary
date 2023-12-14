@@ -5,6 +5,8 @@ import { CountdownToVacations } from "../../../dependenciesAndRequirements/Count
 import { FiSun, FiSettings, FiUsers, FiMap } from 'react-icons/fi';
 import { Link } from "react-router-dom";
 // import { CalendarComponent } from "../../calendar/Calendar";
+import { backendServer } from "../../../config";
+
 
 export function AdminDashboard(){
     const [userCount, setUserCount] = useState([]);
@@ -16,7 +18,7 @@ export function AdminDashboard(){
 
     useEffect(() => {
         // Pobierz liczbę użytkowników z serwera
-        fetch('/users-count')
+        fetch(`${backendServer}/users-count`)
           .then(response => response.json())
           .then(data => {
             setUserCount(data.userCount); // Ustaw stan na liczbę użytkowników z bazy danych
@@ -28,7 +30,7 @@ export function AdminDashboard(){
 
       useEffect(() => {
         // Pobierz liczbę szkół z serwera
-        fetch('/schools-count')
+        fetch(`${backendServer}/schools-count`)
           .then(response => response.json())
           .then(data => {
             setSchoolCount(data.schoolCount); // Ustaw stan na liczbę szkół z bazy danych
@@ -40,7 +42,7 @@ export function AdminDashboard(){
 
       useEffect(() => {
         // Pobierz liczbę ankiet z serwera
-        fetch('/polls-count')
+        fetch(`${backendServer}/polls-count`)
           .then(response => response.json())
           .then(data => {
             setPollCount(data.pollCount); // Ustaw stan na liczbę ankiet z bazy danych

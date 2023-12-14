@@ -89,7 +89,8 @@ const remarksEndpoint = (app) => {
                        us.first_name AS student_first_name,
                        us.second_name AS student_second_name,
                        u.first_name AS teacher_first_name,
-                       u.second_name AS teacher_second_name
+                       u.second_name AS teacher_second_name,
+                       cl.class_name
                    FROM gradebook.remarks r
                    LEFT JOIN gradebook.students st ON r.student_id = st.student_id
                    LEFT JOIN gradebook.schools sc ON st.school_id = sc.school_id

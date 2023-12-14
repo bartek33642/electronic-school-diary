@@ -210,6 +210,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
+import { backendServer } from "../../../config";
 
 export function AdminClasses() {
     const [open1, setOpen1] = useState(false);
@@ -218,7 +219,7 @@ export function AdminClasses() {
     const [classData, setClassData] = useState([]);
 
     useEffect(() => {
-        fetch('/schools')
+        fetch(`${backendServer}/schools`)
           .then(response => response.json())
           .then(data => {
             setSchoolData(data);
@@ -229,7 +230,7 @@ export function AdminClasses() {
     }, []);
 
     useEffect(() => {
-        fetch('/classes')
+        fetch(`${backendServer}/classes`)
           .then(response => response.json())
           .then(data => {
             setClassData(data);
@@ -256,7 +257,7 @@ export function AdminClasses() {
     };
 
     const handleUpdateClasses = () => {
-        fetch('/classes')
+        fetch(`${backendServer}/classes`)
           .then(response => response.json())
           .then(data => {
             setClassData(data);
@@ -281,12 +282,12 @@ export function AdminClasses() {
 
     const handleDeleteClass = (classId) => {
         if (window.confirm('Czy na pewno chcesz usunąć tę klasę?')) {
-          fetch(`http://localhost:3001/classes/${classId}`, {
+          fetch(`${backendServer}/classes/${classId}`, {
             method: 'DELETE',
           })
             .then(response => {
               if (response.status === 204) {
-                fetch('http://localhost:3001/classes')
+                fetch(`${backendServer}/classes`)
                   .then(response => response.json())
                   .then(data => {
                     setClassData(data);

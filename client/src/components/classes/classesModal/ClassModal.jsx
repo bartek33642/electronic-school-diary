@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import './ClassModal.css';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { backendServer } from "../../../config";
 
 export function ClassModal(props){
   const { open1, handleClose1, schoolData, updateClasses } = props; 
@@ -44,7 +45,7 @@ export function ClassModal(props){
   
 
       // Wyślij dane do serwera, aby dodać klasę do bazy danych
-      fetch('http://localhost:3001/add-class', {
+      fetch(`${backendServer}/add-class`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

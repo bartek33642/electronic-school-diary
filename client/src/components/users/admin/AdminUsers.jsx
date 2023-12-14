@@ -15,7 +15,7 @@ import { ClassModal } from "../../classes/classesModal/ClassModal";
 
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-
+import { backendServer } from "../../../config";
 
 export function AdminUsers(){
     const [open, setOpen] = useState(false);
@@ -91,7 +91,7 @@ export function AdminUsers(){
     };
 
     const fetchData = () => {
-      fetch('http://localhost:3001/users')
+      fetch(`${backendServer}/users`)
         .then(response => response.json())
         .then(data => {
           setUserData(data);
@@ -104,7 +104,7 @@ export function AdminUsers(){
     useEffect(() => {
       if (open2) {
         // Wywołaj zapytanie HTTP GET na serwer, aby pobrać użytkowników
-        fetch('/users')
+        fetch(`${backendServer}/users`)
           .then(response => response.json())
           .then(data => {
             // Zaktualizuj stan z danymi użytkowników
@@ -130,7 +130,7 @@ export function AdminUsers(){
 
 
     useEffect(() => {
-      fetch('/schools')
+      fetch(`${backendServer}/schools`)
         .then(response => response.json())
         .then(data => {
           setSchoolData(data); 
@@ -209,7 +209,7 @@ const handleRegistrationResult = (successMessage, errorMessage) => {
               className="create-accounts-admin-btn"
               onClick={handleOpen2}
             >
-                        Przeglądaj użytkowników 
+            Przeglądaj użytkowników 
           </button>
 
           <UserModal open2={open2} handleClose2={handleClose2} userData={userData} fetchUserData={fetchData} onRegistrationResult={handleRegistrationResult} />

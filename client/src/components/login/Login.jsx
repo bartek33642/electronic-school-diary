@@ -8,6 +8,8 @@ import { catchError, map } from "rxjs/operators";
 import { of } from "rxjs";
 import { useNavigate } from "react-router-dom";
 // Utwórz obiekt historii
+import { backendServer } from "../../config";
+
 
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -31,7 +33,7 @@ export function Login() {
   const handleLogin = () => {
     const loginData = { email, password };
 
-    const login$ = ajax.post("http://localhost:3001/login", loginData, {
+    const login$ = ajax.post(`${backendServer}/login`, loginData, {
       "Content-Type": "application/json",
     });
 

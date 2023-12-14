@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StudentMenu } from "../../menu/student/StudentMenu";
 import '../admin/AdminSettings';
 import packageJson from '../../../../package.json';
+import { backendServer } from "../../../config";
 
 export function StudentSettings() {
   const [selectedTab, setSelectedTab] = useState("UserData");
@@ -22,7 +23,7 @@ export function StudentSettings() {
   const handleSaveClick = async () => {
     try {
       const userId = userData.length > 0 ? userData[0].user_id : '';
-      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+      const response = await fetch(`${backendServer}/users/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -70,7 +71,7 @@ export function StudentSettings() {
         const userEmail = localStorage.getItem("userEmail");
 
         if (userEmail) {
-          const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+          const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
           console.log("userData: ", userData);
@@ -90,7 +91,7 @@ export function StudentSettings() {
 
             if (userData.length > 0) {
               const userId = userData[0].user_id;
-              const settingsQuery = `http://localhost:3001/users/${userId}`;
+              const settingsQuery = `${backendServer}/users/${userId}`;
               const settingsResult = await fetch(settingsQuery);
               const settingsData = await settingsResult.json();
               console.log("settingsData: ", settingsData);

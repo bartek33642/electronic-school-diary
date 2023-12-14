@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import './TeacherSubjects.css';
 import { DataGrid } from '@mui/x-data-grid';
 import { TeacherMenu } from "../../menu/teacher/TeacherMenu";
-
+import { backendServer } from "../../../config";
 
 export function TeacherSubjects(){
 
@@ -16,7 +16,7 @@ export function TeacherSubjects(){
             const userEmail = localStorage.getItem("userEmail");
     
             if (userEmail) {
-              const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+              const userQuery = `${backendServer}/users-school-student/${userEmail}`;
               const result = await fetch(userQuery);
               const userData = await result.json();
               console.log("userData: ", userData);
@@ -27,7 +27,7 @@ export function TeacherSubjects(){
                   const schoolId = userData[0].school_id;
               
                   // Pobierz tematy dla danego studenta i klasy
-                  const subjectsQuery = `http://localhost:3001/subjects-all-classes-teacher/${schoolId}`;
+                  const subjectsQuery = `${backendServer}/subjects-all-classes-teacher/${schoolId}`;
                   const subjectsResult = await fetch(subjectsQuery);
                   console.log("subjectsResult: ",subjectsResult)
                   const subjectsData = await subjectsResult.json();
@@ -58,7 +58,7 @@ export function TeacherSubjects(){
       }, []);
 
       const columns = [
-     
+        { field: 'subject_id', headerName: 'ID', width: 100},
         { field: 'subject_name', headerName: 'Nazwa przedmiotu', width: 160},
         { field: 'class_name', headerName: 'Nazwa klasy', width: 130 },
 
@@ -67,6 +67,7 @@ export function TeacherSubjects(){
     
     
       const rows = subjects.map(subject => ({
+        subject_id: subject.subject_id,
         subject_name: subject.subject_name,
         class_name: subject.class_name,
       }));
@@ -81,7 +82,7 @@ export function TeacherSubjects(){
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.subject_name}
+            getRowId={(row) => row.subject_id}
             pageSize={8}
             initialState={{
               pagination: {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import './PrincipalSubjects.css';
 import { PrincipalMenu } from "../../menu/prncipal/PrincipalMenu";
 import { DataGrid } from '@mui/x-data-grid';
-
+import { backendServer } from "../../../config";
 
 export function PrincipalSubjects(){
 
@@ -16,7 +16,7 @@ export function PrincipalSubjects(){
             const userEmail = localStorage.getItem("userEmail");
     
             if (userEmail) {
-              const userQuery = `http://localhost:3001/users-school-student/${userEmail}`;
+              const userQuery = `${backendServer}/users-school-student/${userEmail}`;
               const result = await fetch(userQuery);
               const userData = await result.json();
               console.log("userData: ", userData);
@@ -27,7 +27,7 @@ export function PrincipalSubjects(){
                   const schoolId = userData[0].school_id;
               
                   // Pobierz tematy dla danego studenta i klasy
-                  const subjectsQuery = `http://localhost:3001/subjects-all-classes/${schoolId}`;
+                  const subjectsQuery = `${backendServer}/subjects-all-classes/${schoolId}`;
                   const subjectsResult = await fetch(subjectsQuery);
                   console.log("subjectsResult: ",subjectsResult)
                   const subjectsData = await subjectsResult.json();
