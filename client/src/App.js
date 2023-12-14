@@ -57,6 +57,7 @@ import { TeacherRemarks } from './components/remarks/teacher/TeacherRemarks';
 import { TeacherClasses } from './components/classes/teacher/TeacherClasses';
 import { TeacherTopics } from './components/topics/teacher/TeacherTopics';
 import { TeacherSubjects } from './components/subjects/teacher/TeacherSubjects';
+import { TeacherTimetable } from './components/timetable/TeacherTimetable/TeacherTimetable';
 
 import { isExpired } from 'react-jwt';
 import { TeacherMarks } from './components/marks/teacher/TeacherMarks';
@@ -409,13 +410,21 @@ function App() {
               
               }/>
 
-            <Route path='/teacher-marks' element={<TeacherMarks />} /> 
-            {/* <Route path="/teacher-marks" element={
+            {/* <Route path='/teacher-marks' element={<TeacherMarks />} />  */}
+            <Route path="/teacher-marks" element={
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/login' /> 
                 ) : ( <TeacherMarks/>)
               
-              }/> */}
+              }/>
+
+            {/* <Route path='/teacher-timetable' element={<TeacherTimetable />} />  */}
+            <Route path="/teacher-timetable" element={
+                isExpired(localStorage.getItem("token")) ? (
+                <Navigate replace to='/login' /> 
+                ) : ( <TeacherTimetable/>)
+              
+              }/>
          
         </Routes>
       </BrowserRouter>

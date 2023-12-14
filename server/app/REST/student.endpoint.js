@@ -65,6 +65,24 @@ const studentEndpoint = (app) => {
       }
     } )
   
-};
 
+
+app.get('/student-parent/:student_id', async (req, res) => {
+  const studentId = req.params.student_id;
+
+  try {
+    const studentParentQuery = `
+      SELECT st.user_id AS student_user_id, st.class_id, st.school_id
+      FROM gradebook.students st
+      WHERE student_id = $1;
+    `;
+
+    const { rows } = await pool.query(studentParentQuery, [studentId]);
+    res.send(rows);
+  } catch (error) {
+    console.error('Błąd pobierania studenta:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+};
 export default studentEndpoint;

@@ -68,6 +68,27 @@ const marksEndpoint = (app) => {
             }
         });
 
+        
+        app.get('/marks-students/:class_id/:subject_id', async (req, res) => {
+            const { class_id, subject_id } = req.params;
+        
+            try {
+                const marksQuery = `
+                SELECT gr.*, su.class_id, cl.class_name
+                FROM gradebook.grades gr
+                INNER JOIN gradebook.subjects su ON gr.subject_id = su.subject_id 
+                INNER JOIN gradebook.classes cl ON su.class_id = cl.class_id
+                WHERE cl.class_id = $1 AND gr.subject_id = $2 `;
+        
+                const { rows } = await pool.query(marksQuery, [class_id, subject_id]);
+                res.send(rows);
+                console.log(rows);
+            } catch (error) {
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+            }
+        });
+
         app.get('/students/:school_id/:class_id', async (req, res) => {
             const { school_id, class_id } = req.params;
         

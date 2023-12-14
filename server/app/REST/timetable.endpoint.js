@@ -35,7 +35,7 @@ const timetableEndpoint = (app) => {
             } )
 
             app.get('/timetable/:school_id/:class_id', async (req, res) => {
-              const { school_id, class_id } = req.params; // Usunięto subject_id z destrukturyzacji
+              const { school_id, class_id } = req.params; 
               try {
                   const timetableQuery = `
                       SELECT * FROM gradebook.timetable tb
@@ -52,6 +52,26 @@ const timetableEndpoint = (app) => {
                   res.status(500).send('Internal Server Error');
               }
           });
+
+          app.get('/teacher-timetable/:school_id/:teacher_id', async (req, res) => {
+            const { school_id, teacher_id } = req.params;
+            try {
+                const timetableQuery = `
+                    SELECT * FROM gradebook.timetable tb
+                    INNER JOIN gradebook.classes cl ON cl.class_id = tb.class_id
+                    INNER JOIN gradebook.schools sc ON sc.school_id = cl.school_id
+                    INNER JOIN gradebook.subjects sb ON tb.subject_id = sb.subject_id
+                    INNER JOIN gradebook.teachers te ON tb.teacher_id = te.teacher_id
+                    WHERE sc.school_id = $1 AND te.teacher_id = $2;
+                `;
+        
+                const { rows } = await pool.query(timetableQuery, [school_id, teacher_id]);
+                res.send(rows);
+            } catch (error) {
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+            }
+        });          
 
                app.post('/add-timetable', async (req, res) => {
                 const { day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date } = req.body;

@@ -27,3 +27,126 @@
     min-height: 45px;
 
 }
+
+.teacher-marks-table{
+    border: solid 1px black;
+    min-width: 100px;
+    text-align: center;
+    border-collapse: collapse;
+    font-size: 14pt;
+}
+
+.teacher-marks-table th{
+    background-color: var(--blue);
+    color: var(--white);
+    border: solid 1px black;
+    padding: 10px;
+
+}
+
+.teacher-marks-table td{
+    border: solid 1px black;
+    padding: 10px;
+
+}
+
+
+.tooltiptext{
+    display: flex;
+    flex-direction: column;
+    color: var(--grey);
+  }
+
+  .tooltip button{
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .bttn-student-marks{
+    margin: 1px;
+    border: none;
+    font-size: 13pt;
+  }
+
+  .marks-button-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .marks-hover-text {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #555;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, top 0.3s;
+  }
+
+  .marks-button-container:hover .marks-hover-text {
+    top: -50px;
+    opacity: 1;
+  }
+
+  .teacher-marks-td-grades {
+    white-space: nowrap; /* Zapobiega łamaniu tekstu do nowej linii */
+  }
+  
+  .teacher-marks-td-grades .tooltip {
+    display: flex;
+  }
+  
+  .teacher-marks-td-grades .tooltip .bttn-student-marks {
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    margin: 1px;
+    position: relative;
+  }
+  
+  .teacher-marks-td-grades .tooltip .grade-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .teacher-marks-td-grades .tooltip .tooltiptext {
+    visibility: hidden;
+    width: auto; /* Ustawienie szerokości na auto */
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px; /* Dodaj padding, aby dopasować tekst */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%); /* Skoryguj pozycję na środku */
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .teacher-marks-td-grades .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  .teacher-marks-td-grades .tooltip .bttn-student-marks:hover + .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+  

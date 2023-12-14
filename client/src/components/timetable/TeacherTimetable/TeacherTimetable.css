@@ -1,0 +1,9 @@
+@import '../../../App.css';
+
+.teacher-timetable-container{
+    display: flex;
+    flex-direction: row;
+}
+.teacher-timetable-elements{
+    margin: 10px;
+}

@@ -33,7 +33,7 @@ export function ParentDashboard(){
 
                 <div className="users-button-components">
 
-                <Link to='/parent-marks' className="admin-button-content">
+                <Link to='/parent-grades' className="admin-button-content">
                     <div className="admin-content-buttons">
                 
                     <div className="admin-button-first">

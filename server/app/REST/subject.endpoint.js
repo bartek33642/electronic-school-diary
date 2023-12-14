@@ -163,6 +163,25 @@ const subjectEndpoint = (app) => {
     }
   })
 
+  app.get('/subjects-all-classes-students/:school_id/:class_id/:subject_id', async (req, res) => {
+    const schoolId = req.params.school_id;
+    const classId = req.params.class_id;
+    const subjectId = req.params.subject_id;
+
+    try{
+      const subjectsAllClassesTeacherQuery = `SELECT * FROM gradebook.subjects su
+      INNER JOIN gradebook.classes cl ON su.class_id = cl.class_id
+      INNER JOIN gradebook.students st ON su.class_id = st.class_id 
+      INNER JOIN gradebook.users us ON st.user_id = us.user_id 
+      WHERE su.school_id = $1 AND su.class_id = $2 AND su.subject_id = $3`;
+      const { rows } = await pool.query(subjectsAllClassesTeacherQuery, [schoolId, classId, subjectId]);
+      res.send(rows);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  })
+
 
 }
 
