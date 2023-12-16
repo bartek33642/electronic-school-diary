@@ -304,7 +304,7 @@ export function StudentTimetable() {
               <Appointments />
             </Scheduler>
           ) : (
-            <p>Ładowanie danych kalendarza...</p>
+            <p>Brak danych</p>
           )}
         </Paper>
       </div>

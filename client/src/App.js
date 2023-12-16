@@ -62,6 +62,9 @@ import { TeacherTimetable } from './components/timetable/TeacherTimetable/Teache
 import { isExpired } from 'react-jwt';
 import { TeacherMarks } from './components/marks/teacher/TeacherMarks';
 
+import { Contact } from './components/contact/Contact';
+import { PrivacyPolicy } from './components/privacy_policy/PrivacyPolicy';
+
 
 function App() {
   return (
@@ -72,6 +75,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
 
           {/* Do zmiany dodać zabezpieczeni ścieżek*/}
           {/* <Route path='/role' element={<Role />} path="/role" />} /> */}
