@@ -57,8 +57,7 @@ export function PrincipalTopics() {
   }, []);
 
   const columns = [
-    // { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
-    
+    { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
     { field: 'date', headerName: 'Data', width: 100},
     { field: 'class', headerName: 'Klasa', width: 100},
     { field: 'subject', headerName: 'Przedmiot', width: 130 },
@@ -73,7 +72,7 @@ export function PrincipalTopics() {
   // console.log(formatDate);
 
   const rows = topics.map(topic => ({
-    // topicId: topic.topic_id,
+    topicId: topic.topic_id,
     date: new Date(topic.date).toLocaleDateString(),
     class: topic.class_name,
     subject: topic.subject_name,
@@ -88,11 +87,12 @@ export function PrincipalTopics() {
       <PrincipalMenu />
       <div className="principal-topics-elements">
         <h2>Tematy</h2>
+        <button type="button">Dodaj temat</button>
         <div>
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.date}
+            getRowId={(row) => row.topicId}
             pageSize={8}
             initialState={{
               pagination: {

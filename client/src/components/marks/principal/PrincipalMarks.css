@@ -1,0 +1,11 @@
+.principal-marks-container{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.principal-marks-elements{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}

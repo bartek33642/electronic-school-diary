@@ -58,12 +58,14 @@ import { TeacherClasses } from './components/classes/teacher/TeacherClasses';
 import { TeacherTopics } from './components/topics/teacher/TeacherTopics';
 import { TeacherSubjects } from './components/subjects/teacher/TeacherSubjects';
 import { TeacherTimetable } from './components/timetable/TeacherTimetable/TeacherTimetable';
+import { PrincipalMarks } from './components/marks/principal/PrincipalMarks';
 
 import { isExpired } from 'react-jwt';
 import { TeacherMarks } from './components/marks/teacher/TeacherMarks';
 
 import { Contact } from './components/contact/Contact';
 import { PrivacyPolicy } from './components/privacy_policy/PrivacyPolicy';
+import { PrincipalAttendance } from './components/attendance/principal/PrincipalAttendance';
 
 
 function App() {
@@ -428,6 +430,22 @@ function App() {
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/login' /> 
                 ) : ( <TeacherTimetable/>)
+              
+              }/>
+
+            {/* <Route path='/principal-grades' element={<PrincipalMarks />} />  */}
+            <Route path="/principal-grades" element={
+                isExpired(localStorage.getItem("token")) ? (
+                <Navigate replace to='/principal-grades' /> 
+                ) : ( <PrincipalMarks/>)
+              
+              }/>
+
+            {/* <Route path='/principal-attendance' element={<PrincipalAttendance />} />  */}
+            <Route path="/principal-attendance" element={
+                isExpired(localStorage.getItem("token")) ? (
+                <Navigate replace to='/principal-attendance' /> 
+                ) : ( <PrincipalAttendance/>)
               
               }/>
          

@@ -1,0 +1,10 @@
+.principal-attendance-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.principal-attendance-elements{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
