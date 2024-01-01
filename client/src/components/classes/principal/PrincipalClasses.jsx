@@ -62,12 +62,12 @@ useEffect(() => {
     }, []);
 
     const columns = [
-        // { field: 'classId', headerName: 'ID', width: 100 },
+        { field: 'classId', headerName: 'ID', width: 100 },
         { field: 'class_name', headerName: 'Nazwa klasy', width: 130 },
       ];
     
       const rows = classes.map(classes => ({
-        // classId: classes.class_id,
+        classId: classes.class_id,
         class_name: classes.class_name,
       }));
 

@@ -6,6 +6,7 @@ import {
   Route,
   Navigate
 } from "react-router-dom";
+import {jwtDecode} from 'jwt-decode';
 
 import { Home } from './components/homepage/Home';
 import { Login } from './components/login/Login';
@@ -66,9 +67,32 @@ import { TeacherMarks } from './components/marks/teacher/TeacherMarks';
 import { Contact } from './components/contact/Contact';
 import { PrivacyPolicy } from './components/privacy_policy/PrivacyPolicy';
 import { PrincipalAttendance } from './components/attendance/principal/PrincipalAttendance';
+import { TeacherAttendance } from './components/attendance/teacher/TeacherAttendance';
 
 
 function App() {
+
+
+  // const checkRole = (expectedRole) => {
+  //   const token = localStorage.getItem("token");
+  //   if (isExpired(token)) {
+  //     return <Navigate replace to='/login' />;
+  //   }
+  //   const decodedToken = jwtDecode(token);
+  //   return decodedToken.role === expectedRole ? <RegisterAdmin /> : <Navigate replace to='/login' />;
+  // };
+
+  //   const withRoleCheck = (Component, expectedRole) => {
+  //   return () => {
+  //     const token = localStorage.getItem("token");
+  //     if (isExpired(token)) {
+  //       return <Navigate replace to='/login' />;
+  //     }
+  //     const decodedToken = jwtDecode(token);
+  //     return decodedToken.role === expectedRole ? <Component /> : <Navigate replace to='/login' />;
+  //   };
+  // };
+
   return (
 
     <React.StrictMode>
@@ -96,6 +120,8 @@ function App() {
                 <Navigate replace to='/login' /> 
                 ) : ( <RegisterAdmin />)
               }/>
+            {/* <Route path="/register-admin" element={checkRole(1)} /> */}
+
 
             {/* <Route path="/register-parent" component={<RegisterParent />} /> */}
             
@@ -446,6 +472,14 @@ function App() {
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/principal-attendance' /> 
                 ) : ( <PrincipalAttendance/>)
+              
+              }/>
+
+            {/* <Route path='/teacher-attendance' element={<TeacherAttendance />} />  */}
+            <Route path="/teacher-attendance" element={
+                isExpired(localStorage.getItem("token")) ? (
+                <Navigate replace to='/teacher-attendance' /> 
+                ) : ( <TeacherAttendance/>)
               
               }/>
          

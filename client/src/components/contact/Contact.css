@@ -1,0 +1,22 @@
+@import url('../../App.css');
+
+
+.contact-container{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--blue);
+    height: 100vh;
+}
+
+.contact-elements{
+    margin-left: 20px;
+}
+
+.contact-mail, .contact-phone{
+    text-decoration: none;
+    color: var(--black);
+}
+
+.contact-elements p{
+    font-size: 14pt;
+}

@@ -1,0 +1,19 @@
+@import url('../../App.css');
+
+
+.privacy-policy-container{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--blue);
+    height: 100vh;
+}
+
+.privacy-policy-elements{
+    margin-left: 20px;
+    margin-right: 12px;
+}
+
+
+.privacy-policy-elements p{
+    font-size: 14pt;
+}

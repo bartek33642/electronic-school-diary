@@ -82,7 +82,7 @@ const marksEndpoint = (app) => {
         
                 const { rows } = await pool.query(marksQuery, [class_id, subject_id]);
                 res.send(rows);
-                console.log(rows);
+                // console.log(rows);
             } catch (error) {
                 console.error(error);
                 res.status(500).send('Internal Server Error');

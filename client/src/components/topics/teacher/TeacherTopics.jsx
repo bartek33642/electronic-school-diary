@@ -56,6 +56,8 @@ export function TeacherTopics() {
     fetchUserData();
   }, []);
 
+
+
   const columns = [
     { field: 'topicId', headerName: 'ID', width: 100},
     { field: 'date', headerName: 'Data', width: 100},
@@ -87,6 +89,8 @@ export function TeacherTopics() {
       <TeacherMenu />
       <div className="teacher-topics-elements">
         <h2>Tematy</h2>
+
+        <button type="button">Dodaj temat</button>
         <div>
           <DataGrid
             rows={rows}

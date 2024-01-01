@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./PrincipalMenu.css";
 import { FiHome, FiUser, FiBookOpen, FiCalendar, FiClipboard, FiSettings, FiPower, FiUserPlus, FiUserMinus, FiLayers, FiGrid, FiCheckSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 export function PrincipalMenu(){
+    const [loggedOut, setLoggedOut] = useState(false);
+
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+        if (loggedOut) {
+          localStorage.clear();
+          navigate("/");
+          window.location.reload();
+        }
+      }, [loggedOut, navigate]);
+
     return (
 <div className="navbar">
   <nav className="nav-menu">
@@ -20,8 +33,13 @@ export function PrincipalMenu(){
       <li className="menu-li"> <FiLayers className="Fi" /><Link to='/principal-subjects' className="LinkBtn"> <span className="nav-item"> Przedmioty</span></Link></li>
       <li className="menu-li"> <FiCheckSquare className="Fi" /><Link to='/principal-polls' className="LinkBtn"> <span className="nav-item"> Ankiety</span></Link></li>
       <li className="menu-li"> <FiSettings className="Fi" /> <Link to='/principal-settings' className="LinkBtn"><span className="nav-item"> Ustawienia</span></Link></li>
-      <li className="menu-li twoMenuBtns"> <FiPower className="Fi" /><Link to='/' className="LinkBtn LinkBtn2">  <span className="nav-item"> Wyloguj</span></Link></li>
-     </ul>
+      <li className="menu-li twoMenuBtns">
+        <FiPower className="Fi" />
+        <Link to="/" className="LinkBtn LinkBtn2" onClick={(event) => {event.preventDefault(); setLoggedOut(true);}}>
+            <span className="nav-item">Wyloguj</span>
+        </Link>
+      </li> 
+      </ul>
      </nav>
     </div>
     );

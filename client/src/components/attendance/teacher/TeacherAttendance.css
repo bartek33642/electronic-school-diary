@@ -1,0 +1,10 @@
+.teacher-attendance-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.teacher-attendance-elements{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}

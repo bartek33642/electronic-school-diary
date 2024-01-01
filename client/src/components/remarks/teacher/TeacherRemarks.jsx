@@ -60,23 +60,22 @@ export function TeacherRemarks() {
       const getIsPosstive = (is_possitive) => (is_possitive ? 'Tak' : 'Nie');
     
       const columns = [
-        // { field: 'topicId', headerName: 'ID', width: 100, hide: true, renderHeader: () => null},
-        
-        { field: 'studentId', headerName: 'Student ID', width: 100},
+        { field: 'remarkId', headerName: 'ID', width: 60},
+        { field: 'student', headerName: 'Uczeń', width: 103},
         { field: 'class', headerName: 'Klasa', width: 100},
-        { field: 'remark_text', headerName: 'Opis uwagi', width: 130 },
+        { field: 'remark_text', headerName: 'Opis uwagi', width: 180 },
         { field: 'is_possitive', headerName: 'Pozytywna?', width: 130 },
-        { field: 'date', headerName: 'Data', width: 250},
+        { field: 'date', headerName: 'Data', width: 100},
         { field: 'teacher', headerName: 'Nauczyciel', width: 130},
     
       ];
-    
     
       // let formatDate = topics.date.toISOString().substring(0, 10);
       // console.log(formatDate);
     
       const rows = remarks.map(remark => ({
-        studentId: remark.student_id,
+        remarkId: remark.remark_id,
+        student: remark.student_first_name + ' ' + remark.student_second_name,
         class: remark.class_name,
         remark_text: remark.remark_text,
         is_possitive: getIsPosstive(remark.is_possitive),
@@ -90,12 +89,12 @@ export function TeacherRemarks() {
             <TeacherMenu />
             <div className="teacher-remarks-elements">
                 <h2>Uwagi</h2>
-
+              <button type="button">Dodaj uwagę</button>
                 <div>
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.date}
+            getRowId={(row) => row.remarkId}
             pageSize={8}
             initialState={{
               pagination: {

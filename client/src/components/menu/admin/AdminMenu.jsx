@@ -1,74 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AdminMenu.css";
 import { FiHome, FiUser, FiMap, FiBookOpen, FiCalendar, FiClipboard, FiSettings, FiPower, FiUserPlus, FiUserMinus, FiLayers, FiGrid, FiCheckSquare } from "react-icons/fi";
-import { Link, Navigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { backendServer } from "../../../config";
+import { Link } from "react-router-dom";
+
 
 export function AdminMenu(){
-    const [userData, setUserData] = useState([]);
-    const [error, setError] = useState(null);
+  const [loggedOut, setLoggedOut] = useState(false);
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-          try {
-            const userEmail = localStorage.getItem("userEmail");
-    
-            if (userEmail) {
-              const userQuery = `${backendServer}/users-school-student/${userEmail}`;
-              const result = await fetch(userQuery);
-              const userData = await result.json();
-              console.log("userData: ", userData);
-              if (result.ok) {
-                setUserData(userData);
-               } else {
-                setError("Błąd pobierania danych użytkownika.");
-              }
-            } else {
-              setError("Brak dostępu do adresu e-mail zalogowanego użytkownika.");
-            }
-    
-          } catch (error) {
-            console.error(error);
-            setError("Wystąpił błąd podczas pobierania danych użytkownika.");
-          }
-        };
-    
-        fetchUserData();
-      }, []);
+  const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        try {
-          const token = localStorage.getItem('token');
-
-          if (!token) {
-            console.error('Token not found');
-            return;
-          }
-          const decodedToken = jwtDecode(token);
-          const user_id = decodedToken.user_id;
-
-          const tokenQuery = `${backendServer}/logout/${user_id}`;
-          const result = await fetch(tokenQuery, {
-            method: 'DELETE',
-          });
-      
-          if (result.status === 202) {
-            console.log('Logout successful');
-            console.log('Before token removal:', localStorage.getItem('token'));
-            localStorage.removeItem('token');
-            console.log('After token removal:', localStorage.getItem('token'));
-            return <Navigate to='/' />;
-          } else {
-            console.error('Logout failed', error);
-          }
-        } catch (error) {
-          console.error("Error: ", error);
-        }
+  useEffect(() => {
+      if (loggedOut) {
+        localStorage.clear();
+        navigate("/");
         window.location.reload();
+
       }
-      
-      
+    }, [loggedOut, navigate]);
+    
     return (
 <div className="navbar">
   <nav className="nav-menu">
@@ -86,8 +36,13 @@ export function AdminMenu(){
       <li className="menu-li"> <FiLayers className="Fi" /><Link to='/admin-subjects' className="LinkBtn"> <span className="nav-item"> Przedmioty</span></Link></li>
       <li className="menu-li"> <FiCheckSquare className="Fi" /><Link to='/admin-polls' className="LinkBtn"> <span className="nav-item"> Ankiety</span></Link></li>
       <li className="menu-li"> <FiSettings className="Fi" /> <Link to='/admin-settings' className="LinkBtn"><span className="nav-item"> Ustawienia</span></Link></li>
-      <li className="menu-li twoMenuBtns"> <FiPower className="Fi" /><Link to="/" className="LinkBtn LinkBtn2" onClick={handleLogout}>  <span className="nav-item"> Wyloguj</span></Link></li>
-     </ul>
+      <li className="menu-li twoMenuBtns">
+        <FiPower className="Fi" />
+        <Link to="/" className="LinkBtn LinkBtn2" onClick={(event) => {event.preventDefault(); setLoggedOut(true);}}>
+            <span className="nav-item">Wyloguj</span>
+        </Link>
+      </li>     
+      </ul>
      </nav>
     </div>
     );

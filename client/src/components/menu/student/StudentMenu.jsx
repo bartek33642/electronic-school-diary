@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./StudentMenu.css";
 import { FiHome,  FiBookOpen, FiCalendar, FiClipboard, FiSettings, FiPower, FiUserPlus, FiUserMinus, FiLayers } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 export function StudentMenu(){
-  let imie = "Julian";
+  const [loggedOut, setLoggedOut] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+      if (loggedOut) {
+        localStorage.clear();
+        navigate("/");
+        window.location.reload();
+      }
+    }, [loggedOut, navigate]);
+
     return (
 <div className="navbar">
   <nav className="nav-menu">
@@ -18,8 +30,13 @@ export function StudentMenu(){
       <li className="menu-li"> <FiUserMinus className="Fi" /><Link to='/student-remarks' className="LinkBtn">  <span className="nav-item"> Uwagi </span></Link></li>
       <li className="menu-li"> <FiLayers className="Fi" /><Link to='/student-subjects' className="LinkBtn"> <span className="nav-item"> Przedmioty</span></Link></li>
       <li className="menu-li"> <FiSettings className="Fi" /> <Link to='/student-settings' className="LinkBtn"><span className="nav-item"> Ustawienia</span></Link></li>
-      <li className="menu-li twoMenuBtns"> <FiPower className="Fi" /><Link to='/' className="LinkBtn LinkBtn2">  <span className="nav-item"> Wyloguj</span></Link></li>
-     </ul>
+      <li className="menu-li twoMenuBtns">
+        <FiPower className="Fi" />
+        <Link to="/" className="LinkBtn LinkBtn2" onClick={(event) => {event.preventDefault(); setLoggedOut(true);}}>
+            <span className="nav-item">Wyloguj</span>
+        </Link>
+      </li> 
+      </ul>
      </nav>
     </div>
     );
