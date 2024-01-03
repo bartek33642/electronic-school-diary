@@ -11,3 +11,8 @@
     padding-top: 10px;
     width: 100%;
 }
+
+.teacher-topics-add-topic input, select {
+    display: flex;
+    flex-direction: row;
+}

@@ -166,6 +166,20 @@ const marksEndpoint = (app) => {
             }
         });
         
+        app.delete('/grades/:grade_id/:student_id', async (req, res) => {
+            const studentId = req.params.student_id;
+            const gradeId = req.params.grade_id;
+
+            try{
+                const deleteGradeQuery = ` DELETE FROM gradebook.grades WHERE grade_id = $1 AND student_id = $2;`;
+
+                const rows = await pool.query(deleteGradeQuery, [gradeId, studentId]); 
+                res.send(rows);
+            }catch (error) {
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+        }
+    });
 
         };
 export default marksEndpoint;

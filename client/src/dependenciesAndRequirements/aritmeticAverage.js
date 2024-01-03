@@ -13,7 +13,7 @@ export const calculateAritmeticAverage = (grades) => {
     const sum = grades.reduce((accumulator, grade) => accumulator + grade, 0);
   
     // Oblicz średnią arytmetyczną
-    const average = sum / grades.length;
+    const average = sum / grades.length.toFixed(2);
   
     return average;
   }

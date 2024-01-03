@@ -70,6 +70,12 @@ export function Login() {
     setSnackbarOpen(false);
   };
 
+  const handlePasswordOrEmailKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="login-form"> 
       <div className="login-content">
@@ -87,6 +93,7 @@ export function Login() {
               id="login"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onKeyPress={handlePasswordOrEmailKeyPress}
             />
           </div>
           <br />
@@ -98,6 +105,7 @@ export function Login() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={handlePasswordOrEmailKeyPress}
               />
               {showPassword ? (
                 <span
