@@ -84,5 +84,23 @@ app.get('/student-parent/:student_id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+app.get('/students-from-class/:class_id', async (req, res) => {
+  const classId = req.params.class_id;
+  try {
+    const studentsQuery = `SELECT st.student_id, st.class_id, st.user_id, st.school_id, us.first_name, us.second_name FROM gradebook.students st
+                            INNER JOIN gradebook.users us ON st.user_id = us.user_id
+                            WHERE class_id = $1`;
+
+    const { rows } = await pool.query(studentsQuery, [classId]);
+    res.send(rows);
+  }
+  catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  } )
+
 };
 export default studentEndpoint;

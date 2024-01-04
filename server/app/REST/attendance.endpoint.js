@@ -33,6 +33,51 @@ const attendanceEnpoint = (app) => {
         }
       });
 
+
+      // app.get('/attendance-all-for-class/:class_id', async (req, res) => {
+      //   const classId = req.params.class_id;
+      //   try {
+      //     const attendanceQuery = `SELECT * FROM gradebook.attendance at
+      //                               INNER JOIN gradebook.classes cl ON at.class_id = cl.class_id
+      //                               INNER JOIN gradebook.schools sc ON cl.school_id = sc.school_id
+      //                               INNER JOIN gradebook.students st ON at.student_id = st.student_id
+      //                               INNER JOIN gradebook.users us ON st.user_id = us.user_id
+      //                               INNER JOIN gradebook.timetable tb ON at.timetable_id = tb.timetable_id
+      //                               WHERE cl.class_id = $1`;
+                                    
+      //     const { rows } = await pool.query(attendanceQuery, [classId]);
+      //     res.send(rows);
+    
+      //   } catch (error) {
+      //     console.error(error);
+      //     res.status(500).send('Internal Server Error');
+      //   }
+      // });
+
+      app.get('/attendance-all-for-class/:class_id/:lesson_number', async (req, res) => {
+        const classId = req.params.class_id;
+        const lessonNumber = req.params.lesson_number;
+      
+        try {
+          const attendanceQuery = `
+            SELECT * FROM gradebook.attendance at
+            INNER JOIN gradebook.classes cl ON at.class_id = cl.class_id
+            INNER JOIN gradebook.schools sc ON cl.school_id = sc.school_id
+            INNER JOIN gradebook.students st ON at.student_id = st.student_id
+            INNER JOIN gradebook.users us ON st.user_id = us.user_id
+            INNER JOIN gradebook.timetable tb ON at.timetable_id = tb.timetable_id
+            WHERE cl.class_id = $1 AND tb.lesson_number = $2
+          `;
+                                          
+          const { rows } = await pool.query(attendanceQuery, [classId, lessonNumber]);
+          res.send(rows);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send('Internal Server Error');
+        }
+      });
+      
+
       app.get('/attendance-all/:student_id', async (req, res) => {
         const { student_id } = req.params;
         try {
