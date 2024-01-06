@@ -152,7 +152,6 @@ export function StudentMarks() {
                 <th>Średnia arytmetyczna</th>
                 <th>Średnia ważona</th>
                 <th>Przewidywana ocena</th>
-                <th>Ocena końcowa</th>
               </tr>
             </thead>
             <tbody>
@@ -192,7 +191,6 @@ export function StudentMarks() {
                   <td>{row.aritmeticAverage}</td>
                   <td>{row.weightedAverage}</td>
                   <td>{row.expectedGrade}</td>
-                  <td>{row.finalGrade}</td>
                 </tr>
               ))}
             </tbody>

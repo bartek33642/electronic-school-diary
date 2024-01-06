@@ -165,6 +165,21 @@ const marksEndpoint = (app) => {
                 res.status(500).send('Internal Server Error');
             }
         });
+
+
+        app.put('/update-mark', async(req, res) => {
+            const { grade_value, weight, description, date, student_id, grade_id } = req.body;
+            try{
+                const updateMarks = `UPDATE gradebook.grades SET grade_value = $1, weight = $2, description = $3, date = $4 WHERE student_id = $5 AND grade_id = $6`;
+                await pool.query(updateMarks, [grade_value, weight, description, date, student_id, grade_id]);
+                console.log("Zmieniono oceny w bazy danych");
+      
+                res.status(201).json({ message: 'Ocena zaktualizowana pomyślnie.' });
+            }catch(error){
+                console.error('Błąd aktualizacji oceny:', error);
+                res.status(500).json({ error: 'Błąd aktualizacji oceny' });
+            }
+          });
         
         app.delete('/grades/:grade_id/:student_id', async (req, res) => {
             const studentId = req.params.student_id;

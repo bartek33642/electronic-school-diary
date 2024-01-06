@@ -18,7 +18,7 @@ const attendanceEnpoint = (app) => {
     
       app.get('/attendance-all', async (req, res) => {
         try {
-          const attendanceQuery = `SELECT * FROM gradebook.attendance at
+          const attendanceQuery = `SELECT at.*, cl.*, sc.*, st.*, us.user_id, us.first_name, us.second_name FROM gradebook.attendance at
                                     INNER JOIN gradebook.classes cl ON at.class_id = cl.class_id
                                     INNER JOIN gradebook.schools sc ON cl.school_id = sc.school_id
                                     INNER JOIN gradebook.students st ON at.student_id = st.student_id
@@ -33,21 +33,22 @@ const attendanceEnpoint = (app) => {
         }
       });
 
-      app.get('/attendance-all-for-class/:class_id/:lesson_number', async (req, res) => {
+      app.get('/attendance-all-for-class/:class_id/:lesson_number/:date', async (req, res) => {
         const classId = req.params.class_id;
         const lessonNumber = req.params.lesson_number;
+        const date = req.params.date;
       
         try {
           const attendanceQuery = `
-            SELECT * FROM gradebook.attendance at
+            SELECT at.*, cl.*, sc.*, st.*, us.user_id, us.first_name, us.second_name FROM gradebook.attendance at
             INNER JOIN gradebook.classes cl ON at.class_id = cl.class_id
             INNER JOIN gradebook.schools sc ON cl.school_id = sc.school_id
             INNER JOIN gradebook.students st ON at.student_id = st.student_id
             INNER JOIN gradebook.users us ON st.user_id = us.user_id
-            WHERE cl.class_id = $1 AND at.lesson_number = $2
+            WHERE cl.class_id = $1 AND at.lesson_number = $2 AND at.date=$3;
           `;
                                           
-          const { rows } = await pool.query(attendanceQuery, [classId, lessonNumber]);
+          const { rows } = await pool.query(attendanceQuery, [classId, lessonNumber, date]);
           res.send(rows);
         } catch (error) {
           console.error(error);
