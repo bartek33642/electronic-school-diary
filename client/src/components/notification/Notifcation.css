@@ -1,0 +1,17 @@
+.notification-container{
+    font-size: 13pt;
+}
+.notification-table{
+    margin: 10px;
+}
+/* .notification-th{
+    border: black solid 0.3px;
+}
+.notification-td{
+    border: black solid 0.3px;
+
+} */
+
+.notification-td, .notification-th{
+    padding-right: 20px;
+}

@@ -5,6 +5,7 @@ import { CalendarComponent } from "../../calendar/Calendar";
 import { CountdownToVacations } from "../../../dependenciesAndRequirements/CountdownToVacations";
 import { FiSettings, FiBookOpen, FiClipboard } from 'react-icons/fi';
 import { Link } from "react-router-dom";
+import { Notification } from "../../notification/Notification";
 
 export function ParentDashboard(){
     
@@ -77,6 +78,15 @@ export function ParentDashboard(){
                 </Link>
                 </div>
 
+
+                <div className="parent-notification-component">
+                    <h2>Powiadomienia</h2>
+                    <div className="parent-notification-elements">
+                        <Notification />
+
+                    </div>
+                </div>
+                
             </div>
         </div>
         </>

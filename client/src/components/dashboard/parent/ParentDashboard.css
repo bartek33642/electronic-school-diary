@@ -1,0 +1,14 @@
+@import url('../../../App.css');
+.parent-notification-component{
+    background-color: var(--lightgrey) ;
+    border-radius: 20px;
+    width: 95%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    min-height: 140px;
+    text-align: center;
+}
+.parent-notification-elements{
+    margin: auto;
+    padding: auto;
+}

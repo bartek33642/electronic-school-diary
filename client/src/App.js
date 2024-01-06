@@ -69,7 +69,6 @@ import { PrivacyPolicy } from './components/privacy_policy/PrivacyPolicy';
 import { PrincipalAttendance } from './components/attendance/principal/PrincipalAttendance';
 import { TeacherAttendance } from './components/attendance/teacher/TeacherAttendance';
 
-
 function App() {
 
 

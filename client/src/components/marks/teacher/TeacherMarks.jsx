@@ -254,7 +254,7 @@ export function TeacherMarks() {
           weight: formData.weight,
           description: formData.description,
           teacher_id: teacherId,
-          date: date,
+          date: formData.date,
         });
 
         // Wyslij żądanie do serwera, aby dodać nową ocenę
@@ -270,7 +270,7 @@ export function TeacherMarks() {
             weight: formData.weight,
             description: formData.description,
             teacher_id: teacherId,
-            date: date,
+            date: formData.date,
           }),
         });
 
