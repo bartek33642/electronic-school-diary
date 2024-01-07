@@ -48,7 +48,7 @@ const teacherEndpoint = (app) => {
     } )
 
     app.get('/all-teachers/:schoolId', async (req, res) => {
-      const schoolId = req.params.school_id;
+      const schoolId = req.params.schoolId;
 
       try {
           const teachersQuery = `

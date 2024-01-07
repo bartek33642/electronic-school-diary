@@ -3,89 +3,136 @@ import './PrincipalClasses.css';
 import { PrincipalMenu } from "../../menu/prncipal/PrincipalMenu";
 import { DataGrid } from '@mui/x-data-grid';
 import { backendServer } from "../../../config";
+import { PrincipalClassModal } from "./PrincipalClassModal";
 
-export function PrincipalClasses(){
-    const [userData, setUserData] = useState([]);
-    const [classes, setClasses] =  useState([]);
-    const [error, setError] = useState(null);
+export function PrincipalClasses() {
+  const [userData, setUserData] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [error, setError] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-useEffect(() => {
-      const fetchUserData = async () => {
-        try {
-          const userEmail = localStorage.getItem("userEmail");
-  
-          if (userEmail) {
-            
-            const userQuery = `${backendServer}/users-school-student/${userEmail}`;
-            const result = await fetch(userQuery);
-            const userData = await result.json();
-            console.log("userData: ", userData);
-  
-            if (result.ok) {
-              setUserData(userData);
-  
-              if (userData.length > 0) {
-                const schoolId = userData[0].school_id;
-                const classesPrincipalQuery = `${backendServer}/principal-classes/${schoolId}`;
-                const classesPrincipalResult = await fetch(classesPrincipalQuery);
-                const classesPrincipal = await classesPrincipalResult.json();
-                console.log("classesPrincipal: ", classesPrincipal);
-                  
-  
-                  if (classesPrincipalResult.ok) {
-                    // Usuń duplikaty na podstawie subjectId
-                    const uniqueClassesPrincipalIds = Array.from(new Set(classesPrincipal.map(classes => classes.school_id)));
-                    const uniqueClassPrincipal = classesPrincipal.filter(classes => uniqueClassesPrincipalIds.includes(classes.school_id));
-                    setClasses(uniqueClassPrincipal);
-                  
-                  } else {
-                    setError("Błąd pobierania danych z danymi klas - dla roli dyrektora.");
-                  }
-  
-              } else {
-                setError("Błąd pobierania danych użytkownika: brak danych.");
-              }
+  const fetchUserData = async () => {
+    try {
+      const userEmail = localStorage.getItem("userEmail");
+
+      if (userEmail) {
+        const userQuery = `${backendServer}/users-school-student/${userEmail}`;
+        const result = await fetch(userQuery);
+        const userData = await result.json();
+        console.log("userData: ", userData);
+
+        if (result.ok) {
+          setUserData(userData);
+
+          if (userData.length > 0) {
+            const schoolId = userData[0].school_id;
+            const classesPrincipalQuery = `${backendServer}/principal-classes/${schoolId}`;
+            const classesPrincipalResult = await fetch(classesPrincipalQuery);
+            const classesPrincipal = await classesPrincipalResult.json();
+            console.log("classesPrincipal: ", classesPrincipal);
+
+            if (classesPrincipalResult.ok) {
+              const uniqueClassesPrincipalIds = Array.from(new Set(classesPrincipal.map(classes => classes.school_id)));
+              const uniqueClassPrincipal = classesPrincipal.filter(classes => uniqueClassesPrincipalIds.includes(classes.school_id));
+              setClasses(uniqueClassPrincipal);
+
             } else {
-              setError("Błąd pobierania danych użytkownika.");
+              setError("Błąd pobierania danych z danymi klas - dla roli dyrektora.");
             }
+
           } else {
-            setError("Brak dostępu do adresu e-mail zalogowanego użytkownika.");
+            setError("Błąd pobierania danych użytkownika: brak danych.");
           }
-  
-        } catch (error) {
-          console.error(error);
-          setError("Wystąpił błąd podczas pobierania danych użytkownika.");
+        } else {
+          setError("Błąd pobierania danych użytkownika.");
         }
-      };
-  
-      fetchUserData();
-    }, []);
+      } else {
+        setError("Brak dostępu do adresu e-mail zalogowanego użytkownika.");
+      }
 
-    const columns = [
-        { field: 'classId', headerName: 'ID', width: 100 },
-        { field: 'class_name', headerName: 'Nazwa klasy', width: 130 },
-      ];
-    
-      const rows = classes.map(classes => ({
-        classId: classes.class_id,
-        class_name: classes.class_name,
-      }));
+    } catch (error) {
+      console.error(error);
+      setError("Wystąpił błąd podczas pobierania danych użytkownika.");
+    }
+  };
 
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
-    return(
-        <div className="principal-classes-container">
-            <PrincipalMenu />
+  const handleDeleteClass = async (classId) => {
+    if (window.confirm('Czy na pewno chcesz usunąć klasę?')) {
+      try {
+        const response = await fetch(`${backendServer}/classes/${classId}`, {
+          method: 'DELETE',
+        });
 
-            <div className="principal-classes-elements">
-                <h2>Klasy</h2>
-            <div>
-                <input type="button" value="Dodaj klasę" />
-            </div>
+        if (response.status === 204) {
+          fetchUserData();
+        } else {
+          console.error('Błąd usuwania klasy');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const columns = [
+    { field: 'classId', headerName: 'ID', width: 100 },
+    { field: 'class_name', headerName: 'Nazwa klasy', width: 130 },
+    { field: 'action', headerName: '-', width: 100,    
+    renderCell: (params) => (
+      <button
+        type="button"
+        onClick={() => handleDeleteClass(params.row.classId)}
+      >
+        Usuń
+      </button>
+    ), },
+
+  ];
+
+  const rows = classes.map(classes => ({
+    classId: classes.class_id,
+    class_name: classes.class_name,
+    action: (
+      <button
+        type="button"
+        onClick={() => handleDeleteClass(classes.class_id)}
+      >
+        Usuń
+      </button>)
+  }));
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  return (
+    <div className="principal-classes-container">
+      <PrincipalMenu />
+
+      <div className="principal-classes-elements">
+        <h2>Klasy</h2>
+        <div>
+          <button onClick={handleOpenModal}>Dodaj klasę</button>
+          <PrincipalClassModal
+            open={modalOpen}
+            handleClose={handleCloseModal}
+            schoolData={userData}
+            updateClasses={fetchUserData}
+          />
+        </div>
         <div>
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.class_name}
+            getRowId={(row) => row.classId}
             pageSize={8}
             initialState={{
               pagination: {
@@ -96,8 +143,7 @@ useEffect(() => {
             // checkboxSelection
           />
         </div>
-
-            </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 }
