@@ -14,8 +14,8 @@ const studentEndpoint = (app) => {
     const bcryptPassword = await bcrypt.hash(password, salt);
 
     try {
-      const studentRegister = await pool.query('INSERT INTO gradebook.users(email, password, role, active, status, first_name, second_name) VALUES($1, $2, 4, $3, $4, $5, $6) RETURNING user_id',
-        [email, bcryptPassword, active, 'student', first_name, second_name]);
+      const studentRegister = await pool.query('INSERT INTO gradebook.users(email, password, role, active, status, first_name, second_name, school_id) VALUES($1, $2, 4, $3, $4, $5, $6, $7) RETURNING user_id',
+        [email, bcryptPassword, active, 'student', first_name, second_name, school_id]);
 
       const userId = studentRegister.rows[0].user_id;
 
