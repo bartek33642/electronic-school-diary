@@ -1,0 +1,24 @@
+.principal-timetable-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.principal-timetable-elements{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    width: 50%;
+
+}
+
+.principal-timetable-form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.principal-timetable-hr{
+    border: black solid 1px;
+    width: 100%;
+}
+

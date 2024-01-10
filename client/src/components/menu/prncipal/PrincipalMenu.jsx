@@ -26,7 +26,7 @@ export function PrincipalMenu(){
       <li className="menu-li"> <FiUser className="Fi" /><Link to='/principal-users' className="LinkBtn"> <span className="nav-item">Użytkownicy</span></Link></li>
       <li className="menu-li"> <FiGrid className="Fi" /><Link to='/principal-classes' className="LinkBtn"> <span className="nav-item">Klasy</span></Link></li>
       <li className="menu-li"> <FiBookOpen className="Fi" /><Link to='/principal-grades' className="LinkBtn"> <span className="nav-item">Oceny</span></Link></li>
-      <li className="menu-li"> <FiCalendar className="Fi" /><Link to='/principal-schedule' className="LinkBtn">  <span className="nav-item">Plan zajęć</span></Link></li>
+      <li className="menu-li"> <FiCalendar className="Fi" /><Link to='/principal-timetable' className="LinkBtn">  <span className="nav-item">Plan zajęć</span></Link></li>
       <li className="menu-li"> <FiClipboard className="Fi" /><Link to='/principal-topics' className="LinkBtn"> <span className="nav-item">Tematy</span></Link></li>
       <li className="menu-li"> <FiUserPlus className="Fi" /><Link to='/principal-attendance' className="LinkBtn"> <span className="nav-item">Frekwencja</span></Link></li>
       <li className="menu-li"> <FiUserMinus className="Fi" /><Link to='/principal-remarks' className="LinkBtn">  <span className="nav-item"> Uwagi </span></Link></li>

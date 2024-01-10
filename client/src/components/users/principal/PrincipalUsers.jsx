@@ -229,7 +229,6 @@ export function PrincipalUsers() {
     pb: 3,
   };
 
-  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userEmail = localStorage.getItem("userEmail");
@@ -270,8 +269,39 @@ export function PrincipalUsers() {
       }
     };
 
+  useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [userData])
+
+  const columns = [
+    { field: 'userId', headerName: 'ID', width: 60 },
+    { field: 'email', headerName: 'E-mail', width: 190 },
+    { field: 'active', headerName: 'Aktywny', width: 90 },
+    { field: 'name', headerName: 'Imię i Nazwisko', width: 300 },
+    { field: 'status', headerName: 'Status', width: 150 },
+    {
+      field: 'action',
+      headerName: ' - ',
+      width: 60,
+      renderCell: (params) => {
+        // Użyj nawiasów klamrowych dla bloku if
+        if (params.row.status === 'dyrektor') {
+          return <div></div>;
+        } else {
+          // W przeciwnym razie zwróć przycisk usuwania
+          return (
+            <button
+              type="button"
+              onClick={() => handleDeleteUser(params.row.userId)}
+            >
+              Usuń
+            </button>
+          );
+        }
+      },
+    },
+  ];
+  
 
   const getStatusName = (status) => {
     switch (status) {
@@ -292,14 +322,10 @@ export function PrincipalUsers() {
 
   const getIsActive = (active) => (active ? 'Tak' : 'Nie');
 
-  const columns = [
-    { field: 'email', headerName: 'E-mail', width: 190 },
-    { field: 'active', headerName: 'Aktywny', width: 90 },
-    { field: 'name', headerName: 'Imię i Nazwisko', width: 300 },
-    { field: 'status', headerName: 'Status', width: 150 },
-  ];
+
 
   const rows = userPrincipalData.map(userPrincipal => ({
+    userId: userPrincipal.user_id,
     email: userPrincipal.email,
     active: getIsActive(userPrincipal.active),
     name: userPrincipal.first_name + ' ' + userPrincipal.second_name,
@@ -336,6 +362,26 @@ export function PrincipalUsers() {
     setOpen(true);
   }
 
+  const handleDeleteUser = async (userId) => {
+    if (window.confirm('Czy na pewno chcesz usunąć użytkownika?')) {
+      try {
+        const response = await fetch(`${backendServer}/users/${userId}`, {
+          method: 'DELETE',
+        });
+
+        if (response.status === 204) {
+          fetchUserData();
+          setSuccessMessage("Usunięto użytkownika");
+        } else {
+          console.error('Błąd usuwania użytkownika');
+          setErrorMessage("Błąd usuwania użytkownika");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -343,20 +389,22 @@ export function PrincipalUsers() {
     setOpen(false);
   };
 
+
+
   return (
     <div className="principal-users-container">
       <PrincipalMenu />
       <div className="principal-users-elements">
         <h2>Użytkownicy</h2>
         <div className="admin-users-addButtons">
-          <Button onClick={handleOpenAddTeacherModal} className="admin-users-btns">Dodaj nauczyciela</Button>
-          <Button onClick={handleOpenAddStudentModal} className="admin-users-btns">Dodaj ucznia</Button>
+          <button onClick={handleOpenAddTeacherModal} className="admin-users-btns">Dodaj nauczyciela</button>
+          <button onClick={handleOpenAddStudentModal} className="admin-users-btns">Dodaj ucznia</button>
         </div>
         <div>
           <DataGrid
             rows={rows}
             columns={columns}
-            getRowId={(row) => row.name}
+            getRowId={(row) => row.userId}
             pageSize={8}
             initialState={{
               pagination: {

@@ -75,21 +75,21 @@ const topicsEndpoint = (app) => {
         //   })
 
         app.post('/add-topic', async (req, res) => {
-          const { teacher_id, class_id, topic_text, description, date, subject_id, school_id } = req.body;
+          const { teacher_id, class_id, topic_text, description, date, subject_id } = req.body;
       
           try {
               // Sprawdź, czy nauczyciel, klasa i szkoła istnieją i są powiązane
-              const checkQuery = `
-                  SELECT *
-                  FROM gradebook.teachers te
-                  LEFT JOIN gradebook.classes cl ON te.school_id = cl.school_id
-                  WHERE te.teacher_id = $1 AND cl.class_id = $2 AND cl.school_id = $3
-              `;
-              const checkResult = await pool.query(checkQuery, [teacher_id, class_id, school_id]);
+              // const checkQuery = `
+              //     SELECT *
+              //     FROM gradebook.teachers te
+              //     LEFT JOIN gradebook.classes cl ON te.school_id = cl.school_id
+              //     WHERE te.teacher_id = $1 AND cl.class_id = $2 AND cl.school_id = $3
+              // `;
+              // const checkResult = await pool.query(checkQuery, [teacher_id, class_id, school_id]);
       
-              if (checkResult.rows.length === 0) {
-                  return res.status(400).json({ error: 'Nieprawidłowe dane nauczyciela lub klasy.' });
-              }
+              // if (checkResult.rows.length === 0) {
+              //     return res.status(400).json({ error: 'Nieprawidłowe dane nauczyciela lub klasy.' });
+              // }
       
               const addTopicQuery = `
                   INSERT INTO gradebook.topics(teacher_id, class_id, topic_text, description, date, subject_id)

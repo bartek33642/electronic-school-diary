@@ -11,3 +11,14 @@
     padding-top: 10px;
     width: 100%;
 }
+
+.principal-topic-modal-inputs input, select{
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+}
+
+
+.principal-topic-modal-inputs input{
+    border-radius: 10px;
+}

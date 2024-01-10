@@ -73,21 +73,21 @@ const timetableEndpoint = (app) => {
             }
         });          
 
-               app.post('/add-timetable', async (req, res) => {
-                const { day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date } = req.body;
-                try {
-                    const addTimetableQuery = `INSERT INTO gradebook.timetable(day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
-                    await pool.query(addTimetableQuery, [day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date]);
-                    console.log("Dodano zajęcie do planu lekcji do bazy danych");
+            app.post('/add-timetable', async (req, res) => {
+            const { day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date } = req.body;
+            try {
+                const addTimetableQuery = `INSERT INTO gradebook.timetable(day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
+                await pool.query(addTimetableQuery, [day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date]);
+                console.log("Dodano zajęcie do planu lekcji do bazy danych");
 
-                    res.status(201).json({ message: 'Zajęcie do planu lekcji dodany pomyślnie.' });
+                res.status(201).json({ message: 'Zajęcie do planu lekcji dodany pomyślnie.' });
 
-                }
-                catch (error) {
-                    console.error('Błąd dodania tmatu:', error);
-                    res.status(500).send('Internal Server Error');
-                }
-               })
+            }
+            catch (error) {
+                console.error('Błąd dodania tmatu:', error);
+                res.status(500).send('Internal Server Error');
+            }
+            })
 
             app.put('/timetable-all-classes/:school_id/:class_id', async (req, res) => {
               const { school_id, class_id } = req.params;

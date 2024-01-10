@@ -60,6 +60,7 @@ import { TeacherTopics } from './components/topics/teacher/TeacherTopics';
 import { TeacherSubjects } from './components/subjects/teacher/TeacherSubjects';
 import { TeacherTimetable } from './components/timetable/TeacherTimetable/TeacherTimetable';
 import { PrincipalMarks } from './components/marks/principal/PrincipalMarks';
+import { PrincipalTimetable } from './components/timetable/PrincipalTimetable/PrincipalTimetable';
 
 import { isExpired } from 'react-jwt';
 import { TeacherMarks } from './components/marks/teacher/TeacherMarks';
@@ -479,6 +480,14 @@ function App() {
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/teacher-attendance' /> 
                 ) : ( <TeacherAttendance/>)
+              
+              }/>
+
+            {/* <Route path='/principal-timetable' element={<PrincipalTimetable />} />  */}
+            <Route path="/principal-timetable" element={
+                isExpired(localStorage.getItem("token")) ? (
+                <Navigate replace to='/principal-timetable' /> 
+                ) : ( <PrincipalTimetable/>)
               
               }/>
          

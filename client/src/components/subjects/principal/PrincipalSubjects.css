@@ -11,3 +11,16 @@
     padding-top: 10px;
     width: 100%;
 }
+
+.principal-form-subject{
+    display: flex;
+    flex-direction: column;
+}
+
+.principal-form-subject input{
+    border-radius: 10px;
+}
+
+.principal-form-subject input, select{
+width: 80%;
+}

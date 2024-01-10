@@ -14,8 +14,8 @@ const parentEndpoint = (app) => {
       const salt = await bcrypt.genSalt(saltRound);
       const bcryptPassword = await bcrypt.hash(password, salt);
 
-      const parentRegister = await pool.query('INSERT INTO gradebook.users(email, password, role, active, status, first_name, second_name) VALUES($1, $2, 5, $3, $4, $5, $6)  RETURNING user_id',
-        [email, bcryptPassword, active, 'parent', first_name, second_name]);
+      const parentRegister = await pool.query('INSERT INTO gradebook.users(email, password, role, active, status, first_name, second_name, school_id) VALUES($1, $2, 5, $3, $4, $5, $6, $7)  RETURNING user_id',
+        [email, bcryptPassword, active, 'parent', first_name, second_name, school_id]);
 
       const userId = parentRegister.rows[0].user_id;
 
