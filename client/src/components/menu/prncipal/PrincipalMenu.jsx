@@ -31,7 +31,7 @@ export function PrincipalMenu(){
       <li className="menu-li"> <FiUserPlus className="Fi" /><Link to='/principal-attendance' className="LinkBtn"> <span className="nav-item">Frekwencja</span></Link></li>
       <li className="menu-li"> <FiUserMinus className="Fi" /><Link to='/principal-remarks' className="LinkBtn">  <span className="nav-item"> Uwagi </span></Link></li>
       <li className="menu-li"> <FiLayers className="Fi" /><Link to='/principal-subjects' className="LinkBtn"> <span className="nav-item"> Przedmioty</span></Link></li>
-      <li className="menu-li"> <FiCheckSquare className="Fi" /><Link to='/principal-polls' className="LinkBtn"> <span className="nav-item"> Ankiety</span></Link></li>
+      {/* <li className="menu-li"> <FiCheckSquare className="Fi" /><Link to='/principal-polls' className="LinkBtn"> <span className="nav-item"> Ankiety</span></Link></li> */}
       <li className="menu-li"> <FiSettings className="Fi" /> <Link to='/principal-settings' className="LinkBtn"><span className="nav-item"> Ustawienia</span></Link></li>
       <li className="menu-li twoMenuBtns">
         <FiPower className="Fi" />

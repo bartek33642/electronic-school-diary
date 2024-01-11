@@ -598,6 +598,411 @@
 //     );
 // }
 
+// import React, { useState, useEffect } from "react";
+// import './AdminMarks.css';
+// import { AdminMenu } from "../../menu/admin/AdminMenu";
+// import Modal from '@mui/material/Modal';
+// import Button from "@mui/material/Button";
+// import Box from '@mui/material/Box';
+// import { backendServer } from "../../../config";
+// import { calculateAritmeticAverage } from "../../../dependenciesAndRequirements/aritmeticAverage";
+// import { expectedGrades } from "../../../dependenciesAndRequirements/expectedGrade";
+// import { calculateWeightedAverage } from "../../../dependenciesAndRequirements/weightedAverage";
+
+// export function AdminMarks() {
+//   const [open, setOpen] = useState(false);
+//   const [schools, setSchools] = useState([]);
+//   const [classes, setClasses] = useState([]);
+//   const [students, setStudents] = useState([]);
+//   const [teachers, setTeachers] = useState([]);
+//   const [subjects, setSubjects] = useState([]);
+
+//   const [selectedSchool, setSelectedSchool] = useState("");
+//   const [selectedClass, setSelectedClass] = useState("");
+//   const [selectedStudents, setSelectedStudents] = useState([]);
+//   const [selectedTeacher, setSelectedTeacher] = useState("");
+//   const [selectedSubject, setSelectedSubject] = useState("");
+//   const [studentGrades, setStudentGrades] = useState({});
+
+//   const [gradeData, setGradeData] = useState({
+//     grade: "",
+//     date: "",
+//     weight: "",
+//     comment: ""
+//   });
+  
+//   const resetGradeData = () => {
+//     setGradeData({
+//       grade: "",
+//       date: "",
+//       weight: "",
+//       comment: ""
+//     });
+//   };
+  
+
+//   const handleOpen = () => {
+//     resetGradeData();
+//     setOpen(true);
+//   };
+  
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
+
+//   const handleInputChange = (event) => {
+//     const { name, value } = event.target;
+//     setGradeData((prevData) => ({
+//       ...prevData,
+//       [name]: value
+//     }));
+//   };
+
+//   const style = {
+//     position: 'absolute',
+//     top: '50%',
+//     left: '50%',
+//     transform: 'translate(-50%, -50%)',
+//     width: 400,
+//     bgcolor: 'background.paper',
+//     border: '2px solid #000',
+//     boxShadow: 24,
+//     pt: 2,
+//     px: 4,
+//     pb: 3,
+//   };
+
+//   useEffect(() => {
+//     // Pobierz listę szkół
+//     fetch(`${backendServer}/schools`)
+//       .then(response => response.json())
+//       .then(data => setSchools(data))
+//       .catch(error => console.error('Błąd pobierania szkół:', error));
+//   }, []);
+
+//   // const handleSchoolChange = (event) => {
+//   //   const schoolId = event.target.value;
+//   //   setSelectedSchool(schoolId);
+
+//   //   // Pobierz listę klas w danej szkole
+//   //   fetch(`${backendServer}/classes/${schoolId}`)
+//   //     .then(response => response.json())
+//   //     .then(data => {
+//   //       console.log("selected Class ", data);
+//   //       setClasses(data)
+//   //     })
+//   //     .catch(error => console.error('Błąd pobierania klas:', error));
+
+//   //   // Pobierz listę nauczycieli w danej szkole
+//   //   fetch(`${backendServer}/teachers/${schoolId}`)
+//   //     .then(response => response.json())
+//   //     .then(data => setTeachers(data))
+//   //     .catch(error => console.error('Błąd pobierania nauczycieli:', error));
+//   // };
+
+//   const handleSchoolChange = (event) => {
+//     const schoolId = event.target.value;
+//     setSelectedSchool(schoolId);
+  
+//     // Pobierz listę klas w danej szkole
+//     fetch(`${backendServer}/classes/${schoolId}`)
+//       .then(response => response.json())
+//       .then(data => {
+//         console.log("selected Class ", data);
+//         setClasses(data)
+//       })
+//       .catch(error => console.error('Błąd pobierania klas:', error));
+      
+//     // Pobierz listę nauczycieli w danej szkole
+//     fetch(`${backendServer}/teachers/${schoolId}`)
+//       .then(response => response.json())
+//       .then(data => setTeachers(data))
+//       .catch(error => console.error('Błąd pobierania nauczycieli:', error));
+//   };
+  
+
+//   const handleClassChange = (event) => {
+//     const selectedClass = event.target.value;
+//     setSelectedClass(selectedClass);
+
+//     // Pobierz listę przedmiotów w danej klasie
+//     fetch(`${backendServer}/subjects/class/${selectedClass}`)
+//       .then(response => response.json())
+//       .then(data => setSubjects(data))
+//       .catch(error => console.error('Błąd pobierania przedmiotów:', error));
+
+//     // Pobierz listę uczniów w danej klasie
+//     fetch(`${backendServer}/students-from-class/${selectedClass}`)
+//       .then(response => response.json())
+//       .then(data => setStudents(data))
+//       .catch(error => console.error('Błąd pobierania uczniów:', error));
+//   };
+
+//   // const handleStudentChange = (event) => {
+//   //   const selectedStudentId = event.target.value;
+//   //   setSelectedStudents(prevSelected => {
+//   //     const updatedSelectedStudents = [...prevSelected, selectedStudentId];
+//   //     return updatedSelectedStudents;
+//   //   });
+//   // };
+
+//   const handleStudentChange = (event) => {
+//     const selectedStudentId = event.target.value;
+//     setSelectedStudents((prevSelected) => {
+//       const updatedSelectedStudents = [...prevSelected, selectedStudentId];
+//       return updatedSelectedStudents;
+//     });
+//   };
+  
+//   const handleTeacherChange = (event) => {
+//     setSelectedTeacher(event.target.value);
+//   };
+
+//   const handleSubjectChange = (event) => {
+//     setSelectedSubject(event.target.value);
+//   };
+
+//   // const handleSaveGrade = () => {
+//   //   // Tutaj możesz wysłać dane oceny na serwer
+//   //   // Dostęp do danych oceny znajduje się w gradeData
+//   //   // Możesz użyć selectedStudents, selectedTeacher, selectedSubject do wysłania danych na serwer
+
+//   //   // Przypisz ocenę do konkretnego ucznia
+//   //   const updatedStudentGrades = { ...studentGrades };
+
+//   //   selectedStudents.forEach((studentId) => {
+//   //     if (!updatedStudentGrades[studentId]) {
+//   //       updatedStudentGrades[studentId] = [];
+//   //     }
+
+//   //     updatedStudentGrades[studentId].push(gradeData);
+//   //   });
+
+//   //   setStudentGrades(updatedStudentGrades);
+
+//   //   // Zamknij modal po dodaniu oceny
+//   //   handleClose();
+//   // };
+
+//   const handleSaveGrade = () => {
+//     // Validate the required fields before saving
+//     if (!selectedSchool || !selectedClass || !selectedTeacher || !selectedSubject || !selectedStudents.length) {
+//       // Add your validation logic or show an error message
+//       return;
+//     }
+  
+//     // Here, you can send the data to the server
+//     const dataToSend = {
+//       schoolId: selectedSchool,
+//       classId: selectedClass,
+//       teacherId: selectedTeacher,
+//       subjectId: selectedSubject,
+//       students: selectedStudents,
+//       gradeData: gradeData
+//     };
+  
+//     // Example fetch:
+//     fetch(`${backendServer}/saveGrade`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(dataToSend),
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       // Handle success (if needed)
+//       console.log("Grade saved successfully", data);
+//     })
+//     .catch(error => {
+//       // Handle error
+//       console.error('Error saving grade:', error);
+//     });
+  
+//     // Close the modal after saving
+//     handleClose();
+//   };
+  
+
+//   return (
+//     <>
+//       <div className="marks-container">
+//         <AdminMenu />
+
+//         <div className="admin-marks-elements">
+//           <h2 className="admin-marks-header">Oceny</h2>
+//           <form>
+//             <p className="marks-title">Szkoła</p>
+//             <select
+//               value={selectedSchool}
+//               onChange={handleSchoolChange}
+//               className="marks-selection"
+//             >
+//               <option value="-">Wybierz szkołę</option>
+//               {schools.map((school) => (
+//                 <option key={school.school_id} value={school.school_id}>
+//                   {school.school_name}
+//                 </option>
+//               ))}
+//             </select>
+
+//             <p className="marks-title">Klasa</p>
+//             <select
+//               value={selectedClass}
+//               onChange={handleClassChange}
+//               className="marks-selection"
+//             >
+//               <option value="-">Wybierz klasę</option>
+//               {classes.map((classItem) => (
+//                 <option key={classItem.class_id} value={classItem.class_id}>
+//                   {classItem.class_name}
+//                 </option>
+//               ))}
+//             </select>
+
+//             <p className="marks-title">Nauczyciel</p>
+//             <select
+//               value={selectedTeacher}
+//               onChange={handleTeacherChange}
+//               className="marks-selection"
+//             >
+//               <option value="-">Wybierz nauczyciela</option>
+//               {teachers.map((teacher) => (
+//                 <option
+//                   key={teacher.teacher_id}
+//                   value={teacher.teacher_id}
+//                 >{`${teacher.first_name} ${teacher.second_name}`}</option>
+//               ))}
+//             </select>
+
+//             <p className="marks-title">Przedmiot</p>
+//             <select
+//               value={selectedSubject}
+//               onChange={handleSubjectChange}
+//               className="marks-selection"
+//             >
+//               <option value="-">Wybierz przedmiot</option>
+//               {subjects.map((subject) => (
+//                 <option key={subject.subject_id} value={subject.subject_id}>
+//                   {subject.subject_name}
+//                 </option>
+//               ))}
+//             </select><br />
+
+//           </form>
+
+//           <table className="marks-table">
+//             <thead>
+//               <tr>
+//                 <th className="header-table">Uczeń</th>
+//                 <th className="header-table">Przedmiot</th>
+//                 <th className="header-table">Oceny</th>
+//                 <th className="header-table">Średnia</th>
+//                 <th className="header-table">Średnia ważona</th>
+//                 <th className="header-table">Przewidywana ocena końcowa</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//             {selectedStudents.map((student) => (
+//   <tr key={student.student_id}>
+//     <td>{`${student.first_name} ${student.second_name}`}</td>
+//     <td>{selectedSubject}</td>
+//     <td>
+//       {studentGrades[student.student_id]?.map((grade, index) => (
+//         <div key={index}>
+//           {grade.grade}{" "}
+//           <Button variant="outlined" size="small">
+//             Edytuj
+//           </Button>
+//         </div>
+//       ))}
+//       <Button
+//         variant="contained"
+//         size="small"
+//         onClick={handleOpen}
+//         className="admin-marks-button"
+//       >
+//         +
+//       </Button>
+//     </td>
+//     <td>{calculateAritmeticAverage(studentGrades[student.student_id], student.student_id)}</td>
+//     <td>{calculateWeightedAverage(studentGrades[student.student_id], student.student_id)}</td>
+//     <td>{expectedGrades(studentGrades[student.student_id], student.student_id)}</td>
+//   </tr>
+// ))}
+//             </tbody>
+//           </table>
+
+//           <input
+//             type="button"
+//             value="Zapisz"
+//             onClick={handleSaveGrade}
+//             className="admin-marks-saveBtn"
+//             id="admin-button-save"
+//           />
+
+//           <Modal
+//             open={open}
+//             onClose={handleClose}
+//             aria-labelledby="parent-modal-title"
+//             aria-describedby="parent-modal-description"
+//           >
+//             <Box sx={{ ...style }}>
+//               <h2>Ocena</h2>
+//               Ocena:{" "}
+//               <input
+//                 type="number"
+//                 name="grade"
+//                 id="grade"
+//                 min="0.01"
+//                 max="6.0"
+//                 step="0.01"
+//                 value={gradeData.grade}
+//                 onChange={handleInputChange}
+//               />
+//               <br />
+//               Data:{" "}
+//               <input type="date"
+//                 name="date"
+//                 id="date"
+//                 value={gradeData.date}
+//                 onChange={handleInputChange}
+//               />
+//               <br />
+//               Waga:{" "}
+//               <input
+//                 type="number"
+//                 step="0.1"
+//                 name="weight"
+//                 id="weight"
+//                 value={gradeData.weight}
+//                 onChange={handleInputChange}
+//               />
+//               <br />
+//               Komentarz:{" "}
+//               <input
+//                 type="text"
+//                 name="comment"
+//                 id="comment"
+//                 value={gradeData.comment}
+//                 onChange={handleInputChange}
+//               />
+//               <br />
+//               <Button
+//                 variant="contained"
+//                 onClick={handleSaveGrade}
+//                 id="admin-button-save"
+//               >
+//                 Zapisz
+//               </Button>
+//             </Box>
+//           </Modal>
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
 import React, { useState, useEffect } from "react";
 import './AdminMarks.css';
 import { AdminMenu } from "../../menu/admin/AdminMenu";
@@ -606,8 +1011,8 @@ import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 import { backendServer } from "../../../config";
 import { calculateAritmeticAverage } from "../../../dependenciesAndRequirements/aritmeticAverage";
-import { expectedGrades } from "../../../dependenciesAndRequirements/expectedGrade";
 import { calculateWeightedAverage } from "../../../dependenciesAndRequirements/weightedAverage";
+import { expectedGrades } from "../../../dependenciesAndRequirements/expectedGrade";
 
 export function AdminMarks() {
   const [open, setOpen] = useState(false);
@@ -616,22 +1021,35 @@ export function AdminMarks() {
   const [students, setStudents] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
-
   const [selectedSchool, setSelectedSchool] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
-  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState("");
   const [selectedTeacher, setSelectedTeacher] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const [studentGrades, setStudentGrades] = useState({});
+  const [gradeData, setGradeData] = useState([
+    {
+      grade_value: "",
+      date: "",
+      weight: "",
+      comment: ""
+    }
+  ]);
 
-  const [gradeData, setGradeData] = useState({
-    grade: "",
-    date: "",
-    weight: "",
-    comment: ""
-  });
+  const resetGradeData = () => {
+    setGradeData([
+      {
+        grade_value: "",
+        date: "",
+        weight: "",
+        comment: ""
+      }
+    ]);
+  };
 
-  const handleOpen = () => {
+  const handleOpen = (studentId) => {
+    resetGradeData();
+    setSelectedStudents([studentId]);
     setOpen(true);
   };
 
@@ -665,7 +1083,10 @@ export function AdminMarks() {
     // Pobierz listę szkół
     fetch(`${backendServer}/schools`)
       .then(response => response.json())
-      .then(data => setSchools(data))
+      .then(data => {
+        console.log("Schools data:", data);
+        setSchools(data);
+      })
       .catch(error => console.error('Błąd pobierania szkół:', error));
   }, []);
 
@@ -677,15 +1098,18 @@ export function AdminMarks() {
     fetch(`${backendServer}/classes/${schoolId}`)
       .then(response => response.json())
       .then(data => {
-        console.log("selected Class ", data);
-        setClasses(data)
+        console.log("Classes data:", data);
+        setClasses(data);
       })
       .catch(error => console.error('Błąd pobierania klas:', error));
 
     // Pobierz listę nauczycieli w danej szkole
     fetch(`${backendServer}/teachers/${schoolId}`)
       .then(response => response.json())
-      .then(data => setTeachers(data))
+      .then(data => {
+        console.log("Teachers data:", data);
+        setTeachers(data);
+      })
       .catch(error => console.error('Błąd pobierania nauczycieli:', error));
   };
 
@@ -696,51 +1120,122 @@ export function AdminMarks() {
     // Pobierz listę przedmiotów w danej klasie
     fetch(`${backendServer}/subjects/class/${selectedClass}`)
       .then(response => response.json())
-      .then(data => setSubjects(data))
+      .then(data => {
+        console.log("Subjects data:", data);
+        setSubjects(data);
+      })
       .catch(error => console.error('Błąd pobierania przedmiotów:', error));
 
     // Pobierz listę uczniów w danej klasie
     fetch(`${backendServer}/students-from-class/${selectedClass}`)
       .then(response => response.json())
-      .then(data => setStudents(data))
+      .then(data => {
+        console.log("Students data:", data);
+        setStudents(data);
+      })
       .catch(error => console.error('Błąd pobierania uczniów:', error));
   };
 
+  const handleSubjectChange = (event) => {
+    const selectedSubject = event.target.value;
+    setSelectedSubject(selectedSubject);
+  
+    // Sprawdź, czy selectedClass jest zdefiniowany
+    if (selectedClass) {
+      // Pobierz listę ocen uczniów w danej klasie i danym przedmiocie
+      fetch(`${backendServer}/marks-students/${selectedClass}/${selectedSubject}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log("Marks data:", data);
+  
+          // Aktualizuj stany ocen uczniów
+          const updatedStudentGrades = {};
+          data.forEach(grade => {
+            const studentId = grade.student_id;
+  
+            if (!updatedStudentGrades[studentId]) {
+              updatedStudentGrades[studentId] = [];
+            }
+  
+            updatedStudentGrades[studentId].push(grade);
+          });
+  
+          setStudentGrades(updatedStudentGrades);
+        })
+        .catch(error => console.error('Błąd pobierania ocen:', error));
+    } else {
+      // Handle the case when selectedClass is not defined
+      console.error('Selected class is not defined');
+      // Możesz ustawić domyślne dane lub pokazać komunikat o błędzie
+      // setStudentGrades(defaultData);
+    }
+  };
+  
   const handleStudentChange = (event) => {
     const selectedStudentId = event.target.value;
-    setSelectedStudents(prevSelected => {
-      const updatedSelectedStudents = [...prevSelected, selectedStudentId];
-      return updatedSelectedStudents;
-    });
+    setSelectedStudents([selectedStudentId]); // Zmiana na przekazanie tablicy z jednym identyfikatorem
   };
+  
 
   const handleTeacherChange = (event) => {
     setSelectedTeacher(event.target.value);
   };
 
-  const handleSubjectChange = (event) => {
-    setSelectedSubject(event.target.value);
-  };
-
   const handleSaveGrade = () => {
-    // Tutaj możesz wysłać dane oceny na serwer
-    // Dostęp do danych oceny znajduje się w gradeData
-    // Możesz użyć selectedStudents, selectedTeacher, selectedSubject do wysłania danych na serwer
-
-    // Przypisz ocenę do konkretnego ucznia
-    const updatedStudentGrades = { ...studentGrades };
-
-    selectedStudents.forEach((studentId) => {
-      if (!updatedStudentGrades[studentId]) {
-        updatedStudentGrades[studentId] = [];
-      }
-
-      updatedStudentGrades[studentId].push(gradeData);
+    // Validate the required fields before saving
+    if (!selectedSchool || !selectedClass || !selectedTeacher || !selectedSubject || !selectedStudents.length) {
+      // Add your validation logic or show an error message
+      console.error("Validation failed. Please fill in all the required fields.");
+      return;
+    }
+  
+    // Display data before sending
+    console.log("Data to send:", {
+      school_id: selectedSchool,
+      class_id: selectedClass,
+      teacher_id: selectedTeacher,
+      subject_id: selectedSubject,
+      student_id: selectedStudents,
+      // gradeData: gradeData
+      grade_value: gradeData[0].grade_value,
+      weight: gradeData[0].weight,
+      description: gradeData[0].description,
+      date: gradeData[0].date,
     });
-
-    setStudentGrades(updatedStudentGrades);
-
-    // Zamknij modal po dodaniu oceny
+  
+    // Here, you can send the data to the server
+    const dataToSend = {
+      school_id: selectedSchool,
+      class_id: selectedClass,
+      teacher_id: selectedTeacher,
+      subject_id: selectedSubject,
+      student_id: selectedStudents,
+      // gradeData: gradeData
+      grade_value: gradeData[0].grade_value,
+      weight: gradeData[0].weight,
+      description: gradeData[0].description,
+      date: gradeData[0].date,
+    };
+  
+    // Example fetch:
+    fetch(`${backendServer}/add-marks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle success (if needed)
+        console.log("Grade saved successfully", data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error saving grade:', error);
+      });
+  
+    // Close the modal after saving
     handleClose();
   };
 
@@ -808,64 +1303,90 @@ export function AdminMarks() {
                 </option>
               ))}
             </select><br />
-
-            <input
-              type="button"
-              value="Wyszukaj"
-              className="admin-marks-saveBtn"
-              onClick={handleSaveGrade}
-            />
           </form>
 
           <table className="marks-table">
             <thead>
               <tr>
                 <th className="header-table">Uczeń</th>
-                <th className="header-table">Przedmiot</th>
                 <th className="header-table">Oceny</th>
-                <th className="header-table">Średnia</th>
+                <th className="header-table">Średnia arytmetyczna</th>
                 <th className="header-table">Średnia ważona</th>
                 <th className="header-table">Przewidywana ocena końcowa</th>
               </tr>
             </thead>
             <tbody>
-              {selectedStudents.map((student) => (
-                <tr key={student.student_id}>
+              {students.map((student, studentIndex) => (
+                <tr key={studentIndex}>
                   <td>{`${student.first_name} ${student.second_name}`}</td>
-                  <td>{selectedSubject}</td>
-                  <td>
+                  <td className="admin-td-table-marks">
                     {studentGrades[student.student_id]?.map((grade, index) => (
                       <div key={index}>
-                        {grade.grade}{" "}
-                        <Button variant="outlined" size="small">
+                       <button className="admin-bttn-marks"> {grade.grade_value}{" "}</button>
+                        {/* <Button variant="outlined" size="small">
                           Edytuj
-                        </Button>
+                        </Button> */}
                       </div>
+                      
                     ))}
-                    <Button
+                    <button
                       variant="contained"
                       size="small"
-                      onClick={handleOpen}
+                      onClick={() => handleOpen(student.student_id)}
                       className="admin-marks-button"
                     >
                       +
-                    </Button>
+                    </button>
                   </td>
-                  <td>{calculateAritmeticAverage(studentGrades[student.student_id], student.student_id)}</td>
-                  <td>{calculateWeightedAverage(studentGrades[student.student_id], student.student_id)}</td>
-                  <td>{expectedGrades(studentGrades[student.student_id], student.student_id)}</td>
-                </tr>
+
+                  {/* <td>
+  {calculateAritmeticAverage(
+    students.map((mark) => parseFloat(mark.grade_value))
+  ).toFixed(2)}
+</td> */}
+<td>
+  {studentGrades[student.student_id] &&
+    calculateAritmeticAverage(
+      studentGrades[student.student_id].map((mark) => parseFloat(mark.grade_value))
+    ).toFixed(2)}
+</td>
+
+<td>
+  {studentGrades[student.student_id] &&
+    (() => {
+      const grades = studentGrades[student.student_id].map((mark) => parseFloat(mark.grade_value));
+      const weights = studentGrades[student.student_id].map((mark) => parseInt(mark.weight));
+
+      const weightedAverage = calculateWeightedAverage(grades, weights).toFixed(2);
+
+      console.log("Weighted Average for student", student.student_id, ":", weightedAverage);
+
+      return weightedAverage;
+    })()}
+</td>
+<td>
+  {studentGrades &&
+    studentGrades[student.student_id] &&
+    (() => {
+      const grades = studentGrades[student.student_id].map((mark) => parseFloat(mark.grade_value));
+      const weights = studentGrades[student.student_id].map((mark) => parseInt(mark.weight));
+
+      const expectedGradeValue = expectedGrades(
+        calculateWeightedAverage(grades, weights).toFixed(2)
+      );
+
+      console.log("Expected Grade for student", student.student_id, ":", expectedGradeValue);
+
+      return expectedGradeValue;
+    })()}
+</td>
+
+            </tr>
               ))}
+              
             </tbody>
           </table>
 
-          <input
-            type="button"
-            value="Zapisz"
-            onClick={handleSaveGrade}
-            className="admin-marks-saveBtn"
-            id="admin-button-save"
-          />
 
           <Modal
             open={open}
@@ -878,17 +1399,18 @@ export function AdminMarks() {
               Ocena:{" "}
               <input
                 type="number"
-                name="grade"
-                id="grade"
+                name="grade_value"
+                id="grade_value"
                 min="0.01"
                 max="6.0"
                 step="0.01"
-                value={gradeData.grade}
+                value={gradeData.grade_value}
                 onChange={handleInputChange}
               />
               <br />
               Data:{" "}
-              <input type="date"
+              <input
+                type="date"
                 name="date"
                 id="date"
                 value={gradeData.date}
@@ -928,4 +1450,3 @@ export function AdminMarks() {
     </>
   );
 }
-

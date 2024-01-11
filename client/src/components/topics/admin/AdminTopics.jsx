@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
-import { backendServer } from '../../../config';
+import { backendServer } from "../../../config";
 
 export function AdminTopics() {
   const [open, setOpen] = useState(false);
@@ -48,9 +48,8 @@ export function AdminTopics() {
   }, []);
 
   useEffect(() => {
-    // Fetch classes based on selected school
     if (selectedSchool) {
-      console.log('selectedSchool: ', selectedSchool );
+      console.log("selectedSchool: ", selectedSchool);
       fetch(`${backendServer}/classes/${selectedSchool}`)
         .then((response) => response.json())
         .then((data) => {
@@ -74,24 +73,25 @@ export function AdminTopics() {
   }, []);
 
   useEffect(() => {
-    fetch(`${backendServer}/all-teachers/${schoolId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setTeacherData(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [schoolId]);
-
+    if (selectedSchool) {
+      console.log("selectedSchool: ", selectedSchool);
+      fetch(`${backendServer}/all-teachers/${selectedSchool}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setTeacherData(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedSchool]);
 
   console.log("selectedSchool: ", selectedSchool);
-
 
   useEffect(() => {
     // Fetch subjects based on selected class
     if (selectedClass) {
-      console.log('selectedClass: ', selectedClass );
+      console.log("selectedClass: ", selectedClass);
       fetch(`${backendServer}/subjects/class/${parseInt(selectedClass, 10)}`)
         .then((response) => response.json())
         .then((data) => {
@@ -102,9 +102,8 @@ export function AdminTopics() {
         });
     }
   }, [selectedClass]);
-  
-  // console.log("selectedClass: ", selectedClass);
 
+  // console.log("selectedClass: ", selectedClass);
 
   console.log("schoolData: ", schoolData);
   console.log("classData: ", classData);
@@ -112,10 +111,9 @@ export function AdminTopics() {
   console.log("subjectData: ", subjectData);
 
   const setTest = (data) => {
-    console.log("Test" , data);
+    console.log("Test", data);
     setNewTopic(data);
-
-  }
+  };
 
   const [newTopic, setNewTopic] = useState({
     teacher_id: "",
@@ -127,25 +125,23 @@ export function AdminTopics() {
     school_id: "",
   });
 
-
   const handleAddTopic = async () => {
-
-          console.log('TEEEEEST1', newTopic);
-
-      // Pobieranie zaktualizowanego stanu
-      const updatedTopic = newTopic;
-    
-      const newTopicWithNumbers = {
-        ...updatedTopic,
-        teacher_id: parseInt(selectedTeacher, 10) || null,
-        class_id: parseInt(selectedClass, 10) || null,
-        subject_id: parseInt(updatedTopic.subject_id, 10) || null,
-        school_id: parseInt(selectedSchool, 10) || null,
-      };
-
-      setNewTopic(newTopicWithNumbers);
-    
-      console.log("newTopicWithNumbers:", newTopicWithNumbers);
+    console.log("TEEEEEST1", newTopic);
+  
+    // Pobieranie zaktualizowanego stanu
+    const updatedTopic = newTopic;
+  
+    const newTopicWithNumbers = {
+      ...updatedTopic,
+      teacher_id: parseInt(selectedTeacher, 10) || null,
+      class_id: parseInt(selectedClass, 10) || null,
+      subject_id: parseInt(updatedTopic.subject_id, 10) || null,
+      school_id: parseInt(selectedSchool, 10) || null,
+    };
+  
+    console.log("newTopicWithNumbers before fetch:", newTopicWithNumbers);
+  
+    setNewTopic(newTopicWithNumbers);
   
     // Wysyłanie żądania POST do serwera
     fetch(`${backendServer}/add-topic`, {
@@ -162,7 +158,6 @@ export function AdminTopics() {
             .then((response) => response.json())
             .then((data) => {
               setTopicData(data);
-
             })
             .catch((error) => {
               console.error(error);
@@ -175,6 +170,7 @@ export function AdminTopics() {
         console.error(error);
       });
   };
+  
 
   const style = {
     position: "absolute",
@@ -311,8 +307,8 @@ export function AdminTopics() {
             onChange={(e) => {
               console.log("Event ", e.target.value);
               setSelectedSchool(e.target.value);
-              setSelectedClass(""); 
-              setSelectedTeacher(""); 
+              setSelectedClass("");
+              setSelectedTeacher("");
             }}
           >
             <option value="select_school">Wybierz szkołę</option>
@@ -344,24 +340,22 @@ export function AdminTopics() {
                 ))}
             </select>
           )}
-          {selectedSchool && selectedClass && (
-            <select
-              name="add_topic_teacher"
-              id=""
-              onChange={(e) => setSelectedTeacher(e.target.value)}
-            >
-              <option value="select_teacher">Wybierz nauczyciela</option>
-              {teacherData
-                .filter(
-                  (teacher) => teacher.school_id === parseInt(selectedSchool)
-                )
-                .map((teacher) => (
-                  <option key={teacher.teacher_id} value={teacher.teacher_id}>
-                    {`${teacher.first_name} ${teacher.second_name}`}
-                  </option>
-                ))}
-            </select>
-          )}
+{selectedSchool && selectedClass && teacherData.length > 0 && (
+  <select
+    name="add_topic_teacher"
+    id=""
+    onChange={(e) => setSelectedTeacher(e.target.value)}
+  >
+    <option value="select_teacher">Wybierz nauczyciela</option>
+    {teacherData.map((teacher) => (
+      <option key={teacher.teacher_id} value={teacher.teacher_id}>
+        {`${teacher.first_name} ${teacher.second_name}`}
+      </option>
+    ))}
+  </select>
+)}
+
+
           {selectedSchool && selectedClass && selectedTeacher && (
             <select
               name="add_topic_subject"

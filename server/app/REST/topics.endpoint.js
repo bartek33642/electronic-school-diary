@@ -19,12 +19,14 @@ const topicsEndpoint = (app) => {
 
         app.get('/topics-all', async (req, res) => {
           try {
-            const topicsQuery = `SELECT * FROM gradebook.topics
-                                  NATURAL JOIN gradebook.schools
-                                  NATURAL JOIN gradebook.teachers
-                                  NATURAL JOIN gradebook.classes
-                                  NATURAL JOIN gradebook.subjects
-                                  NATURAL JOIN gradebook.users
+            const topicsQuery = `SELECT top.*, te.*, cl.*, sc.*, su.*, us.* 
+            FROM gradebook.topics top
+            INNER JOIN gradebook.teachers te ON top.teacher_id = te.teacher_id
+            INNER JOIN gradebook.classes cl ON top.class_id = cl.class_id
+            INNER JOIN gradebook.schools sc ON cl.school_id = sc.school_id
+            INNER JOIN gradebook.subjects su ON top.subject_id = su.subject_id
+            INNER JOIN gradebook.users us ON te.user_id = us.user_id;
+            
                                   `;
       
             const { rows } = await pool.query(topicsQuery);
