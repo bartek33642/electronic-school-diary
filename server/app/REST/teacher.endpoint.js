@@ -1,7 +1,3 @@
-import business from '../business/business.container';
-import applicationException from '../service/applicationException';
-import login from '../middleware/login';
-import auth from '../middleware/auth';
 import pool from '../../db'; 
 const bcrypt = require("bcrypt");
 
@@ -20,7 +16,6 @@ const teacherEndpoint = (app) => {
 
       const userId = teacherRegister.rows[0].user_id;
 
-      // Dodaj informacje o nauczycielu do tabeli nauczycieli
       const teacherInfo = await pool.query('INSERT INTO gradebook.teachers(user_id, specialization, school_id) VALUES($1, $2, $3)',
         [userId, specialization, school_id]);
 

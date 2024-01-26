@@ -346,10 +346,7 @@ export function PrincipalMarks() {
           setErrorMessage("Ocena nie została zaktualizowana");
         }
       };
-      
-    
-    
-    
+
     
       const handleAddOrUpdateGrade = async (gradeId, studentId, isUpdate = false) => {
       
@@ -412,7 +409,7 @@ export function PrincipalMarks() {
             teacher_id: selectedTeacher,
           });
           setSelectedGrade(selectedMark);
-          setSelectedStudentId(selectedMark.student_id); // Dodaj tę linię
+          setSelectedStudentId(selectedMark.student_id); 
           setIsModalOpen(true);
         }
       };
@@ -443,8 +440,8 @@ export function PrincipalMarks() {
     useEffect(() => {
         console.log("Teachers:", teachers);
         if (reloadData) {
-            fetchData(); // Fetch data when reloadData flag changes
-            setReloadData(false); // Reset the flag
+            fetchData(); 
+            setReloadData(false); 
         }
     }, [reloadData]);
     
@@ -527,7 +524,7 @@ export function PrincipalMarks() {
                   <th>Średnia arytmetyczna</th>
                   <th>Średnia ważona</th>
                   <th>Przewidywana ocena końcowa</th>
-                  {/* <th>Ocena końcowa</th> */}
+
                 </tr>
               </thead>
               <tbody>
@@ -661,11 +658,6 @@ export function PrincipalMarks() {
           })()}
       </td>
 
-
-                    {/* <td>
-
-                      <button type="button" id="finalGrade">+</button>
-                    </td> */}
                   </tr>
                 ))}
               </tbody>

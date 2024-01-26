@@ -1,73 +1,76 @@
-import config from "./config";
+// import config from "./config";
+// const express = require('express');
+// const pool = require('../db');
+// const cors = require("cors");
+// const app = express();
+// const bodyParser = require('body-parser');
+// import routes from "./REST/routes";
+
+// const port = process.env.NODE_ENV === 'test' ? 3002 : 3001;
+
+// app.use(cors({
+//   origin: '*',
+// }));
+
+// app.options('*', cors()); 
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json({ limit: "2048kb" }));
+
+// app.get("/", (req, res) => {
+//     console.log("start");
+//     res.send("Hello, Server was started")
+// });
+
+// routes(app);
+
+
+// app.get('/*', function (req, res) {
+//   res.sendFile(__dirname + '/public/index.html');
+// });
+
+// app.listen(port, () => {
+//   console.log(`Server started on port ${port}`)
+// })
+
+
 const express = require('express');
 const pool = require('../db');
 const cors = require("cors");
-const app = express();
 const bodyParser = require('body-parser');
 import routes from "./REST/routes";
 
+const port = process.env.NODE_ENV === 'test' ? 3002 : 3001;
 
-app.use(cors({
-  origin: '*',
-}));
+const createApp = () => {
+  const app = express();
 
-app.options('*', cors()); 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json({ limit: "2048kb" }));
+  app.use(cors({
+    origin: '*',
+  }));
 
-app.get("/", (req, res) => {
-    console.log("start");
-    res.send("Hello, Server was started")
-});
+  app.options('*', cors()); 
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json({ limit: "2048kb" }));
 
-routes(app);
+  app.get("/", (req, res) => {
+      console.log("start");
+      res.send("Hello, Server was started")
+  });
 
+  routes(app);
 
-app.get('/*', function (req, res) {
-  res.sendFile(__dirname + '/public/index.html');
-});
+  app.get('/*', function (req, res) {
+    res.sendFile(__dirname + '/public/index.html');
+  });
 
-app.listen(config.port, () => {
-  console.log(`Server started on port ${config.port}`)
-})
+  return app;
+}
 
+if (process.env.NODE_ENV !== 'test') {
+  const app = createApp();
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}`)
+  })
+}
 
-// // Add the JWT middleware to secure routes
-// app.use('/admin', authMiddleware); 
-// app.use('/grade', authMiddleware);
-// app.use('/parent', authMiddleware);
-// app.use('/principal', authMiddleware);
-// app.use('/student', authMiddleware);
-// app.use('/teacher', authMiddleware);
-
-// //test
-// app.get('/roles', async (req, res) => {
-//     try {
-//       const query = 'SELECT * FROM gradebook.roles';
-//       const { rows } = await pool.query(query);
-//       res.send(rows);
-//       console.log("Roles okay");
-
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).send('Internal Server Error');
-//     }
-//   });
-
-
-// // test
-// app.get('/users', async (req, res) => {
-//     try {
-//       const query = 'SELECT * FROM gradebook.users';
-//       const { rows } = await pool.query(query);
-//       res.send(rows);
-//       console.log("Users okay");
-
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).send('Internal Server Error');
-//     }
-//   });
-
-// app.use('/REST', require('./REST/routes/adminRoutes'));
-
+export default createApp;

@@ -6,11 +6,9 @@ import { calculateAritmeticAverage } from "../../../dependenciesAndRequirements/
 import { calculateWeightedAverage } from "../../../dependenciesAndRequirements/weightedAverage";
 import { expectedGrades } from "../../../dependenciesAndRequirements/expectedGrade";
 
-
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
@@ -22,17 +20,13 @@ export function TeacherMarks() {
   const [marks, setMarks] = useState([]);
   const [error, setError] = useState([]);
   const [isDataFilled, setIsDataFilled] = useState(false);
-
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedStudentId, setSelectedStudentId] = useState("");
   const [selectedGrade, setSelectedGrade] = useState(null);
-
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [open, setOpen] = useState(false);
   const [reloadData, setReloadData] = useState(false);
 
@@ -51,7 +45,7 @@ export function TeacherMarks() {
       setSelectedGrade(selectedMark);
     }
   };
-  
+
   const handleClose = () => {
     setOpen(false);
     setIsModalOpen(false);
@@ -90,9 +84,9 @@ export function TeacherMarks() {
 
   const formatDate = (date) => {
     const isoDate = new Date(date).toISOString();
-    return isoDate.split('T')[0];
+    return isoDate.split("T")[0];
   };
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -128,11 +122,9 @@ export function TeacherMarks() {
   const handleSelectChange = async (event) => {
     const { name, value } = event.target;
 
-    // Aktualizuj stan w zależności od zmienionego selecta
     switch (name) {
       case "class":
         setSelectedClass(value);
-        // Pobierz przedmioty dla wybranej klasy
         try {
           const subjectsData = await fetch(
             `${backendServer}/subjects/class/${value}`
@@ -170,7 +162,6 @@ export function TeacherMarks() {
         );
         const marks = await marksData.json();
         setMarks(marks);
-
         setIsDataFilled(true);
         console.log("Marks: ", marks);
       }
@@ -188,14 +179,11 @@ export function TeacherMarks() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  //-----
-  // Dodaj nowy stan do przechowywania szczegółów nowej oceny
   const [newGrade, setNewGrade] = useState({
     gradeValue: "",
     weight: "",
     description: "",
   });
-  
 
   const handleAddMarksResult = (successMessage, errorMessage) => {
     if (successMessage) {
@@ -223,11 +211,11 @@ export function TeacherMarks() {
             method: "DELETE",
           }
         );
-  
+
         if (response.status === 200) {
           console.log("Ocena została pomyślnie usunięta.");
           setSuccessMessage("Pomyślnie usunięto ocenę");
-          setReloadData(true); // Set the flag to reload data
+          setReloadData(true);
           window.location.reload();
           console.error(
             "Błąd podczas usuwania oceny. Odpowiedź serwera:",
@@ -241,11 +229,7 @@ export function TeacherMarks() {
       }
     }
   };
-  
-  
-  
 
-  // Funkcja obsługująca kliknięcie w przycisk plusa
   const handleAddGrade = (studentId) => {
     setSelectedStudentId(studentId);
     setIsModalOpen(true);
@@ -263,7 +247,6 @@ export function TeacherMarks() {
         const studentId =
           selectedStudentId || (students.length > 0 && students[0].student_id);
 
-        // If selectedGrade is not null, it means you are updating an existing grade
         if (selectedGrade) {
           await updateGrade(selectedGrade.grade_id);
         } else {
@@ -279,7 +262,6 @@ export function TeacherMarks() {
     }
   };
 
-  // Funkcja do dodawania nowej oceny
   const addGrade = async (studentId) => {
     try {
       const response = await fetch(`${backendServer}/add-marks`, {
@@ -315,7 +297,7 @@ export function TeacherMarks() {
 
   const updateGrade = async (gradeId) => {
     const formattedDate = formatDate(formData.date);
-  
+
     try {
       const response = await fetch(`${backendServer}/update-mark`, {
         method: "PUT",
@@ -331,14 +313,14 @@ export function TeacherMarks() {
           student_id: selectedStudentId,
         }),
       });
-  
+
       if (response.status === 201) {
         console.log("Ocena zaktualizowana pomyślnie.");
         setSuccessMessage("Pomyślnie zaktualizowano ocenę");
         setIsModalOpen(false);
         setReloadData(true);
-         // Set the flag to reload data
-         window.location.reload();
+        // Set the flag to reload data
+        window.location.reload();
       } else {
         console.error("Błąd aktualizacji oceny. Odpowiedź serwera:", response);
         setErrorMessage("Ocena nie została zaktualizowana");
@@ -348,18 +330,16 @@ export function TeacherMarks() {
       setErrorMessage("Ocena nie została zaktualizowana");
     }
   };
-  
 
-
-
-
-  const handleAddOrUpdateGrade = async (gradeId, studentId, isUpdate = false) => {
-    // ... (reszta kodu)
-  
+  const handleAddOrUpdateGrade = async (
+    gradeId,
+    studentId,
+    isUpdate = false
+  ) => {
     if (!isUpdate) {
       return;
     }
-  
+
     const selectedMark = marks.find((mark) => mark.grade_id === gradeId);
     if (selectedMark) {
       setNewGrade({
@@ -374,19 +354,18 @@ export function TeacherMarks() {
       setIsModalOpen(true);
     }
   };
-  
+
   const addOrUpdateGrade = async () => {
     try {
       if (!selectedStudentId) {
         console.error("Błąd dodania oceny: Brak wybranego ucznia.");
         return;
       }
-  
+
       if (students.length > 0) {
         const studentId =
           selectedStudentId || (students.length > 0 && students[0].student_id);
-  
-        // If selectedGrade is not null, it means you are updating an existing grade
+
         if (selectedGrade) {
           await updateGrade(selectedGrade.grade_id);
         } else {
@@ -414,20 +393,17 @@ export function TeacherMarks() {
         date: selectedMark.date,
       });
       setSelectedGrade(selectedMark);
-      setSelectedStudentId(selectedMark.student_id); // Dodaj tę linię
+      setSelectedStudentId(selectedMark.student_id);
       setIsModalOpen(true);
     }
   };
-  
-  
 
   useEffect(() => {
     if (reloadData) {
-      fetchData(); // Fetch data when reloadData flag changes
-      setReloadData(false); // Reset the flag
+      fetchData();
+      setReloadData(false);
     }
   }, [reloadData]);
-  //-----
 
   return (
     <div className="teacher-marks-container">
@@ -484,149 +460,182 @@ export function TeacherMarks() {
                   <th>Średnia arytmetyczna</th>
                   <th>Średnia ważona</th>
                   <th>Przewidywana ocena końcowa</th>
-                  {/* <th>Ocena końcowa</th> */}
                 </tr>
               </thead>
               <tbody>
-              {students.map((student, studentIndex) => (
-            <tr key={studentIndex}>
-              <td>{`${student.first_name} ${student.second_name}`}</td>
-              <td className="teacher-marks-td-grades">
-                <div className="grade-container">
-                  <div className="tooltip">
-{marks
-  .filter((mark) => mark.student_id === student.student_id)
-  .map((mark) => (
-    <div key={mark.grade_id} className="grade-container">
-      <div className="tooltip">
-        <button
-          className="bttn-student-marks"
-          // onClick={() => handleOpen(mark.grade_id)
-           onClick={() => handleEditGrade(mark.grade_id)}
-        >
-          {mark.grade_value}
-          <div className="tooltiptext">
-            <span>Waga: {mark.weight}</span>
-            <span>Opis: {mark.description}</span>
-            <span>Nauczyciel: {mark.teacher_name}</span>
-          </div>
-        </button>
-      </div>
-    </div>
-  ))}
-
-                  </div>
-                  <button onClick={() => handleAddGrade(student.student_id)}>
-                    +
-                  </button>
-                  <Modal
-                    open={isModalOpen}
-                    onClose={handleClose}
-                    aria-labelledby="parent-modal-title"
-                    aria-describedby="parent-modal-description"
-                  >
-  <Box sx={{ ...style }} className="modal-content">
-    <h2 className="teacher-topics-add-topic">
-      {selectedGrade ? 'Edytuj Ocenę:' : 'Dodaj Ocenę:'}
-    </h2>
-        Ocena:{" "}
-        <input
-          type="text"
-          name="grade_value"
-          onChange={handleChange}
-          value={formData.grade_value}
-        />{" "}
-        <br />
-        Waga:{" "}
-        <input
-          type="number"
-          min="0"
-          name="weight"
-          onChange={handleChange}
-          value={formData.weight}
-        />{" "}
-        <br />
-        Opis :{" "}
-        <input
-          type="text"
-          name="description"
-          onChange={handleChange}
-          value={formData.description}
-        />{" "}
-        <br />
-        Data :{" "}
-        <input
-          type="date"
-          name="date"
-          onChange={handleChange}
-          value={formatDate(formData.date)}
-        />{" "}
-        <br />
-        <Button onClick={() => addNewGrade()}>
-                      {selectedGrade ? 'Zaktualizuj Ocenę' : 'Dodaj Ocenę'}
-                    </Button>
-                    <Button onClick={() => handleDeleteGrade(selectedGrade.grade_id, selectedGrade.student_id)}>
-                    {selectedGrade ? 'Usuń Ocenę': ''}</Button>
-
-                    <Button onClick={handleClose}>Zamknij</Button>
-                  </Box>
-                </Modal>
-  </div>
-</td>
-
-                    <td>
-                      {calculateAritmeticAverage(
-                        marks
-                          .filter(
-                            (mark) => mark.student_id === student.student_id
-                          )
-                          .map((mark) => parseFloat(mark.grade_value))
-                      ).toFixed(2)}
+                {students.map((student, studentIndex) => (
+                  <tr key={studentIndex}>
+                    <td>{`${student.first_name} ${student.second_name}`}</td>
+                    <td className="teacher-marks-td-grades">
+                      <div className="grade-container">
+                        <div className="tooltip">
+                          {marks
+                            .filter(
+                              (mark) => mark.student_id === student.student_id
+                            )
+                            .map((mark) => (
+                              <div
+                                key={mark.grade_id}
+                                className="grade-container"
+                              >
+                                <div className="tooltip">
+                                  <button
+                                    className="bttn-student-marks"
+                                    onClick={() =>
+                                      handleEditGrade(mark.grade_id)
+                                    }
+                                  >
+                                    {mark.grade_value}
+                                    <div className="tooltiptext">
+                                      <span>Waga: {mark.weight}</span>
+                                      <span>Opis: {mark.description}</span>
+                                      <span>
+                                        Nauczyciel: {mark.teacher_name}
+                                      </span>
+                                    </div>
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                        <button
+                          onClick={() => handleAddGrade(student.student_id)}
+                        >
+                          +
+                        </button>
+                        <Modal
+                          open={isModalOpen}
+                          onClose={handleClose}
+                          aria-labelledby="parent-modal-title"
+                          aria-describedby="parent-modal-description"
+                        >
+                          <Box sx={{ ...style }} className="modal-content">
+                            <h2 className="teacher-topics-add-topic">
+                              {selectedGrade ? "Edytuj Ocenę:" : "Dodaj Ocenę:"}
+                            </h2>
+                            Ocena:{" "}
+                            <input
+                              type="text"
+                              name="grade_value"
+                              onChange={handleChange}
+                              value={formData.grade_value}
+                            />{" "}
+                            <br />
+                            Waga:{" "}
+                            <input
+                              type="number"
+                              min="0"
+                              name="weight"
+                              onChange={handleChange}
+                              value={formData.weight}
+                            />{" "}
+                            <br />
+                            Opis :{" "}
+                            <input
+                              type="text"
+                              name="description"
+                              onChange={handleChange}
+                              value={formData.description}
+                            />{" "}
+                            <br />
+                            Data :{" "}
+                            <input
+                              type="date"
+                              name="date"
+                              onChange={handleChange}
+                              value={formatDate(formData.date)}
+                            />{" "}
+                            <br />
+                            <Button onClick={() => addNewGrade()}>
+                              {selectedGrade
+                                ? "Zaktualizuj Ocenę"
+                                : "Dodaj Ocenę"}
+                            </Button>
+                            <Button
+                              onClick={() =>
+                                handleDeleteGrade(
+                                  selectedGrade.grade_id,
+                                  selectedGrade.student_id
+                                )
+                              }
+                            >
+                              {selectedGrade ? "Usuń Ocenę" : ""}
+                            </Button>
+                            <Button onClick={handleClose}>Zamknij</Button>
+                          </Box>
+                        </Modal>
+                      </div>
                     </td>
+
                     <td>
-        {marks &&
-          marks[student.student_id] &&
-          marks[student.student_id].length > 0 &&
-          (() => {
-            const grades = marks[student.student_id].map((mark) => parseFloat(mark.grade_value));
-            const weights = marks[student.student_id].map((mark) => parseInt(mark.weight));
+                      {marks &&
+                        (() => {
+                          console.log("marks1", marks);
+                          const aritmeticAverage = calculateAritmeticAverage(
+                            marks
+                              .filter(
+                                (mark) => mark.student_id === student.student_id
+                              )
+                              .map((mark) => parseFloat(mark.grade_value))
+                          ).toFixed(2);
+                          return aritmeticAverage;
+                        })()}
+                    </td>
 
-            console.log("Grades for student", student.student_id, ":", grades);
-            console.log("Weights for student", student.student_id, ":", weights);
+                    <td>
+                      {marks[student.student_id] &&
+                        (() => {
+                          const grades = marks[student.student_id].map((mark) =>
+                            parseFloat(mark.grade_value)
+                          );
+                          console.log("grades", grades);
+                          const weights = marks[student.student_id].map(
+                            (mark) => parseInt(mark.weight)
+                          );
+                          console.log("weights", weights);
 
-            const weightedAverage = calculateWeightedAverage(grades, weights).toFixed(2);
+                          const weightedAverage = calculateWeightedAverage(
+                            grades,
+                            weights
+                          ).toFixed(2);
 
-            console.log("Weighted Average for student", student.student_id, ":", weightedAverage);
+                          console.log(
+                            "Weighted Average for student",
+                            student.student_id,
+                            ":",
+                            weightedAverage
+                          );
 
-            return weightedAverage;
-          })()}
-      </td>
-      <td>
-        {marks &&
-          marks[student.student_id] &&
-          marks[student.student_id].length > 0 &&
-          (() => {
-            const grades = marks[student.student_id].map((mark) => parseFloat(mark.grade_value));
-            const weights = marks[student.student_id].map((mark) => parseInt(mark.weight));
+                          return weightedAverage;
+                        })()}
+                    </td>
 
-            const expectedGradeValue = expectedGrades(
-              calculateWeightedAverage(grades, weights).toFixed(2)
-            );
+                    <td>
+                      {marks &&
+                        marks[student.student_id] &&
+                        marks[student.student_id].length > 0 &&
+                        (() => {
+                          const grades = marks[student.student_id].map((mark) =>
+                            parseFloat(mark.grade_value)
+                          );
+                          const weights = marks[student.student_id].map(
+                            (mark) => parseInt(mark.weight)
+                          );
 
-            console.log("Expected Grade for student", student.student_id, ":", expectedGradeValue);
+                          const expectedGradeValue = expectedGrades(
+                            calculateWeightedAverage(grades, weights).toFixed(2)
+                          );
 
-            return expectedGradeValue;
-          })()}
-      </td>
+                          console.log(
+                            "Expected Grade for student",
+                            student.student_id,
+                            ":",
+                            expectedGradeValue
+                          );
 
-
-
-
- 
-                    {/* <td>
-
-                      <button type="button" id="finalGrade">+</button>
-                    </td> */}
+                          return expectedGradeValue;
+                        })()}
+                    </td>
                   </tr>
                 ))}
               </tbody>

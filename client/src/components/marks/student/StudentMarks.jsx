@@ -32,7 +32,6 @@ export function StudentMarks() {
           if (result.ok && userData.length > 0) {
             const studentId = userData[0].student_id;
 
-            // Pobierz tematy dla danego studenta i klasy
             const userMarksQuery = `${backendServer}/marks/${studentId}`;
             const userMarksResult = await fetch(userMarksQuery);
             const userMarksData = await userMarksResult.json();
@@ -51,7 +50,6 @@ export function StudentMarks() {
                 setSchoolClassSubjectData(schoolClassSubjectData);
                 setUserMarksData(userMarksData);
 
-                // Przygotuj dane do tabeli
                 const tableData = prepareTableData(userMarksData, schoolClassSubjectData);
 
                 setMarks(tableData);
@@ -76,13 +74,11 @@ export function StudentMarks() {
     fetchUserData();
   }, []);
 
-  // Przygotuj dane do tabeli
   const prepareTableData = (userMarksData, schoolClassSubjectData, weight) => {
     const tableData = [];
   
     schoolClassSubjectData.forEach((subject) => {
       const matchingMarks = userMarksData.filter((mark) => mark.subject_id === subject.subject_id);
-          // Reset arrays for each subject
     DataOfWeightMarks = [];
     DataOfDescriptionMarks = [];
     DataOfDescriptionTeacher = [];
@@ -96,11 +92,6 @@ export function StudentMarks() {
   
         const expectedGrade = expectedGrades(weightedAverage);
   
-// Assign values to the variables defined in the outer scope
-// DataOfWeightMarks = matchingMarks.map(mark => mark.weight);
-// DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
-  
-       // Assign values to the variables defined in the outer scope
       DataOfWeightMarks = matchingMarks.map(mark => mark.weight);
       DataOfDescriptionMarks = matchingMarks.map(mark => mark.description);
       DataOfDescriptionTeacher = matchingMarks.map(mark => mark.first_name + " " + mark.second_name);
@@ -151,7 +142,7 @@ export function StudentMarks() {
                 <th>Oceny</th>
                 <th>Średnia arytmetyczna</th>
                 <th>Średnia ważona</th>
-                <th>Przewidywana ocena</th>
+                <th>Ocena końcowa</th>
               </tr>
             </thead>
             <tbody>

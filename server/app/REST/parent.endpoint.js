@@ -1,7 +1,3 @@
-import business from '../business/business.container';
-import applicationException from '../service/applicationException';
-import login from '../middleware/login';
-import auth from '../middleware/auth';
 import pool from '../../db'; 
 const bcrypt = require("bcrypt");
 
@@ -19,7 +15,6 @@ const parentEndpoint = (app) => {
 
       const userId = parentRegister.rows[0].user_id;
 
-      // Dodaj informacje o rodzicu do tabeli rodziców
       const parentInfo = await pool.query('INSERT INTO gradebook.parents(user_id, student_id, street, building_number, apartment_number, zip_code, town, phone_number, school_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)',
         [userId, student_id, street, building_number, apartment_number, zip_code, town, phone_number, school_id]);
 

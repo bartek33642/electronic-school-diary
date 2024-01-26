@@ -1,8 +1,7 @@
 /**
- * Funkcja do obliczania średniej arytmetycznej ocen.
- * @param {Array} grades - Tablica ocen.
- * @param {number} weight - Waga ocen.
- * @returns {number} - Średnia arytmetyczna ocen.
+ * @param {Array} grades 
+ * @param {number} weight 
+ * @returns {number} 
  */
 export const calculateWeightedAverage = (grades, weights) => {
     if (grades.length === 0 || grades.length !== weights.length) {

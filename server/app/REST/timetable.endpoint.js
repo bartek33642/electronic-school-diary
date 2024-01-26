@@ -93,7 +93,6 @@ const timetableEndpoint = (app) => {
               const { school_id, class_id } = req.params;
               const { day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, subject_id, teacher_id, lesson_number, end_recurring_date } = req.body;
               try {
-                  // Fix SQL query syntax by adding commas between assignments in the SET clause
                   const updateTimetableQuery = `UPDATE gradebook.timetable 
                                                 SET day_of_week = $1, start_time = $2, end_time = $3, classroom = $4, 
                                                     is_substitution = $5, is_canceled = $6, is_recurring = $7, 

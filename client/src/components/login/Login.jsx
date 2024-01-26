@@ -1,4 +1,3 @@
-// Login.jsx
 import React, { useState } from "react";
 import "./Login.css";
 import imageEducation from "../../images/education.svg";
@@ -7,10 +6,7 @@ import { ajax } from "rxjs/ajax";
 import { catchError, map } from "rxjs/operators";
 import { of } from "rxjs";
 import { useNavigate } from "react-router-dom";
-// Utwórz obiekt historii
 import { backendServer } from "../../config";
-
-
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
@@ -19,7 +15,6 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -42,7 +37,6 @@ export function Login() {
         map((response) => response.response),
         catchError((error) => {
           console.error("Błąd logowania: ", error);
-          // setError("Nieprawidłowa odpowiedź serwera.");
           setSnackbarSeverity("error");
           setSnackbarMessage("Błąd logowania");
           setSnackbarOpen(true);
@@ -55,7 +49,7 @@ export function Login() {
           
           console.log("Token: ", data.token);
           localStorage.setItem("token", data.token);
-          localStorage.setItem("userEmail", email); // Dodaj to, aby przechować e-mail w Local Storage
+          localStorage.setItem("userEmail", email);
           Navigate("/role");
           setSnackbarSeverity("success");
           setSnackbarMessage("Pomyślnie zalogowano.");

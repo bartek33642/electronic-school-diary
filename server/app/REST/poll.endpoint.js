@@ -9,7 +9,6 @@ const pollEndpoint = (app) => {
       const pollQuery = 'SELECT user_id, title, active, created_at, school_id FROM gradebook.poll';
       const { rows } = await pool.query(pollQuery);
       res.send(rows);
-    //   console.log("Polls okay");
 
     } catch (error) {
       console.error(error);
@@ -23,7 +22,6 @@ const pollEndpoint = (app) => {
       const { rows } = await pool.query(pollcountQuery);
       const pollCount = parseInt(rows[0].count);
       res.send({ pollCount });
-    //   console.log("Polls count okay");
 
     } catch (error) {
       console.error(error);

@@ -17,7 +17,6 @@ export function AdminTimetable() {
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedLessonNumber, setSelectedLessonNumber] = useState("");
     const [selectedSchool, setSelectedSchool] = useState("");
-
     const [selectedStartTime, setSelectedStartTime] = useState("");
     const [selectedEndTime, setSelectedEndTime] = useState("");
     const [selectedClassroom, setSelectedClassroom] = useState("");
@@ -66,27 +65,6 @@ export function AdminTimetable() {
         };
         fetchSchoolData();
     }, [userData]);
-
-    // useEffect(() => {
-    //     const fetchClassData = async () => {
-    //         try {
-    //             if (userData.length > 0) {
-    //                 const schoolId = selectedSchool;
-
-    //                 const classQuery = `${backendServer}/classes/${schoolId}`;
-    //                 const result = await fetch(classQuery);
-    //                 const classData = await result.json();
-
-    //                 if (result.ok) {
-    //                     setClassData(classData);
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             console.error(error.message);
-    //         }
-    //     };
-    //     fetchClassData();
-    // }, [userData]);
 
     useEffect(() => {
         const fetchClassesForSchool = async (schoolId) => {
@@ -192,14 +170,11 @@ export function AdminTimetable() {
 
             if (response.ok) {
                 console.log('Timetable entry added successfully');
-                // Handle success (e.g., show a success message, reset form fields, etc.)
             } else {
                 console.error('Failed to add timetable entry');
-                // Handle failure (e.g., show an error message)
             }
         } catch (error) {
             console.error('Error adding timetable entry:', error);
-            // Handle error (e.g., show an error message)
         }
     };
 

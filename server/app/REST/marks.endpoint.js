@@ -37,7 +37,7 @@ const marksEndpoint = (app) => {
             try {
                 const marksQuery = `
                 SELECT gr.*, su.*, us.first_name, us.second_name
-                    FROM gradebook.grades gr
+                FROM gradebook.grades gr
                 INNER JOIN gradebook.subjects su ON gr.subject_id = su.subject_id
 				INNER JOIN gradebook.teachers te ON gr.teacher_id = te.teacher_id
 				INNER JOIN gradebook.users us ON te.user_id = us.user_id

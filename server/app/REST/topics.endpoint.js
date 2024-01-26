@@ -60,39 +60,11 @@ const topicsEndpoint = (app) => {
             }
           });
         
-
-        // app.post('/add-topics', async(req, res) => {
-        //     const { teacher_id, class_id, topic_text, description, date, subject_id } = req.body;
-        
-        //     try{
-        //         const addMarks = `INSERT INTO gradebook.topics(teacher_id, class_id, topic_text, description, date, subject_id) VALUES ($1, $2, $3, $4, $5, $6)`;
-        //         await pool.query(addMarks, [teacher_id, class_id, topic_text, description, date, subject_id]);
-        //         console.log("Dodano temat do bazy danych");
-      
-        //         res.status(201).json({ message: 'Temat dodany pomyślnie.' });
-        //     }catch(error){
-        //         console.error('Błąd dodania tematu:', error);
-        //         res.status(500).json({ error: 'Błąd dodania tematu' });
-        //     }
-        //   })
-
         app.post('/add-topic', async (req, res) => {
           const { teacher_id, class_id, topic_text, description, date, subject_id } = req.body;
       
           try {
-              // Sprawdź, czy nauczyciel, klasa i szkoła istnieją i są powiązane
-              // const checkQuery = `
-              //     SELECT *
-              //     FROM gradebook.teachers te
-              //     LEFT JOIN gradebook.classes cl ON te.school_id = cl.school_id
-              //     WHERE te.teacher_id = $1 AND cl.class_id = $2 AND cl.school_id = $3
-              // `;
-              // const checkResult = await pool.query(checkQuery, [teacher_id, class_id, school_id]);
-      
-              // if (checkResult.rows.length === 0) {
-              //     return res.status(400).json({ error: 'Nieprawidłowe dane nauczyciela lub klasy.' });
-              // }
-      
+     
               const addTopicQuery = `
                   INSERT INTO gradebook.topics(teacher_id, class_id, topic_text, description, date, subject_id)
                   VALUES ($1, $2, $3, $4, $5, $6)

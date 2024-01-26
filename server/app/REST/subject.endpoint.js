@@ -31,20 +31,6 @@ const subjectEndpoint = (app) => {
   });
 
 
-  // app.get('/subjects/class/:class_id', async (req, res) => {
-  //   const classId = req.params.class_id;
-
-  //   try {
-  //     const subjectsQuery = `SELECT * FROM gradebook.subjects
-  //     WHERE class_id = $1`;
-  //     const { rows } = await pool.query(subjectsQuery, [classId]);
-  //     res.send(rows);
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).send('Internal Server Error');
-  //   }
-  // });
-
   app.get('/subjects/class/:class_id', async (req, res) => {
     const classId = parseInt(req.params.class_id, 10);
 
@@ -53,7 +39,6 @@ const subjectEndpoint = (app) => {
       WHERE class_id = $1`;
       const { rows } = await pool.query(subjectsQuery, [classId]);
       
-      // Check if any rows were returned
       if (rows.length === 0) {
         res.status(404).send('No subjects found for the given class ID');
       } else {
@@ -81,26 +66,6 @@ const subjectEndpoint = (app) => {
     }
   })
 
-
-//   app.get('/subjects/:school_id/:class_id/:student_id', async (req, res) => {
-//     try {
-//         const { school_id, class_id, student_id } = req.params;
-
-//         // Przykładowe zapytanie SQL, dostosuj je do swojej bazy danych
-//         const subjectsQuery1 = `
-//             SELECT s.subject_id, s.subject_name, s.class_id, s.school_id
-//             FROM gradebook.subjects s
-//             WHERE s.school_id = $1 AND s.class_id = $2
-//         `;
-        
-//         const { rows } = await pool.query(subjectsQuery1, [school_id, class_id, student_id]);
-//         res.send(rows);
-
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
 
   app.post('/add-subjects', async(req, res) => {
     const { subject_name, school_id, class_id} = req.body;

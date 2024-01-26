@@ -13,10 +13,7 @@ export function AdminSubjects() {
     const [open, setOpen] = useState(false);
     const [schoolData, setSchoolData] = useState([]); 
     const [classData, setClassData] = useState([]);
-
     const [subjectData, setSubjectData] = useState([]); 
-    // console.log(subjectData);
-
     const [newSubjectName, setNewSubjectName] = useState('');
     const [selectedSchool, setSelectedSchool] = useState('');
     const [selectedClass, setSelectedClass] = useState('');
@@ -27,11 +24,10 @@ export function AdminSubjects() {
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
     useEffect(() => {
-      // Tutaj wykonaj zapytanie HTTP GET na serwer, aby pobrać dane o szkołach
       fetch(`${backendServer}/schools`)
         .then(response => response.json())
         .then(data => {
-          setSchoolData(data); // Ustaw dane w stanie
+          setSchoolData(data); 
         })
         .catch(error => {
           console.error(error);
@@ -39,11 +35,10 @@ export function AdminSubjects() {
   }, []);
 
   useEffect(() => {
-      // Tutaj wykonaj zapytanie HTTP GET na serwer, aby pobrać dane o szkołach
       fetch(`${backendServer}/classes`)
         .then(response => response.json())
         .then(data => {
-          setClassData(data); // Ustaw dane w stanie
+          setClassData(data); 
         })
         .catch(error => {
           console.error(error);
@@ -52,7 +47,6 @@ export function AdminSubjects() {
 
     const handleDeleteSubject = (subjectId) => {
         if (window.confirm('Czy na pewno chcesz usunąć ten przedmiot?')) {
-            // Wysyłamy żądanie DELETE do serwera
             console.log('Usuwanie przedmiotu o subject_id:', subjectId);
   
             fetch(`${backendServer}/subject/${subjectId}`, {
@@ -70,7 +64,6 @@ export function AdminSubjects() {
                       console.error(error);
                     });
                 } else {
-                  // Obsłuż błąd usuwania szkoły
                   console.error('Błąd usuwania szkoły');
                 }
               })
@@ -99,7 +92,7 @@ export function AdminSubjects() {
     const handleSchoolChange = (event) => {
       setSelectedSchool(event.target.value);
       setIsSchoolSelected(true);
-      setSelectedClass(''); // Wyczyść wybraną klasę po zmianie szkoły
+      setSelectedClass(''); 
 
     };
     
@@ -108,7 +101,6 @@ export function AdminSubjects() {
     };
     
     const handleAddSubject = () => {
-      // Wyślij dane do serwera za pomocą zapytania POST
       fetch(`${backendServer}/add-subjects`, {
         method: 'POST',
         headers: {
@@ -123,7 +115,6 @@ export function AdminSubjects() {
         .then(response => response.json())
         .then(data => {
           console.log('Odpowiedź z serwera:', data);
-          // Dodaj nowy przedmiot do lokalnego stanu, aby od razu zobaczyć zmiany
           setSubjectData([...subjectData, data]); 
           setSnackbarSeverity("success");
           setSnackbarMessage("Przedmiot dodany pomyślnie.");
@@ -136,7 +127,6 @@ export function AdminSubjects() {
           setSnackbarMessage("Błąd podczas dodawania przedmiotu.");
           setSnackbarOpen(true);
         });
-        // Po poprawnym dodaniu przedmiotu:
           setNewSubjectName('');
           setSelectedSchool('');
           setSelectedClass('');
@@ -203,10 +193,6 @@ export function AdminSubjects() {
             </button>),
     
       }));
-      // console.log("schoolData: ", schoolData);
-
-      // console.log("classData: ", classData);
-
 
     return(
         <div className="admin-subjects-container">
@@ -217,8 +203,7 @@ export function AdminSubjects() {
                 </h3>
 
                 <div className="admin-subjects-buttons">
-                    {/* <input type="button" value="Dodaj przedmioty" /> */}
-                    <input type="button" value="Przeglądaj przedmioty" onClick={handleOpen} />
+                    <input type="button" className="admin-subject-buttons" value="Przeglądaj przedmioty" onClick={handleOpen} />
                     <Modal
                 open={open}
                 onClose={handleClose}
@@ -240,7 +225,6 @@ export function AdminSubjects() {
               },
             }}
             pageSizeOptions={[7, 10]}
-            // checkboxSelection
           />
         </div>
 
@@ -281,12 +265,12 @@ export function AdminSubjects() {
   <input
     type="text"
     name="subject_name"
-    id="subject_name"
+    className="admin-form-input-subject-name"
     value={newSubjectName}
     onChange={handleSubjectNameChange}
-  />
+  /> <br />
 
-  <button type="button" onClick={handleAddSubject}>
+  <button type="button" className="admin-subject-button" onClick={handleAddSubject}>
     Dodaj przedmiot
   </button>
 </div>

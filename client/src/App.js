@@ -7,10 +7,14 @@ import {
   Navigate
 } from "react-router-dom";
 import {jwtDecode} from 'jwt-decode';
+import { isExpired } from 'react-jwt';
 
 import { Home } from './components/homepage/Home';
 import { Login } from './components/login/Login';
+import { Contact } from './components/contact/Contact';
+import { PrivacyPolicy } from './components/privacy_policy/PrivacyPolicy';
 import { NotFound } from './components/404/NotFound';
+
 import { RegisterAdmin } from './components/Register/RegisterAdmin';
 import { AdminDashboard } from './components/dashboard/admin/AdminDashboard';
 import { Role } from './components/role/Role';
@@ -61,37 +65,13 @@ import { TeacherSubjects } from './components/subjects/teacher/TeacherSubjects';
 import { TeacherTimetable } from './components/timetable/TeacherTimetable/TeacherTimetable';
 import { PrincipalMarks } from './components/marks/principal/PrincipalMarks';
 import { PrincipalTimetable } from './components/timetable/PrincipalTimetable/PrincipalTimetable';
-
-import { isExpired } from 'react-jwt';
 import { TeacherMarks } from './components/marks/teacher/TeacherMarks';
-
-import { Contact } from './components/contact/Contact';
-import { PrivacyPolicy } from './components/privacy_policy/PrivacyPolicy';
 import { PrincipalAttendance } from './components/attendance/principal/PrincipalAttendance';
 import { TeacherAttendance } from './components/attendance/teacher/TeacherAttendance';
 
+import { isLoggedIn } from './dependenciesAndRequirements/isLoggedIn';
+
 function App() {
-
-
-  // const checkRole = (expectedRole) => {
-  //   const token = localStorage.getItem("token");
-  //   if (isExpired(token)) {
-  //     return <Navigate replace to='/login' />;
-  //   }
-  //   const decodedToken = jwtDecode(token);
-  //   return decodedToken.role === expectedRole ? <RegisterAdmin /> : <Navigate replace to='/login' />;
-  // };
-
-  //   const withRoleCheck = (Component, expectedRole) => {
-  //   return () => {
-  //     const token = localStorage.getItem("token");
-  //     if (isExpired(token)) {
-  //       return <Navigate replace to='/login' />;
-  //     }
-  //     const decodedToken = jwtDecode(token);
-  //     return decodedToken.role === expectedRole ? <Component /> : <Navigate replace to='/login' />;
-  //   };
-  // };
 
   return (
 
@@ -104,26 +84,18 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/privacy-policy' element={<PrivacyPolicy />} />
 
-          {/* Do zmiany dodać zabezpieczeni ścieżek*/}
-          {/* <Route path='/role' element={<Role />} path="/role" />} /> */}
-
             <Route path="/role" element={
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/login' /> 
                 ) : ( <Role/>)
               }/>
             
-            {/* <Route path="/register-admin" component={<RegisterAdmin />} /> */}
 
             <Route path="/register-admin" element={
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/login' /> 
                 ) : ( <RegisterAdmin />)
               }/>
-            {/* <Route path="/register-admin" element={checkRole(1)} /> */}
-
-
-            {/* <Route path="/register-parent" component={<RegisterParent />} /> */}
             
             <Route path="/register-parent" element={
                 isExpired(localStorage.getItem("token")) ? (
@@ -131,15 +103,11 @@ function App() {
                 ) : ( <RegisterParent />)
               }/>
             
-            {/* <Route path="/register-principal" component={<RegisterPrincipal />} /> */}
-
             <Route path="/register-principal" element={
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/login' /> 
                 ) : ( <RegisterPrincipal />)
               }/>
-
-            {/* <Route path="/register-student" component={<RegisterStudent />} /> */}
 
             <Route path="/register-student" element={
                 isExpired(localStorage.getItem("token")) ? (
@@ -147,350 +115,247 @@ function App() {
                 ) : ( <RegisterStudent />)
               }/>
 
-            {/* <Route path="/register-teacher" component={<RegisterTeacher />} /> */}
             <Route path="/register-teacher" element={
                 isExpired(localStorage.getItem("token")) ? (
                 <Navigate replace to='/login' /> 
                 ) : ( <RegisterTeacher />)
               }/>
 
-
-            {/* <Route path="/admin" element={<AdminDashboard />} /> */}
             <Route path="/admin" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminDashboard />)
-              }/>
-              
-            {/* <Route path="/parent/:user_id/:parent_id" element={<ParentDashboard />} /> */}
+              isLoggedIn(1) ? <AdminDashboard /> :  <Navigate replace to='/login' /> 
+            }
+            />
+
             <Route path="/parent/:user_id/:parent_id" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <ParentDashboard />)
-              }/>
+              isLoggedIn(5) ? <ParentDashboard /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path="/student/:user_id/:student_id" element={<StudentDashboard />} /> */}
             <Route path="/student/:user_id/:student_id" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <StudentDashboard />)
-              }/>
+              isLoggedIn(4) ? <StudentDashboard /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path="/principal/:user_id/:principal_id" element={<PrincipalDashboard />} /> */}
             <Route path="/principal/:user_id/:principal_id" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <PrincipalDashboard />)
-              }/>
+              isLoggedIn(2) ? <PrincipalDashboard /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path="/teacher/:user_id/:teacher_id" element={<TeacherDashboard />} /> */}
-            <Route path="/teacher/:user_id/:teacher_id" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <TeacherDashboard />)
-              }/>
+              <Route path="/teacher/:user_id/:teacher_id" element={
+                isLoggedIn(3) ? <TeacherDashboard /> :  <Navigate replace to='/login' /> 
+              }
+              />
 
-            {/* <Route path="/users-admin" element={<AdminUsers />} /> */}
             <Route path="/users-admin" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminUsers />)
-              }/>
+                isLoggedIn(1) ? <AdminUsers /> :  <Navigate replace to='/login' /> 
+              }
+              />
 
-            {/* <Route path="/admin-settings" element={<AdminSettings />} /> */}
             <Route path="/admin-settings" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminSettings />)
-              }/>
+              isLoggedIn(1) ? <AdminSettings /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path="/student-timetable" element={<ParentStudentTimetable />} />*/}
             <Route path="/student-timetable" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <StudentTimetable />)
-              }/>
+              isLoggedIn(4) ? <StudentTimetable /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-              {/* <Route path="/parent-timetable" element={<ParentStudentTimetable />} />*/}
-              <Route path="/parent-timetable" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <ParentTimetable />)
-              }/>
 
-            {/* <Route path="/schools" element={<Schools />} /> */}
+            <Route path="/parent-timetable" element={
+              isLoggedIn(5) ? <ParentTimetable /> :  <Navigate replace to='/login' /> 
+            }
+            />
+
             <Route path="/schools" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <Schools />)
-              }/>
+              isLoggedIn(1) ? <Schools /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/admin-classes' element={<AdminClasses />} /> */}
             <Route path="/admin-classes" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminClasses />)
-              }/>
-
-            {/* <Route path='/admin-topics' element={<AdminTopics />} /> */}
+              isLoggedIn(1) ? <AdminClasses /> :  <Navigate replace to='/login' /> 
+            }
+            />
+            
             <Route path="/admin-topics" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminTopics />)
-            }/>
-
-            {/* <Route path='/admin-grades' element={<AdminMarks />} /> */}
+              isLoggedIn(1) ? <AdminTopics /> :  <Navigate replace to='/login' /> 
+            }
+            />
+                        
             <Route path="/admin-grades" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminMarks />)
-            }/>
+              isLoggedIn(1) ? <AdminMarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/student-marks' element={<StudentMarks />} /> */}
             <Route path="/student-marks" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <StudentMarks />)
-            }/>
+              isLoggedIn(4) ? <StudentMarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/admin-timetable' element={<AdminTimetable />} /> */}
             <Route path="/admin-timetable" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminTimetable />)
-            }/>
+              isLoggedIn(1) ? <AdminTimetable /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/admin-attendance' element={<AdminAttendance />} /> */}
             <Route path="/admin-attendance" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminAttendance />)
-            }/>
+              isLoggedIn(1) ? <AdminAttendance /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/admin-remarks' element={<AdminRemarks />}/> */}
             <Route path="/admin-remarks" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminRemarks />)
-            }/>
-
-            {/* <Route path='/admin-subjects' element={<AdminSubjects />} /> */}
+              isLoggedIn(1) ? <AdminRemarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
+            
             <Route path="/admin-subjects" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminSubjects />)
-            }/>
+              isLoggedIn(1) ? <AdminSubjects /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/admin-polls' element={<AdminPolls />} /> */}
             <Route path="/admin-polls" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <AdminPolls />)
-            }/>
+              isLoggedIn(1) ? <AdminPolls /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/student-attendance' element={<StudentAttendance/>}/> */}
             <Route path="/student-attendance" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <StudentAttendance />)
-            }/>
-
-            {/* <Route path='/parent-attendance' element={<ParentAttendance/>}/> */}
+              isLoggedIn(4) ? <StudentAttendance /> :  <Navigate replace to='/login' /> 
+            }
+            />
+            
             <Route path="/parent-attendance" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <ParentAttendance />)
-            }/>
-
-            {/* <Route path='/parent-topics' element={<ParentTopics/>}/> */}
+              isLoggedIn(5) ? <ParentAttendance /> :  <Navigate replace to='/login' /> 
+            }
+            />
+                       
             <Route path="/parent-topics" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <ParentTopics />)
-            }/>
-
-            {/* <Route path='/student-topics' element={<StudentTopics/>}/> */}
+              isLoggedIn(5) ? <ParentTopics /> :  <Navigate replace to='/login' /> 
+            }
+            />
+              
             <Route path="/student-topics" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <StudentTopics />)
-            }/>
+              isLoggedIn(4) ? <StudentTopics /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/student-subjects' element={<StudentSubjects/>}/> */}
             <Route path="/student-subjects" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <StudentSubjects />)
-            }/>
+              isLoggedIn(4) ? <StudentSubjects /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/student-remarks' element={<StudentRemarks />}/> */}
             <Route path="/student-remarks" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <StudentRemarks />)
-            }/>
+              isLoggedIn(4) ? <StudentRemarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/parent-remarks' element={<ParentRemarks />}/> */}
             <Route path="/parent-remarks" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <ParentRemarks />)
-            }/>
+              isLoggedIn(5) ? <ParentRemarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/student-settings' element={<StudentSettings />}/> */}
             <Route path="/student-settings" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <StudentSettings />)
-            }/>
+              isLoggedIn(4) ? <StudentSettings /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/parent-settings' element={<ParentSettings />}/> */}
             <Route path="/parent-settings" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <ParentSettings />)
-            }/>
+              isLoggedIn(5) ? <ParentSettings /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/principal-settings' element={<PrincipalSettings />}/> */}
             <Route path="/principal-settings" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <PrincipalSettings />)
-            }/>
-            
-            {/* <Route path='/teacher-settings' element={<TeacherSettings />}/> */}
+              isLoggedIn(2) ? <PrincipalSettings /> :  <Navigate replace to='/login' /> 
+            }
+            />
+
             <Route path="/teacher-settings" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <TeacherSettings />)
-            }/>
+              isLoggedIn(3) ? <TeacherSettings /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/principal-users' element={<PrincipalUsers />}/> */}
             <Route path="/principal-users" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <PrincipalUsers />)
-            }/>
-            
-            {/* <Route path='/principal-classes' element={<PrincipalClasses />}/> */}
+              isLoggedIn(2) ? <PrincipalUsers /> :  <Navigate replace to='/login' /> 
+            }
+            />
+
             <Route path="/principal-classes" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <PrincipalClasses />)
-            }/>
+              isLoggedIn(2) ? <PrincipalClasses /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/principal-topics' element={<PrincipalTopics />}/> */}
             <Route path="/principal-topics" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <PrincipalTopics />)
-            }/>
+              isLoggedIn(2) ? <PrincipalTopics /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/principal-remarks' element={<PrincipalRemarks />}/> */}
             <Route path="/principal-remarks" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <PrincipalRemarks />)
-            }/>
+              isLoggedIn(2) ? <PrincipalRemarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/principal-subjects' element={<PrincipalSubjects />}/> */}
             <Route path="/principal-subjects" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <PrincipalSubjects />)
-            }/>
+              isLoggedIn(2) ? <PrincipalSubjects /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/parent-subjects' element={<ParentSubjects />}/> */}
             <Route path="/parent-subjects" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <ParentSubjects />)
-            }/>
+              isLoggedIn(5) ? <ParentSubjects /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/parent-grades' element={<ParentMarks />}/> */}
             <Route path="/parent-grades" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <ParentMarks />)
-            }/>
+              isLoggedIn(5) ? <ParentMarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/teacher-remarks' element={<TeacherRemarks />}/> */}
             <Route path="/teacher-remarks" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <TeacherRemarks />)
-            }/>
+              isLoggedIn(3) ? <TeacherRemarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/teacher-classes' element={<TeacherClasses />} /> */}
             <Route path="/teacher-classes" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <TeacherClasses />)
-            }/>
+              isLoggedIn(3) ? <TeacherClasses /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/teacher-topics' element={<TeacherTopics />} /> */}
             <Route path="/teacher-topics" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <TeacherTopics />)
-            }/>
+              isLoggedIn(3) ? <TeacherTopics /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/teacher-subjects' element={<TeacherSubjects />} />  */}
             <Route path="/teacher-subjects" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <TeacherSubjects/>)
-              
-              }/>
+              isLoggedIn(3) ? <TeacherSubjects /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/teacher-marks' element={<TeacherMarks />} />  */}
             <Route path="/teacher-marks" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <TeacherMarks/>)
-              
-              }/>
+              isLoggedIn(3) ? <TeacherMarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/teacher-timetable' element={<TeacherTimetable />} />  */}
             <Route path="/teacher-timetable" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/login' /> 
-                ) : ( <TeacherTimetable/>)
-              
-              }/>
+              isLoggedIn(3) ? <TeacherTimetable /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/principal-grades' element={<PrincipalMarks />} />  */}
             <Route path="/principal-grades" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/principal-grades' /> 
-                ) : ( <PrincipalMarks/>)
-              
-              }/>
+              isLoggedIn(2) ? <PrincipalMarks /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/principal-attendance' element={<PrincipalAttendance />} />  */}
             <Route path="/principal-attendance" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/principal-attendance' /> 
-                ) : ( <PrincipalAttendance/>)
-              
-              }/>
+              isLoggedIn(2) ? <PrincipalAttendance /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/teacher-attendance' element={<TeacherAttendance />} />  */}
             <Route path="/teacher-attendance" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/teacher-attendance' /> 
-                ) : ( <TeacherAttendance/>)
-              
-              }/>
+              isLoggedIn(3) ? <TeacherAttendance /> :  <Navigate replace to='/login' /> 
+            }
+            />
 
-            {/* <Route path='/principal-timetable' element={<PrincipalTimetable />} />  */}
-            <Route path="/principal-timetable" element={
-                isExpired(localStorage.getItem("token")) ? (
-                <Navigate replace to='/principal-timetable' /> 
-                ) : ( <PrincipalTimetable/>)
-              
-              }/>
-         
+             <Route path="/principal-timetable" element={
+              isLoggedIn(2) ? <PrincipalTimetable /> :  <Navigate replace to='/login' /> 
+            }
+            />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

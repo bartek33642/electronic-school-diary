@@ -21,7 +21,6 @@ const classEndpoint = (app) => {
 
       const { rows } = await pool.query(classesQuery);
       res.send(rows);
-    //   console.log("Classes okay");
 
     } catch (error) {
       console.error(error);
@@ -47,7 +46,6 @@ const classEndpoint = (app) => {
 
       const { rows } = await pool.query(classesQuery, [school_id]);
       res.send(rows);
-    //   console.log("Classes okay");
 
     } catch (error) {
       console.error(error);

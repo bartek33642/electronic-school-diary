@@ -43,13 +43,12 @@ export function TeacherTimetable() {
             const studentParentData = await result2.json();
             console.log("studentParentData: ", studentParentData);
 
-            if (result2.ok && studentParentData.length > 0) { // Poprawiona linijka
+            if (result2.ok && studentParentData.length > 0) { 
               const timetableQuery = `${backendServer}/timetable/${studentParentData[0].school_id}/${studentParentData[0].class_id}`;
               const timetableResult = await fetch(timetableQuery);
               const timetableData = await timetableResult.json();
               console.log('Timetable data: ', timetableData);
 
-              // Dodaj ten log, aby sprawdzić, kiedy ustawiane są dane kalendarza
               console.log('Setting scheduler data:', timetableData);
               setTimetableData(timetableData);
             }
@@ -82,7 +81,6 @@ export function TeacherTimetable() {
 
       
       if (is_recurring) {
-        // Jeśli zajęcia są cykliczne, dodaj regułę do powtarzania
         const endRecurringDate = new Date(end_recurring_date);
         const untilDate = new Date(endRecurringDate.getTime() + 86400000); 
         const untilDateString = untilDate.toISOString().split('T')[0].replace(/-/g, ''); 
@@ -118,12 +116,3 @@ export function TeacherTimetable() {
     );
 
 }
-// export function TeacherTimetable() {
-//     return (
-//         <div className="teacher-timetable-container">
-//             <TeacherMenu />
-//             <div className="teacher-timetable-elements">
-
-//             </div>
-//         </div>
-//     );}

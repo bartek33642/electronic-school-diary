@@ -1,58 +1,3 @@
-// import PasswordDAO from '../DAO/passwordDAO';
-// import TokenDAO from '../DAO/tokenDAO';
-// import UserDAO from '../DAO/userDAO';
-// import crypto from 'crypto';
- 
-// function create(context) {
-
-//   function hashString(password) {
-//     const sha256Hash = crypto.createHash('sha256');
-//     sha256Hash.update(password);
-//     return sha256Hash.digest('hex');
-//   }
-
-//   async function authenticate(name, password) {
-//     let userData;
-//     const user = await UserDAO.getUserByEmail(name);
-//     if (!user) {
-//       throw applicationException.new(applicationException.UNAUTHORIZED, 'User with that email does not exist');
-//     }
-//     userData = await user;
-//     await PasswordDAO.authorize(user.id, hashString(password));
-//     const token = await TokenDAO.create(userData);
-//     return getToken(token);
-//   }
-
-//   function getToken(token) {
-//     return { token: token.value };
-//   }
-
-//   async function createNewOrUpdate(userData) {
-//     const user = await UserDAO.createNewOrUpdate(userData);
-//     if (await userData.password) {
-//       return await PasswordDAO.createOrUpdate({ userId: user.id, password: hashString(userData.password) });
-//     } else {
-//       return user;
-//     }
-//   }
-
-//   async function removeHashSession(userId) {
-//     return await TokenDAO.remove(userId);
-//   }
-
-//   return {
-//     authenticate: authenticate,
-//     createNewOrUpdate: createNewOrUpdate,
-//     removeHashSession: removeHashSession
-//   };
-// }
-
-// export default {
-//   create: create
-// };
-
-
-// app/business/user.manager.js
 import UserDAO from '../DAO/userDAO';
 import PasswordDAO from '../DAO/passwordDAO';
 import TokenDAO from '../DAO/tokenDAO';
@@ -77,14 +22,10 @@ function create(context) {
       throw applicationException.new(applicationException.UNAUTHORIZED, 'Invalid password');
     }
 
-    const token = await TokenDAO.createToken(userData); // Poprawiona nazwa funkcji
+    const token = await TokenDAO.createToken(userData); 
     console.log(token);
     return token;
   }
-
-  // function getToken(token) {
-  //   return { token: token };
-  // }
 
   async function createNewOrUpdate(userData) {
     const user = await UserDAO.createNewOrUpdate(userData);
@@ -96,24 +37,15 @@ function create(context) {
     return user;
   }
 
-  // async function removeHashSession(userId) {
-  //   return await TokenDAO.remove(userId);
-  // }
-
   async function removeHashSession(token) {
     try {
-        // Weryfikacja tokenu
         const decodedToken = jwt.verify(token, config.JwtSecret);
-
-        // Usunięcie sesji użytkownika
         const result = await TokenDAO.remove(decodedToken.user_id);
         console.log("result server: ", result);
 
-        // Odpowiedź sukcesem
         return { message: 'Wylogowano pomyślnie' };
     } catch (error) {
         console.error('Błąd wylogowania:', error);
-        // Odpowiedź błędem
         throw applicationException.new(applicationException.UNAUTHORIZED, 'Błąd z wylogowaniem');
     }
 }

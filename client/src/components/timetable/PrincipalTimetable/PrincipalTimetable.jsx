@@ -153,14 +153,11 @@ export function PrincipalTimetable() {
 
             if (response.ok) {
                 console.log('Timetable entry added successfully');
-                // Handle success (e.g., show a success message, reset form fields, etc.)
             } else {
                 console.error('Failed to add timetable entry');
-                // Handle failure (e.g., show an error message)
             }
         } catch (error) {
             console.error('Error adding timetable entry:', error);
-            // Handle error (e.g., show an error message)
         }
     };
 
@@ -171,8 +168,8 @@ export function PrincipalTimetable() {
             <div className="principal-timetable-elements">
                 <h2>Plan zajęć</h2>
 
-                <input type="button" value="Sprawdź plan zajęć klasy" /> <br />
-                <input type="button" value="Sprawdź plan zajęć nauczyciela" />
+                <button type="button" > Sprawdź plan zajęć klasy </button><br />
+                <button type="button" >Sprawdź plan zajęć nauczyciela </button>
 
                 <div className="principal-timetable-form">
                     <h3>Dodaj plan zajęć</h3>

@@ -317,7 +317,7 @@ export function PrincipalAttendance() {
         <input
           type="date"
           name="date"
-          id="id"
+          className="date_input"
           onChange={(e) => setSelectedDate(e.target.value)}
         ></input>
 

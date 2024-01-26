@@ -9,7 +9,6 @@ const schoolEndpoint = (app) => {
         "SELECT school_id, school_name, town, street, building_number, apartment_number, zip_code FROM gradebook.schools";
       const { rows } = await pool.query(schoolsQuery);
       res.send(rows);
-      //   console.log("Schools okay");
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
@@ -22,7 +21,6 @@ const schoolEndpoint = (app) => {
       const { rows } = await pool.query(schoolcountQuery);
       const schoolCount = parseInt(rows[0].count);
       res.send({ schoolCount });
-      //   console.log("Schools count okay");
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");

@@ -77,33 +77,10 @@ const attendanceEnpoint = (app) => {
         }
       });
 
-    //   app.post('/add-attendance', async (req, res) => {
-    //     const { date, status, student_id, teacher_id, class_id, lesson_number } = req.body;
-    
-    //     // Dodaj warunek sprawdzający, czy student_id nie jest null
-    //     if (student_id === null || student_id === undefined) {
-    //         return res.status(400).json({ error: 'Nieprawidłowy identyfikator studenta.' });
-    //     }
-    
-    //     try {
-    //         const addAttendance = `
-    //             INSERT INTO gradebook.attendance(date, status, student_id, teacher_id, class_id, lesson_number)
-    //             VALUES ($1, $2, $3, $4, $5, $6)
-    //         `;
-    //         await pool.query(addAttendance, [date, status, student_id, teacher_id, class_id, lesson_number]);
-    //         console.log("Dodano frekwencję do bazy danych");
-    
-    //         res.status(201).json({ message: 'Frekwencja dodana pomyślnie.' });
-    //     } catch (error) {
-    //         console.error('Błąd dodania frekwencji:', error);
-    //         res.status(500).json({ error: 'Błąd dodania frekwencji', details: error.detail || error.message });
-    //     }
-    // });
 
     app.post('/add-attendance', async (req, res) => {
       const { date, status, student_id, teacher_id, class_id, lesson_number } = req.body;
     
-      // Dodaj warunek sprawdzający, czy student_id nie jest null
       if (student_id === null || student_id === undefined) {
         return res.status(400).json({ error: 'Nieprawidłowy identyfikator studenta.' });
       }
@@ -119,7 +96,6 @@ const attendanceEnpoint = (app) => {
         `, [date, student_id, class_id, lesson_number]);
     
         if (attendanceExists.length > 0) {
-          // Dane już istnieją, więc je podmieniamy
           const updateAttendance = `
             UPDATE gradebook.attendance
             SET status = $1
@@ -133,7 +109,6 @@ const attendanceEnpoint = (app) => {
     
           res.status(200).json({ message: 'Frekwencja zaktualizowana pomyślnie.' });
         } else {
-          // Dane nie istnieją, więc je dodajemy
           const addAttendance = `
             INSERT INTO gradebook.attendance(date, status, student_id, teacher_id, class_id, lesson_number)
             VALUES ($1, $2, $3, $4, $5, $6)

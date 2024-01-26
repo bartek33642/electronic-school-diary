@@ -19,6 +19,12 @@
 
 .principal-timetable-hr{
     border: black solid 1px;
-    width: 100%;
+    width: 80%;
 }
 
+
+.principal-timetable-form input{
+    border-radius: 10px;
+    width: 80%;
+
+}
