@@ -18,7 +18,6 @@ const studentEndpoint = (app) => {
       const studentInfo = await pool.query('INSERT INTO gradebook.students(user_id, pesel, street, building_number, apartment_number, zip_code, town, phone_number, school_id, class_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
         [userId, pesel, street, building_number, apartment_number, zip_code, town, phone_number, school_id, class_id]);
 
-      console.log("Dodano nowego ucznia do bazy danych:", studentInfo.rows);
 
       res.status(201).json({ message: 'Uczeń zarejestrowany pomyślnie.', user_id: userId });
     } catch (error) {
@@ -59,7 +58,6 @@ const studentEndpoint = (app) => {
         res.status(500).send('Internal Server Error');
       }
     } )
-  
 
 
 app.get('/student-parent/:student_id', async (req, res) => {

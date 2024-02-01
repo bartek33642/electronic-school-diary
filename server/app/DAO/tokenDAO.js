@@ -9,7 +9,6 @@ function createToken(payload) {
   }
 
   const token = jwt.sign(payload, config.JwtSecret, { expiresIn: '1h' });
-  console.log("token: ", token);
   return token;
 }
 
@@ -43,15 +42,12 @@ function remove(token) {
 
     if (tokenIndex !== -1) {
       storedTokens.splice(tokenIndex, 1);
-      console.log("Token removed:", token);
 
       const newToken = createToken({ user_id: decodedToken.user_id, email: decodedToken.email });
-      console.log("New token created:", newToken);
       storedTokens.push({ user_id: decodedToken.user_id, token: newToken });
 
       return newToken;
     } else {
-      console.log("Token not found:", token);
       throw applicationException.new(applicationException.UNAUTHORIZED, 'Token not found');
     }
   } catch (error) {

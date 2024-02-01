@@ -78,7 +78,6 @@ const timetableEndpoint = (app) => {
             try {
                 const addTimetableQuery = `INSERT INTO gradebook.timetable(day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
                 await pool.query(addTimetableQuery, [day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, class_id, subject_id, teacher_id, lesson_number, end_recurring_date]);
-                console.log("Dodano zajęcie do planu lekcji do bazy danych");
 
                 res.status(201).json({ message: 'Zajęcie do planu lekcji dodany pomyślnie.' });
 
@@ -101,7 +100,6 @@ const timetableEndpoint = (app) => {
                                                 WHERE school_id = $12 AND class_id = $13 `;
                   await pool.query(updateTimetableQuery, [day_of_week, start_time, end_time, classroom, is_substitution, is_canceled, is_recurring, subject_id, teacher_id, lesson_number, end_recurring_date, school_id, class_id]);
  
-                  console.log("Timetable updated successfully");
                   res.status(200).send('Timetable updated successfully');
               } catch (error) {
                   console.error("Error updating timetable:", error);

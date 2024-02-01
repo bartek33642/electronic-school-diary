@@ -71,7 +71,6 @@ const topicsEndpoint = (app) => {
               `;
               await pool.query(addTopicQuery, [teacher_id, class_id, topic_text, description, date, subject_id]);
       
-              console.log('Dodano temat do bazy danych');
               res.status(201).json({ message: 'Temat dodany pomyślnie.' });
           } catch (error) {
               console.error('Błąd dodania tematu:', error);
@@ -103,7 +102,6 @@ const topicsEndpoint = (app) => {
                 try{
                     const addMarks = `INSERT INTO gradebook.topics(teacher_id, class_id, topic_text, description, date, subject_id) VALUES ($1, $2, $3, $4, $5, $6)`;
                     await pool.query(addMarks, [teacher_id, class_id, topic_text, description, date, subject_id]);
-                    console.log("Dodano temat do bazy danych");
           
                     res.status(201).json({ message: 'Temat dodany pomyślnie.' });
                 }catch(error){
@@ -160,7 +158,6 @@ const topicsEndpoint = (app) => {
                 const deleteTopicQuery = 'DELETE FROM gradebook.topics WHERE topic_id = $1';
                 await pool.query(deleteTopicQuery, [topicId]);
             
-                console.log('Usunięto temat z bazy danych');
                 res.status(204).end();
               } catch (error) {
                 console.error('Błąd usuwania tematu:', error);

@@ -1,84 +1,75 @@
 import React, { useState, useEffect } from "react";
-import './TeacherSubjects.css';
-import { DataGrid } from '@mui/x-data-grid';
+import "./TeacherSubjects.css";
+import { DataGrid } from "@mui/x-data-grid";
 import { TeacherMenu } from "../../menu/teacher/TeacherMenu";
 import { backendServer } from "../../../config";
 
-export function TeacherSubjects(){
+export function TeacherSubjects() {
+  const [userData, setUserData] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [error, setError] = useState(null);
 
-    const [userData, setUserData] = useState([]);
-    const [subjects, setSubjects] = useState([]);
-    const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userEmail = localStorage.getItem("userEmail");
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-          try {
-            const userEmail = localStorage.getItem("userEmail");
-    
-            if (userEmail) {
-              const userQuery = `${backendServer}/users-school-student/${userEmail}`;
-              const result = await fetch(userQuery);
-              const userData = await result.json();
-              console.log("userData: ", userData);
-              if (result.ok) {
-                setUserData(userData);
-              
-                if (userData.length > 0) {
-                  const schoolId = userData[0].school_id;
-              
-                  // Pobierz tematy dla danego studenta i klasy
-                  const subjectsQuery = `${backendServer}/subjects-all-classes-teacher/${schoolId}`;
-                  const subjectsResult = await fetch(subjectsQuery);
-                  console.log("subjectsResult: ",subjectsResult)
-                  const subjectsData = await subjectsResult.json();
-                  console.log("subjectsData: ", subjectsData)
-                  
-                  if (subjectsResult.ok) {
-                    setSubjects(subjectsData);
-                  } else {
-                    setError("Błąd pobierania danych z tematami.");
-                  }
-                } else {
-                  setError("Błąd pobierania danych użytkownika: brak danych.");
-                }
+        if (userEmail) {
+          const userQuery = `${backendServer}/users-school-student/${userEmail}`;
+          const result = await fetch(userQuery);
+          const userData = await result.json();
+          if (result.ok) {
+            setUserData(userData);
+
+            if (userData.length > 0) {
+              const schoolId = userData[0].school_id;
+
+              const subjectsQuery = `${backendServer}/subjects-all-classes-teacher/${schoolId}`;
+              const subjectsResult = await fetch(subjectsQuery);
+              const subjectsData = await subjectsResult.json();
+
+              if (subjectsResult.ok) {
+                setSubjects(subjectsData);
               } else {
-                setError("Błąd pobierania danych użytkownika.");
+                setError("Błąd pobierania danych z tematami.");
               }
             } else {
-              setError("Brak dostępu do adresu e-mail zalogowanego użytkownika.");
+              setError("Błąd pobierania danych użytkownika: brak danych.");
             }
-    
-          } catch (error) {
-            console.error(error);
-            setError("Wystąpił błąd podczas pobierania danych użytkownika.");
+          } else {
+            setError("Błąd pobierania danych użytkownika.");
           }
-        };
-    
-        fetchUserData();
-      }, []);
+        } else {
+          setError("Brak dostępu do adresu e-mail zalogowanego użytkownika.");
+        }
+      } catch (error) {
+        console.error(error);
+        setError("Wystąpił błąd podczas pobierania danych użytkownika.");
+      }
+    };
 
-      const columns = [
-        { field: 'subject_id', headerName: 'ID', width: 100},
-        { field: 'subject_name', headerName: 'Nazwa przedmiotu', width: 160},
-        { field: 'class_name', headerName: 'Nazwa klasy', width: 130 },
+    fetchUserData();
+  }, []);
 
-    
-      ];
-    
-    
-      const rows = subjects.map(subject => ({
-        subject_id: subject.subject_id,
-        subject_name: subject.subject_name,
-        class_name: subject.class_name,
-      }));
+  const columns = [
+    { field: "subject_id", headerName: "ID", width: 100 },
+    { field: "subject_name", headerName: "Nazwa przedmiotu", width: 160 },
+    { field: "class_name", headerName: "Nazwa klasy", width: 130 },
+  ];
 
-    return(
-        <div className="teacher-subjects-container">
-            <TeacherMenu />
-            <div className="teacher-subjects-elements">
-                <h2>Przedmioty</h2>
+  const rows = subjects.map((subject) => ({
+    subject_id: subject.subject_id,
+    subject_name: subject.subject_name,
+    class_name: subject.class_name,
+  }));
 
-                <div>
+  return (
+    <div className="teacher-subjects-container">
+      <TeacherMenu />
+      <div className="teacher-subjects-elements">
+        <h2>Przedmioty</h2>
+
+        <div>
           <DataGrid
             rows={rows}
             columns={columns}
@@ -90,11 +81,9 @@ export function TeacherSubjects(){
               },
             }}
             pageSizeOptions={[7, 10]}
-            // checkboxSelection
           />
         </div>
-
-            </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 }

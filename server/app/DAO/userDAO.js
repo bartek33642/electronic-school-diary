@@ -6,7 +6,6 @@ async function getUserByEmail(emailOrName) {
   try {
     const result = await pool.query(query, values);
     const user = result.rows[0];
-    console.log('getUserByEmail - User:', user);
     return user;
   } catch (error) {
     console.error('getUserByEmail - Error:', error);

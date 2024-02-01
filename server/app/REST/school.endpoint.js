@@ -42,7 +42,6 @@ const schoolEndpoint = (app) => {
         `INSERT INTO gradebook.schools(school_name, town, street, building_number, apartment_number, zip_code) VALUES ($1, $2, $3, $4, $5, $6)`,
         [school_name, town, street, building_number, apartment_number, zip_code]
       );
-      console.log("dodano szkołę do bazy danych");
 
       res.status(201).json({ message: "Szkoła dodana pomyślnie." });
     } catch (error) {
@@ -74,7 +73,6 @@ const schoolEndpoint = (app) => {
         zip_code,
         school_id,
       ]);
-      console.log("Edytowano szkołę w bazie danych");
 
       res.status(201).json({ message: "Szkoła zedytowana pomyślnie." });
     } catch (error) {
@@ -95,14 +93,12 @@ const schoolEndpoint = (app) => {
         const deleteClassesQuery =
           "DELETE FROM gradebook.classes WHERE school_id = $1";
         await pool.query(deleteClassesQuery, [schoolId]);
-        console.log("Usunięto klasy przypisane do szkoły");
       }
 
       const deleteSchoolQuery =
         "DELETE FROM gradebook.schools WHERE school_id = $1";
       await pool.query(deleteSchoolQuery, [schoolId]);
 
-      console.log("Usunięto szkołę z bazy danych");
       res.status(204).end();
     } catch (error) {
       console.error("Błąd usuwania szkoły:", error);

@@ -1,43 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { ajax } from 'rxjs/ajax';
-import { catchError, map } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { ajax } from "rxjs/ajax";
+import { catchError, map } from "rxjs/operators";
+import { of } from "rxjs";
 import { backendServer } from "../../../../config";
-import './PrincipalUsersAdd.css';
+import "./PrincipalUsersAdd.css";
 export function PrincipalStudentAdd(props) {
   const [schools, setSchools] = useState([]);
   const [userData, setUserData] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [selectedSchool, setSelectedSchool] = useState('');
-  const [selectedClass, setSelectedClass] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [pesel, setPesel] = useState('');
+  const [selectedSchool, setSelectedSchool] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [pesel, setPesel] = useState("");
   const [isActive, setIsActive] = useState(false);
-  const [street, setStreet] = useState('');
-  const [buildingNumber, setBuildingNumber] = useState('');
-  const [apartmentNumber, setApartmentNumber] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [town, setTown] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [street, setStreet] = useState("");
+  const [buildingNumber, setBuildingNumber] = useState("");
+  const [apartmentNumber, setApartmentNumber] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [town, setTown] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userEmail = localStorage.getItem("userEmail");
-  
+
         if (userEmail) {
           const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
-  
+
           if (result.ok && userData.length > 0) {
             setUserData(userData);
           } else {
@@ -51,46 +50,58 @@ export function PrincipalStudentAdd(props) {
         setError("Wystąpił błąd podczas pobierania danych użytkownika.");
       }
     };
-  
+
     fetchUserData();
   }, []);
-  
+
   useEffect(() => {
     if (userData.length > 0) {
       const schoolId = userData[0].school_id;
       fetch(`${backendServer}/classes/${schoolId}`)
         .then((response) => response.json())
         .then((data) => setClasses(data))
-        .catch((error) => console.error('Błąd pobierania klas:', error));
+        .catch((error) => console.error("Błąd pobierania klas:", error));
     }
   }, [userData]);
-  
+
   const handleRegister = (e) => {
-    setErrorMessage('');
-    setSuccessMessage('');
+    setErrorMessage("");
+    setSuccessMessage("");
     e.preventDefault();
 
-    if (!email || !password || !firstName || !lastName || !pesel  || !selectedClass || !classes || !street || !buildingNumber || !zipCode || !town) {
-      setErrorMessage("Wszystkie pola są wymagane."); // Ustaw komunikat o błędzie
+    if (
+      !email ||
+      !password ||
+      !firstName ||
+      !lastName ||
+      !pesel ||
+      !selectedClass ||
+      !classes ||
+      !street ||
+      !buildingNumber ||
+      !zipCode ||
+      !town
+    ) {
+      setErrorMessage("Wszystkie pola są wymagane.");
       return;
-  }
+    }
 
-  const registrationData = {
-    email,
-    password,
-    active: isActive,
-    first_name: firstName,
-    second_name: lastName,
-    pesel,
-    class_id: selectedClass,
-    school_id: userData[0].school_id,
-    street,
-    building_number: buildingNumber,
-    apartment_number: apartmentNumber,
-    zip_code: zipCode,
-    town,
-    phone_number: phoneNumber
-  };
+    const registrationData = {
+      email,
+      password,
+      active: isActive,
+      first_name: firstName,
+      second_name: lastName,
+      pesel,
+      class_id: selectedClass,
+      school_id: userData[0].school_id,
+      street,
+      building_number: buildingNumber,
+      apartment_number: apartmentNumber,
+      zip_code: zipCode,
+      town,
+      phone_number: phoneNumber,
+    };
 
     const registration$ = ajax.post(
       `${backendServer}/register-student`,
@@ -99,63 +110,55 @@ export function PrincipalStudentAdd(props) {
         "Content-Type": "application/json",
       }
     );
- 
+
     registration$
-    .pipe(
-      map((response) => response.response),
-      catchError((error) => {
-        console.error("Błąd rejestracji: ", error);
-        setErrorMessage("Błąd rejestracji. Spróbuj ponownie.");
-        return of(null);
-      })
-    )
-    .subscribe((data) => {
+      .pipe(
+        map((response) => response.response),
+        catchError((error) => {
+          console.error("Błąd rejestracji: ", error);
+          setErrorMessage("Błąd rejestracji. Spróbuj ponownie.");
+          return of(null);
+        })
+      )
+      .subscribe((data) => {
         if (data) {
-          console.log("Uczeń zarejestrowany pomyślnie.");
           setSuccessMessage("Uczeń zarejestrowany pomyślnie.");
           setOpen(true);
-      
+
           props.onRegistrationResult("Uczeń zarejestrowany pomyślnie.", null);
 
+          setEmail("");
+          setPassword("");
+          setIsActive(false);
+          setFirstName("");
+          setLastName("");
+          setPesel("");
+          setSelectedClass("");
+          setStreet("");
+          setBuildingNumber("");
+          setApartmentNumber("");
+          setZipCode("");
+          setTown("");
+          setPhoneNumber("");
+        } else {
+          setErrorMessage("Nieprawidłowa odpowiedź serwera.");
+          props.onRegistrationResult(null, "Nieprawidłowa odpowiedź serwera.");
 
-
-        // Czyszczenie danych z formularza
-        setEmail('');
-        setPassword('');
-        setIsActive(false);
-        setFirstName('');
-        setLastName('');
-        setPesel('');
-        setSelectedClass('');
-        setStreet('');
-        setBuildingNumber('');
-        setApartmentNumber('');
-        setZipCode('');
-        setTown('');
-        setPhoneNumber('');
-
-      } else {
-        // console.error("Nieprawidłowa odpowiedź serwera.");
-        setErrorMessage("Nieprawidłowa odpowiedź serwera.");
-        props.onRegistrationResult(null, "Nieprawidłowa odpowiedź serwera.");
-
-        setOpen(true);
-      }
-    });
-  
+          setOpen(true);
+        }
+      });
   };
 
-        
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
     setOpen(false);
   };
 
-    return (
-      <>
+  return (
+    <>
       <div className="register-form">
         <form method="post" onSubmit={handleRegister}>
           Adres e-mail:{" "}
@@ -305,7 +308,7 @@ export function PrincipalStudentAdd(props) {
             onChange={(e) => setPhoneNumber(e.target.value)}
           />{" "}
           <br />
-          <input type="submit" value="Zapisz" onClick={handleRegister}  />
+          <input type="submit" value="Zapisz" onClick={handleRegister} />
           {errorMessage && (
             <div className="error-message">
               {errorMessage}
@@ -316,8 +319,6 @@ export function PrincipalStudentAdd(props) {
           )}
         </form>
       </div>
-
-</>
-    );
-    
+    </>
+  );
 }

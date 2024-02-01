@@ -18,8 +18,6 @@ const parentEndpoint = (app) => {
       const parentInfo = await pool.query('INSERT INTO gradebook.parents(user_id, student_id, street, building_number, apartment_number, zip_code, town, phone_number, school_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)',
         [userId, student_id, street, building_number, apartment_number, zip_code, town, phone_number, school_id]);
 
-      console.log("Dodano nowego rodzica do bazy danych:", parentInfo.rows);
-
       res.status(201).json({ message: 'Rodzic zarejestrowany pomyślnie.', user_id: userId });
     } catch (error) {
       console.error('Błąd rejestracji rodzica:', error);

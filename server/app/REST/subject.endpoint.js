@@ -73,7 +73,6 @@ const subjectEndpoint = (app) => {
     try{
         const addSubjects = `INSERT INTO gradebook.subjects(subject_name, school_id, class_id) VALUES ($1, $2, $3)`;
         await pool.query(addSubjects, [subject_name, school_id, class_id]);
-        console.log("Dodano przedmiot do bazy danych");
 
         res.status(201).json({ message: 'Przedmiot dodany pomyślnie.' });
     }catch(error){
@@ -89,7 +88,6 @@ const subjectEndpoint = (app) => {
       const deleteSubjectQuery = 'DELETE FROM gradebook.subjects WHERE subject_id = $1';
       await pool.query(deleteSubjectQuery, [subjectId]);
   
-      console.log('Usunięto przedmiot z bazy danych');
       res.status(204).end();
     } catch (error) {
       console.error('Błąd usuwania przedmiotu:', error);
@@ -153,7 +151,7 @@ const subjectEndpoint = (app) => {
     const classId = req.params.class_id;
 
     try{
-      const subjectsForClassTeacherQuery = `SELECT * FROM gradebook.subjects su
+      const subjectsForClassTeacherQuery = `SELECT DISTINCT su.*, cl.class_id, cl.class_name FROM gradebook.subjects su
       INNER JOIN gradebook.classes cl ON su.class_id = cl.class_id
       INNER JOIN gradebook.students st ON su.class_id = st.class_id 
       INNER JOIN gradebook.users us ON st.user_id = us.user_id 

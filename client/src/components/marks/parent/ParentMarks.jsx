@@ -23,15 +23,12 @@ export function ParentMarks() {
           const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
-          console.log("userData: ", userData);
 
           if (result.ok && userData.length > 0) {
             const studentId = userData[0].student_id;
-
             const userMarksQuery = `${backendServer}/marks/${studentId}`;
             const userMarksResult = await fetch(userMarksQuery);
             const userMarksData = await userMarksResult.json();
-            console.log("userMarksData: ", userMarksData);
 
             if (userMarksResult.ok) {
               const classId =
@@ -41,7 +38,6 @@ export function ParentMarks() {
                 const schoolClassSubjectQuery = `${backendServer}/subjects/class/${classId}`;
                 const result2 = await fetch(schoolClassSubjectQuery);
                 const schoolClassSubjectData = await result2.json();
-                console.log("schoolClassSubjectData: ", schoolClassSubjectData);
 
                 if (result2.ok) {
                   setUserData(userData);
@@ -97,8 +93,6 @@ export function ParentMarks() {
         const aritmeticAverage = calculateAritmeticAverage(grades);
         const weights = matchingMarks.map((mark) => parseInt(mark.weight));
         const weightedAverage = calculateWeightedAverage(grades, weights);
-        console.log("weightedAverage ", weightedAverage);
-
         const expectedGrade = expectedGrades(weightedAverage);
 
         DataOfWeightMarks = matchingMarks.map((mark) => mark.weight);

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import './AdminMarks.css';
+import "./AdminMarks.css";
 import { AdminMenu } from "../../menu/admin/AdminMenu";
-import Modal from '@mui/material/Modal';
+import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 import { backendServer } from "../../../config";
 import { calculateAritmeticAverage } from "../../../dependenciesAndRequirements/aritmeticAverage";
 import { calculateWeightedAverage } from "../../../dependenciesAndRequirements/weightedAverage";
@@ -27,8 +27,8 @@ export function AdminMarks() {
       grade_value: "",
       date: "",
       weight: "",
-      comment: ""
-    }
+      comment: "",
+    },
   ]);
 
   const resetGradeData = () => {
@@ -37,8 +37,8 @@ export function AdminMarks() {
         grade_value: "",
         date: "",
         weight: "",
-        comment: ""
-      }
+        comment: "",
+      },
     ]);
   };
 
@@ -56,18 +56,18 @@ export function AdminMarks() {
     const { name, value } = event.target;
     setGradeData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    bgcolor: "background.paper",
+    border: "2px solid #000",
     boxShadow: 24,
     pt: 2,
     px: 4,
@@ -76,12 +76,12 @@ export function AdminMarks() {
 
   useEffect(() => {
     fetch(`${backendServer}/schools`)
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         console.log("Schools data:", data);
         setSchools(data);
       })
-      .catch(error => console.error('Błąd pobierania szkół:', error));
+      .catch((error) => console.error("Błąd pobierania szkół:", error));
   }, []);
 
   const handleSchoolChange = (event) => {
@@ -89,20 +89,18 @@ export function AdminMarks() {
     setSelectedSchool(schoolId);
 
     fetch(`${backendServer}/classes/${schoolId}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log("Classes data:", data);
+      .then((response) => response.json())
+      .then((data) => {
         setClasses(data);
       })
-      .catch(error => console.error('Błąd pobierania klas:', error));
+      .catch((error) => console.error("Błąd pobierania klas:", error));
 
     fetch(`${backendServer}/teachers/${schoolId}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log("Teachers data:", data);
+      .then((response) => response.json())
+      .then((data) => {
         setTeachers(data);
       })
-      .catch(error => console.error('Błąd pobierania nauczycieli:', error));
+      .catch((error) => console.error("Błąd pobierania nauczycieli:", error));
   };
 
   const handleClassChange = (event) => {
@@ -110,81 +108,72 @@ export function AdminMarks() {
     setSelectedClass(selectedClass);
 
     fetch(`${backendServer}/subjects/class/${selectedClass}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log("Subjects data:", data);
+      .then((response) => response.json())
+      .then((data) => {
         setSubjects(data);
       })
-      .catch(error => console.error('Błąd pobierania przedmiotów:', error));
+      .catch((error) => console.error("Błąd pobierania przedmiotów:", error));
 
     fetch(`${backendServer}/students-from-class/${selectedClass}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log("Students data:", data);
+      .then((response) => response.json())
+      .then((data) => {
         setStudents(data);
       })
-      .catch(error => console.error('Błąd pobierania uczniów:', error));
+      .catch((error) => console.error("Błąd pobierania uczniów:", error));
   };
 
   const handleSubjectChange = (event) => {
     const selectedSubject = event.target.value;
     setSelectedSubject(selectedSubject);
-  
+
     if (selectedClass) {
-      fetch(`${backendServer}/marks-students/${selectedClass}/${selectedSubject}`)
-        .then(response => response.json())
-        .then(data => {
-          console.log("Marks data:", data);
-  
+      fetch(
+        `${backendServer}/marks-students/${selectedClass}/${selectedSubject}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
           const updatedStudentGrades = {};
-          data.forEach(grade => {
+          data.forEach((grade) => {
             const studentId = grade.student_id;
-  
+
             if (!updatedStudentGrades[studentId]) {
               updatedStudentGrades[studentId] = [];
             }
-  
+
             updatedStudentGrades[studentId].push(grade);
           });
-  
+
           setStudentGrades(updatedStudentGrades);
         })
-        .catch(error => console.error('Błąd pobierania ocen:', error));
+        .catch((error) => console.error("Błąd pobierania ocen:", error));
     } else {
-      console.error('Selected class is not defined');
-
+      console.error("Selected class is not defined");
     }
   };
-  
+
   const handleStudentChange = (event) => {
     const selectedStudentId = event.target.value;
-    setSelectedStudents([selectedStudentId]); 
+    setSelectedStudents([selectedStudentId]);
   };
-  
 
   const handleTeacherChange = (event) => {
     setSelectedTeacher(event.target.value);
   };
 
   const handleSaveGrade = () => {
-    if (!selectedSchool || !selectedClass || !selectedTeacher || !selectedSubject || !selectedStudents.length) {
-      console.error("Validation failed. Please fill in all the required fields.");
+    if (
+      !selectedSchool ||
+      !selectedClass ||
+      !selectedTeacher ||
+      !selectedSubject ||
+      !selectedStudents.length
+    ) {
+      console.error(
+        "Validation failed. Please fill in all the required fields."
+      );
       return;
     }
-  
-    // Display data before sending
-    console.log("Data to send:", {
-      school_id: selectedSchool,
-      class_id: selectedClass,
-      teacher_id: selectedTeacher,
-      subject_id: selectedSubject,
-      student_id: selectedStudents,
-      grade_value: gradeData[0].grade_value,
-      weight: gradeData[0].weight,
-      description: gradeData[0].description,
-      date: gradeData[0].date,
-    });
-  
+
     const dataToSend = {
       school_id: selectedSchool,
       class_id: selectedClass,
@@ -196,22 +185,22 @@ export function AdminMarks() {
       description: gradeData[0].description,
       date: gradeData[0].date,
     };
-  
+
     fetch(`${backendServer}/add-marks`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(dataToSend),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         console.log("Grade saved successfully", data);
       })
-      .catch(error => {
-        console.error('Error saving grade:', error);
+      .catch((error) => {
+        console.error("Error saving grade:", error);
       });
-  
+
     handleClose();
   };
 
@@ -278,7 +267,8 @@ export function AdminMarks() {
                   {subject.subject_name}
                 </option>
               ))}
-            </select><br />
+            </select>
+            <br />
           </form>
 
           <table className="marks-table">
@@ -298,10 +288,11 @@ export function AdminMarks() {
                   <td className="admin-td-table-marks">
                     {studentGrades[student.student_id]?.map((grade, index) => (
                       <div key={index}>
-                       <button className="admin-bttn-marks"> {grade.grade_value}{" "}</button>
-   
+                        <button className="admin-bttn-marks">
+                          {" "}
+                          {grade.grade_value}{" "}
+                        </button>
                       </div>
-                      
                     ))}
                     <button
                       variant="contained"
@@ -313,49 +304,55 @@ export function AdminMarks() {
                     </button>
                   </td>
 
-<td>
-  {studentGrades[student.student_id] &&
-    calculateAritmeticAverage(
-      studentGrades[student.student_id].map((mark) => parseFloat(mark.grade_value))
-    ).toFixed(2)}
-</td>
+                  <td>
+                    {studentGrades[student.student_id] &&
+                      calculateAritmeticAverage(
+                        studentGrades[student.student_id].map((mark) =>
+                          parseFloat(mark.grade_value)
+                        )
+                      ).toFixed(2)}
+                  </td>
 
-<td>
-  {studentGrades[student.student_id] &&
-    (() => {
-      const grades = studentGrades[student.student_id].map((mark) => parseFloat(mark.grade_value));
-      const weights = studentGrades[student.student_id].map((mark) => parseInt(mark.weight));
+                  <td>
+                    {studentGrades[student.student_id] &&
+                      (() => {
+                        const grades = studentGrades[student.student_id].map(
+                          (mark) => parseFloat(mark.grade_value)
+                        );
+                        const weights = studentGrades[student.student_id].map(
+                          (mark) => parseInt(mark.weight)
+                        );
 
-      const weightedAverage = calculateWeightedAverage(grades, weights).toFixed(2);
+                        const weightedAverage = calculateWeightedAverage(
+                          grades,
+                          weights
+                        ).toFixed(2);
 
-      console.log("Weighted Average for student", student.student_id, ":", weightedAverage);
+                        return weightedAverage;
+                      })()}
+                  </td>
+                  <td>
+                    {studentGrades &&
+                      studentGrades[student.student_id] &&
+                      (() => {
+                        const grades = studentGrades[student.student_id].map(
+                          (mark) => parseFloat(mark.grade_value)
+                        );
+                        const weights = studentGrades[student.student_id].map(
+                          (mark) => parseInt(mark.weight)
+                        );
 
-      return weightedAverage;
-    })()}
-</td>
-<td>
-  {studentGrades &&
-    studentGrades[student.student_id] &&
-    (() => {
-      const grades = studentGrades[student.student_id].map((mark) => parseFloat(mark.grade_value));
-      const weights = studentGrades[student.student_id].map((mark) => parseInt(mark.weight));
+                        const expectedGradeValue = expectedGrades(
+                          calculateWeightedAverage(grades, weights).toFixed(2)
+                        );
 
-      const expectedGradeValue = expectedGrades(
-        calculateWeightedAverage(grades, weights).toFixed(2)
-      );
-
-      console.log("Expected Grade for student", student.student_id, ":", expectedGradeValue);
-
-      return expectedGradeValue;
-    })()}
-</td>
-
-            </tr>
+                        return expectedGradeValue;
+                      })()}
+                  </td>
+                </tr>
               ))}
-              
             </tbody>
           </table>
-
 
           <Modal
             open={open}

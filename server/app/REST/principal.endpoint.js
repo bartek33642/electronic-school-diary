@@ -1,7 +1,6 @@
 import pool from '../../db'; 
 const bcrypt = require("bcrypt");
 
-
 const principalEndpoint = (app) => {
   app.post('/register-principal', async (req, res, next) => {
     const { email, password, active, first_name, second_name, school_id } = req.body;
@@ -22,7 +21,6 @@ const principalEndpoint = (app) => {
       const principalInfo = await pool.query('INSERT INTO gradebook.principal(user_id, school_id) VALUES($1, $2)',
         [userId, school_id]);
 
-      console.log("Dodano nowego dyrektora do bazy danych:", principalInfo.rows);
 
       res.status(201).json({ message: 'Dyrektor zarejestrowany pomyślnie.', user_id: userId });
     } catch (error) {
@@ -30,7 +28,6 @@ const principalEndpoint = (app) => {
       res.status(500).json({ error: 'Błąd rejestracji dyrektora' });
     }
   });
-
 
 
 app.get('/principal-users/:schoolId', async (req, res) => {
@@ -56,8 +53,6 @@ const { rows } = await pool.query(userQuery, [schoolId]);
     res.status(500).send('Internal Server Error');
   }
 });
-
-
 
 };
 export default principalEndpoint;

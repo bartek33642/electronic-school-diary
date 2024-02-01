@@ -7,8 +7,8 @@ import { catchError, map } from "rxjs/operators";
 import { of } from "rxjs";
 import { useNavigate } from "react-router-dom";
 import { backendServer } from "../../config";
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,7 +19,7 @@ export function Login() {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const Navigate = useNavigate ()
+  const Navigate = useNavigate();
 
   const handleShowPasswordChange = () => {
     setShowPassword(!showPassword);
@@ -46,18 +46,16 @@ export function Login() {
       .subscribe((data) => {
         console.log(data);
         if (data) {
-          
           console.log("Token: ", data.token);
           localStorage.setItem("token", data.token);
           localStorage.setItem("userEmail", email);
           Navigate("/role");
           setSnackbarSeverity("success");
           setSnackbarMessage("Pomyślnie zalogowano.");
-          setSnackbarOpen(true); 
+          setSnackbarOpen(true);
           window.location.reload();
         }
       });
-      
   };
 
   const handleSnackbarClose = () => {
@@ -71,7 +69,7 @@ export function Login() {
   };
 
   return (
-    <div className="login-form"> 
+    <div className="login-form">
       <div className="login-content">
         <div className="left-login-content">
           <img src={imageEducation} className="image-login" alt="Education" />
@@ -79,7 +77,6 @@ export function Login() {
         <div className="right-login-content">
           <h3 className="h3-login">Logowanie</h3>
           <p className="p-login">Zaloguj się do aplikacji e-dziennik</p>
-
           E-mail:
           <div className="input-label-login">
             <input
@@ -116,37 +113,43 @@ export function Login() {
                   className="password-toggle"
                   onClick={handleShowPasswordChange}
                 >
-                  <FiEye alt="password show/hide eye" className="fi-login-eye" />
+                  <FiEye
+                    alt="password show/hide eye"
+                    className="fi-login-eye"
+                  />
                 </span>
               )}
             </div>
             <br />
           </div>
           {error && <div className="error-message">{error}</div>}
-          <button onClick={handleLogin} onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              handleLogin();
-            }
-          }} 
-          type="button" className="loginBttn">
+          <button
+            onClick={handleLogin}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleLogin();
+              }
+            }}
+            type="button"
+            className="loginBttn"
+          >
             Zaloguj się
           </button>
         </div>
 
         <Snackbar
-      open={snackbarOpen}
-      autoHideDuration={6000}
-      onClose={handleSnackbarClose}
-      >
-      <Alert
-        onClose={handleSnackbarClose}
-        severity={snackbarSeverity}
-        sx={{ width: "100%" }}
-      >
-        {snackbarMessage}
-      </Alert>
-      </Snackbar>
-
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </div>
     </div>
   );

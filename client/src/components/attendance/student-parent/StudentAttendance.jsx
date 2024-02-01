@@ -16,16 +16,13 @@ export function StudentAttendance() {
           const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
-          console.log("userData: ", userData);
 
           if (result.ok && userData.length > 0) {
             const studentId = userData[0].student_id;
 
-            // Pobierz frekwencję dla danego studenta
             const attendanceQuery = `${backendServer}/attendance-all/${studentId}`;
             const attendanceResult = await fetch(attendanceQuery);
             const attendanceData = await attendanceResult.json();
-            console.log("Attendance data: ", attendanceData);
             setUserData(attendanceData);
           }
         } 

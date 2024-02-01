@@ -69,7 +69,6 @@ const attendanceEnpoint = (app) => {
           WHERE at.student_id = $1;`;
       
           const { rows } = await pool.query(attendanceQuery, [student_id]);
-          console.log("Rows from attendance query:", rows);
           res.send(rows);
         } catch (error) {
           console.error(error);
@@ -105,7 +104,6 @@ const attendanceEnpoint = (app) => {
             AND lesson_number = $5
           `;
           await pool.query(updateAttendance, [status, date, student_id, class_id, lesson_number]);
-          console.log("Zaktualizowano frekwencję w bazie danych");
     
           res.status(200).json({ message: 'Frekwencja zaktualizowana pomyślnie.' });
         } else {
@@ -114,7 +112,6 @@ const attendanceEnpoint = (app) => {
             VALUES ($1, $2, $3, $4, $5, $6)
           `;
           await pool.query(addAttendance, [date, status, student_id, teacher_id, class_id, lesson_number]);
-          console.log("Dodano frekwencję do bazy danych");
     
           res.status(201).json({ message: 'Frekwencja dodana pomyślnie.' });
         }
@@ -132,7 +129,6 @@ const attendanceEnpoint = (app) => {
         const updateAttendanceQuery = 'UPDATE gradebook.attendance SET date, status, teacher_id, lesson_number WHERE student_id = $1 AND date = $2 AND lesson_number = $3';
         await pool.query(updateAttendanceQuery, [studentId]);
     
-        console.log('Zmieniono frekwencję w bazie danych');
         res.status(204).end();
       } catch (error) {
         console.error('Błąd zmiany frekwencji:', error);
@@ -147,7 +143,6 @@ const attendanceEnpoint = (app) => {
           const deleteAttendanceQuery = 'DELETE FROM gradebook.attendance WHERE attendance_id = $1';
           await pool.query(deleteAttendanceQuery, [attendanceId]);
       
-          console.log('Usunięto frekwencję z bazy danych');
           res.status(204).end();
         } catch (error) {
           console.error('Błąd usuwania frekwencji:', error);

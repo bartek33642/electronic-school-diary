@@ -2,24 +2,24 @@ import { calculateAritmeticAverage } from "../dependenciesAndRequirements/aritme
 
 describe('calculateAritmeticAverage', () => {
     test('returns 0 for an empty array', () => {
-      // Given: An empty array
+      // Given
       const grades = [];
   
-      // When: calculateAritmeticAverage is called
+      // When
       const result = calculateAritmeticAverage(grades);
   
-      // Then: The result should be 0
+      // Then
       expect(result).toBe(0);
     });
   
     test('calculates the average for an array of numbers', () => {
-      // Given: An array of numbers
+      // Given
       const grades = [1, 2, 3, 4, 5];
   
-      // When: calculateAritmeticAverage is called
+      // When
       const result = calculateAritmeticAverage(grades);
   
-      // Then: The result should be the average of the numbers
+      // Then
       expect(result).toBe(3);
     });
   });

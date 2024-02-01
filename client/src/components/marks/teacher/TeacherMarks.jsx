@@ -96,7 +96,6 @@ export function TeacherMarks() {
           const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
-          console.log("userData: ", userData);
           setUserData(userData);
         }
       } catch (error) {
@@ -111,7 +110,6 @@ export function TeacherMarks() {
   useEffect(() => {
     if (userData.length > 0) {
       const schoolId = userData[0].school_id;
-      console.log("schoolId: ", schoolId);
       fetch(`${backendServer}/classes/${schoolId}`)
         .then((response) => response.json())
         .then((data) => setClasses(data))
@@ -131,7 +129,6 @@ export function TeacherMarks() {
           );
           const subjects = await subjectsData.json();
           setSubjects(subjects);
-          console.log(`subjects:`, subjects);
         } catch (error) {
           console.error("Błąd pobierania przedmiotów:", error);
         }
@@ -163,7 +160,6 @@ export function TeacherMarks() {
         const marks = await marksData.json();
         setMarks(marks);
         setIsDataFilled(true);
-        console.log("Marks: ", marks);
       }
     } catch (error) {
       console.error("Błąd pobierania danych:", error);
@@ -213,7 +209,6 @@ export function TeacherMarks() {
         );
 
         if (response.status === 200) {
-          console.log("Ocena została pomyślnie usunięta.");
           setSuccessMessage("Pomyślnie usunięto ocenę");
           setReloadData(true);
           window.location.reload();
@@ -281,7 +276,6 @@ export function TeacherMarks() {
       });
 
       if (response.status === 201) {
-        console.log("Ocena dodana pomyślnie.");
         setSuccessMessage("Pomyślnie dodano ocenę");
         setIsModalOpen(false);
         fetchData();
@@ -315,11 +309,9 @@ export function TeacherMarks() {
       });
 
       if (response.status === 201) {
-        console.log("Ocena zaktualizowana pomyślnie.");
         setSuccessMessage("Pomyślnie zaktualizowano ocenę");
         setIsModalOpen(false);
         setReloadData(true);
-        // Set the flag to reload data
         window.location.reload();
       } else {
         console.error("Błąd aktualizacji oceny. Odpowiedź serwera:", response);
@@ -459,7 +451,7 @@ export function TeacherMarks() {
                   <th>Oceny</th>
                   <th>Średnia arytmetyczna</th>
                   <th>Średnia ważona</th>
-                  <th>Przewidywana ocena końcowa</th>
+                  <th>Ocena końcowa</th>
                 </tr>
               </thead>
               <tbody>
@@ -510,58 +502,62 @@ export function TeacherMarks() {
                           aria-describedby="parent-modal-description"
                         >
                           <Box sx={{ ...style }} className="modal-content">
-                            <h2 className="teacher-topics-add-topic">
-                              {selectedGrade ? "Edytuj Ocenę:" : "Dodaj Ocenę:"}
-                            </h2>
-                            Ocena:{" "}
-                            <input
-                              type="text"
-                              name="grade_value"
-                              onChange={handleChange}
-                              value={formData.grade_value}
-                            />{" "}
-                            <br />
-                            Waga:{" "}
-                            <input
-                              type="number"
-                              min="0"
-                              name="weight"
-                              onChange={handleChange}
-                              value={formData.weight}
-                            />{" "}
-                            <br />
-                            Opis :{" "}
-                            <input
-                              type="text"
-                              name="description"
-                              onChange={handleChange}
-                              value={formData.description}
-                            />{" "}
-                            <br />
-                            Data :{" "}
-                            <input
-                              type="date"
-                              name="date"
-                              onChange={handleChange}
-                              value={formatDate(formData.date)}
-                            />{" "}
-                            <br />
-                            <Button onClick={() => addNewGrade()}>
-                              {selectedGrade
-                                ? "Zaktualizuj Ocenę"
-                                : "Dodaj Ocenę"}
-                            </Button>
-                            <Button
-                              onClick={() =>
-                                handleDeleteGrade(
-                                  selectedGrade.grade_id,
-                                  selectedGrade.student_id
-                                )
-                              }
-                            >
-                              {selectedGrade ? "Usuń Ocenę" : ""}
-                            </Button>
-                            <Button onClick={handleClose}>Zamknij</Button>
+                            <div className="teacher-marks-form">
+                              <h2 className="teacher-topics-add-topic">
+                                {selectedGrade
+                                  ? "Edytuj Ocenę:"
+                                  : "Dodaj Ocenę:"}
+                              </h2>
+                              Ocena:{" "}
+                              <input
+                                type="text"
+                                name="grade_value"
+                                onChange={handleChange}
+                                value={formData.grade_value}
+                              />{" "}
+                              <br />
+                              Waga:{" "}
+                              <input
+                                type="number"
+                                min="0"
+                                name="weight"
+                                onChange={handleChange}
+                                value={formData.weight}
+                              />{" "}
+                              <br />
+                              Opis :{" "}
+                              <input
+                                type="text"
+                                name="description"
+                                onChange={handleChange}
+                                value={formData.description}
+                              />{" "}
+                              <br />
+                              Data :{" "}
+                              <input
+                                type="date"
+                                name="date"
+                                onChange={handleChange}
+                                value={formatDate(formData.date)}
+                              />{" "}
+                              <br />
+                              <Button onClick={() => addNewGrade()}>
+                                {selectedGrade
+                                  ? "Zaktualizuj Ocenę"
+                                  : "Dodaj Ocenę"}
+                              </Button>
+                              <Button
+                                onClick={() =>
+                                  handleDeleteGrade(
+                                    selectedGrade.grade_id,
+                                    selectedGrade.student_id
+                                  )
+                                }
+                              >
+                                {selectedGrade ? "Usuń Ocenę" : ""}
+                              </Button>
+                              <Button onClick={handleClose}>Zamknij</Button>
+                            </div>
                           </Box>
                         </Modal>
                       </div>
@@ -570,7 +566,6 @@ export function TeacherMarks() {
                     <td>
                       {marks &&
                         (() => {
-                          console.log("marks1", marks);
                           const aritmeticAverage = calculateAritmeticAverage(
                             marks
                               .filter(
@@ -588,23 +583,14 @@ export function TeacherMarks() {
                           const grades = marks[student.student_id].map((mark) =>
                             parseFloat(mark.grade_value)
                           );
-                          console.log("grades", grades);
                           const weights = marks[student.student_id].map(
                             (mark) => parseInt(mark.weight)
                           );
-                          console.log("weights", weights);
 
                           const weightedAverage = calculateWeightedAverage(
                             grades,
                             weights
                           ).toFixed(2);
-
-                          console.log(
-                            "Weighted Average for student",
-                            student.student_id,
-                            ":",
-                            weightedAverage
-                          );
 
                           return weightedAverage;
                         })()}
@@ -624,13 +610,6 @@ export function TeacherMarks() {
 
                           const expectedGradeValue = expectedGrades(
                             calculateWeightedAverage(grades, weights).toFixed(2)
-                          );
-
-                          console.log(
-                            "Expected Grade for student",
-                            student.student_id,
-                            ":",
-                            expectedGradeValue
                           );
 
                           return expectedGradeValue;

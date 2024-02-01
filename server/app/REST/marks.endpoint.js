@@ -22,7 +22,6 @@ const marksEndpoint = (app) => {
             try{
                 const addMarks = `INSERT INTO gradebook.grades(student_id, subject_id, weight, description, grade_value, teacher_id, date) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
                 await pool.query(addMarks, [student_id, subject_id, weight, description, grade_value, teacher_id, date]);
-                console.log("dodano oceny do bazy danych");
       
                 res.status(201).json({ message: 'Ocena dodana pomyślnie.' });
             }catch(error){
@@ -82,7 +81,6 @@ const marksEndpoint = (app) => {
         
                 const { rows } = await pool.query(marksQuery, [class_id, subject_id]);
                 res.send(rows);
-                // console.log(rows);
             } catch (error) {
                 console.error(error);
                 res.status(500).send('Internal Server Error');
@@ -101,7 +99,6 @@ const marksEndpoint = (app) => {
                 `;
         
                 const { rows } = await pool.query(studentsQuery, [school_id, class_id]);
-                // console.log(' school_id + class_id', school_id, ' + ' ,class_id);
                 res.send(rows);
             } catch (error) {
                 console.error('Błąd pobierania uczniów:', error);
@@ -149,7 +146,6 @@ const marksEndpoint = (app) => {
 
         app.get('/subjects/:class_id', async (req, res) => {
             const classId = req.params.class_id;
-            console.log('Requested class ID:', classId);
         
             try {
                 const subjectsQuery = `
@@ -172,7 +168,6 @@ const marksEndpoint = (app) => {
             try{
                 const updateMarks = `UPDATE gradebook.grades SET grade_value = $1, weight = $2, description = $3, date = $4 WHERE student_id = $5 AND grade_id = $6`;
                 await pool.query(updateMarks, [grade_value, weight, description, date, student_id, grade_id]);
-                console.log("Zmieniono oceny w bazy danych");
       
                 res.status(201).json({ message: 'Ocena zaktualizowana pomyślnie.' });
             }catch(error){

@@ -2,32 +2,33 @@ const request = require('supertest');
 import createApp from '../app/app';
 const app = createApp();
 
-describe('Class Endpoints', () => {
-  // Given
-  const newClass = {
-    class_name: 'Test Class',
-    school_id: 1
-  };
-
-  // Test for GET /classes
-  it('should fetch all classes', async () => {
+// Testy dla metody GET
+describe('GET /classes', () => {
+    // Given
     // When
-    const res = await request(app).get('/classes');
+    it('should return all classes', async () => {
+        const res = await request(app)
+            .get('/classes');
 
-    // Then
-    expect(res.statusCode).toEqual(200);
-    expect(Array.isArray(res.body)).toBeTruthy();
-  });
+        // Then
+        expect(res.statusCode).toEqual(200);
+        expect(Array.isArray(res.body)).toBeTruthy();
+        expect(res.body.length).toBeGreaterThan(0);
+    });
+});
 
-  // // Test for DELETE /classes/:class_id
-  // it('should delete an existing class', async () => {
-  //   // Given
-  //   const classId = 55; 
+describe('GET /classes/:school_id', () => {
+    // Given
+    const school_id = 14;
 
-  //   // When
-  //   const res = await request(app).delete(`/classes/${classId}`);
+    // When
+    it('should return classes for given school', async () => {
+        const res = await request(app)
+            .get(`/classes/${school_id}`);
 
-  //   // Then
-  //   expect(res.statusCode).toEqual(204);
-  // });
+        // Then
+        expect(res.statusCode).toEqual(200);
+        expect(Array.isArray(res.body)).toBeTruthy();
+        expect(res.body.length).toBeGreaterThan(0);
+    });
 });

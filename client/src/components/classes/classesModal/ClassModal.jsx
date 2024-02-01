@@ -11,7 +11,6 @@ export function ClassModal(props){
   const { open1, handleClose1, schoolData, updateClasses } = props; 
   const [className, setClassName] = useState("");
   const [selectedSchool, setSelectedSchool] = useState("-");
-  // Pobierz identyfikator wybranej szkoły
   const selectedSchoolId = selectedSchool;
 
   const [newClassData, setNewClassData] = useState({
@@ -43,8 +42,6 @@ export function ClassModal(props){
         return;
       }
   
-
-      // Wyślij dane do serwera, aby dodać klasę do bazy danych
       fetch(`${backendServer}/add-class`, {
         method: 'POST',
         headers: {
@@ -57,14 +54,12 @@ export function ClassModal(props){
       })
       .then(response => {
         if (response.status === 201) {
-          // Dodano klasę pomyślnie
-          // Tutaj możesz wykonać aktualizację stanu lub innych działań, które są potrzebne
-          updateClasses(); // Ta funkcja powinna być przekazana z wyższego poziomu komponentu
-          handleClose1(); // Zamknij modal
+
+          updateClasses(); 
+          handleClose1(); 
           setSnackbarSeverity("success");
           setSnackbarMessage("Szkoła dodana pomyślnie.");
           setSnackbarOpen(true);
-          // Wyczyść formularz lub wykonaj inne akcje po dodaniu szkoły
           setNewClassData({
             school_id: "",
             class_name: ""
@@ -73,7 +68,6 @@ export function ClassModal(props){
           setClassName("");
 
         } else {
-          // Obsłuż błąd dodawania klasy
           console.error('Błąd dodawania klasy');
           setSnackbarOpen(true);
           setSnackbarSeverity("error");

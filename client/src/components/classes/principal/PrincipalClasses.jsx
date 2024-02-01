@@ -19,7 +19,6 @@ export function PrincipalClasses() {
         const userQuery = `${backendServer}/users-school-student/${userEmail}`;
         const result = await fetch(userQuery);
         const userData = await result.json();
-        console.log("userData: ", userData);
 
         if (result.ok) {
           setUserData(userData);
@@ -29,7 +28,6 @@ export function PrincipalClasses() {
             const classesPrincipalQuery = `${backendServer}/principal-classes/${schoolId}`;
             const classesPrincipalResult = await fetch(classesPrincipalQuery);
             const classesPrincipal = await classesPrincipalResult.json();
-            console.log("classesPrincipal: ", classesPrincipal);
 
             if (classesPrincipalResult.ok) {
               const uniqueClassesPrincipalIds = Array.from(new Set(classesPrincipal.map(classes => classes.school_id)));
@@ -140,7 +138,6 @@ export function PrincipalClasses() {
               },
             }}
             pageSizeOptions={[7, 10]}
-            // checkboxSelection
           />
         </div>
       </div>

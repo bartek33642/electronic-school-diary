@@ -37,10 +37,7 @@ export function StudentTimetable() {
             const timetableQuery = `${backendServer}/timetable/${userData[0].school_id}/${classId}`;
             const timetableResult = await fetch(timetableQuery);
             const timetableData = await timetableResult.json();
-            console.log('Timetable data: ', timetableData);
-  
-            console.log('Setting scheduler data:', timetableData);
-            setTimetableData(timetableData);
+              setTimetableData(timetableData);
           }
         }
       } catch (error) {
@@ -80,9 +77,7 @@ export function StudentTimetable() {
     });
   };
   
-  
   const schedulerData = convertToSchedulerData(timetableData);
-  console.log('Scheduler Data: ', schedulerData);
 
 
   return (

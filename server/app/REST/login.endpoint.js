@@ -20,13 +20,11 @@ app.post('/login', async (req, res) => {
 
 app.delete('/logout/:user_id', async (req, res) => {
   const user_id = req.params.user_id;
-  console.log("logout endpoint, user_id: ", user_id);
 
   try {
     const { email, password } = req.body;
 
     const result = await userManager.removeHashSession(user_id);
-    console.log("result server: ", result);
 
     res.status(200).json({ message: 'Wylogowano pomyślnie' });
   } catch (error) {

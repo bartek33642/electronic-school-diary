@@ -18,7 +18,6 @@ export function StudentSubjects() {
           const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
-          console.log("userData: ", userData);
 
           if (result.ok) {
             setUserData(userData);
@@ -28,11 +27,9 @@ export function StudentSubjects() {
               const subjectsQuery = `${backendServer}/subjects/class/${classId}`;
               const subjectsResult = await fetch(subjectsQuery);
               const subjectsData = await subjectsResult.json();
-              console.log("subjectsData: ", subjectsData);
 
 
                 if (subjectsResult.ok) {
-                  // Usuń duplikaty na podstawie subjectId
                   const uniqueSubjects = Array.from(new Set(subjectsData.map(subject => subject.subject_id)))
                     .map(subjectId => subjectsData.find(subject => subject.subject_id === subjectId));
 
@@ -88,7 +85,6 @@ export function StudentSubjects() {
               },
             }}
             pageSizeOptions={[7, 10]}
-            // checkboxSelection
           />
         </div>
       </div>

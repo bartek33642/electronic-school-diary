@@ -39,7 +39,6 @@ const remarksEndpoint = (app) => {
             try{
                 const addRemarks = `INSERT INTO gradebook.remarks(remark_text, is_possitive, student_id, teacher_id, date) VALUES ($1, $2, $3, $4, $5)`;
                 await pool.query(addRemarks, [remark_text, is_possitive, student_id, teacher_id, date]);
-                console.log("Dodano uwagę do bazy danych");
         
                 res.status(201).json({ message: 'Uwaga dodana pomyślnie.' });
             }catch(error){

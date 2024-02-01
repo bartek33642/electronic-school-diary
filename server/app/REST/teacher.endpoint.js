@@ -19,7 +19,6 @@ const teacherEndpoint = (app) => {
       const teacherInfo = await pool.query('INSERT INTO gradebook.teachers(user_id, specialization, school_id) VALUES($1, $2, $3)',
         [userId, specialization, school_id]);
 
-      console.log("Dodano nowego nauczyciela do bazy danych:", teacherInfo.rows);
 
       res.status(201).json({ message: 'Nauczyciel zarejestrowany pomyślnie.', user_id: userId });
     } catch (error) {

@@ -8,7 +8,7 @@ export function PrincipalAttendance() {
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
-  const [teachers, setTeachers] = useState([]); // Dodaj state dla nauczycieli
+  const [teachers, setTeachers] = useState([]);
 
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -69,10 +69,7 @@ export function PrincipalAttendance() {
   const fetchAttendanceForStudent = async (studentId, lessonNumber, date) => {
     try {
       const response = await fetch(`${backendServer}/attendance-all-for-class/${studentId}/${lessonNumber}/${date}`);
-      console.log("response fetchAttendanceForStudent: ", response);
       const attendanceForStudent = await response.json();
-      console.log(`Response text for student (id: ${studentId}, lesson: ${lessonNumber}, date: ${date}):`, response.statusText);
-      console.log(`Attendance for student (id: ${studentId}, lesson: ${lessonNumber}, date: ${date}):`, attendanceForStudent);
       return attendanceForStudent;
     } catch (error) {
       console.error("Error fetching attendance for student:", error);
@@ -99,7 +96,6 @@ export function PrincipalAttendance() {
   useEffect(() => {
     if (userData.length > 0) {
       const schoolId = userData[0].school_id;
-      console.log("schoolId: ", schoolId);
       fetch(`${backendServer}/classes/${schoolId}`)
         .then((response) => response.json())
         .then((data) => setClasses(data))
@@ -148,7 +144,6 @@ export function PrincipalAttendance() {
         break;
       case "lessonNumber":
         setSelectedLessonNumber(value);
-        // Dodaj wywołanie funkcji fetchAttendanceForStudents po ustawieniu numeru lekcji
         await fetchAttendanceForStudents();
         break;
         case "teacher":
@@ -184,7 +179,6 @@ export function PrincipalAttendance() {
       const attendanceForStudent = await fetchAttendanceForStudent(studentId, selectedLessonNumber, selectedDate);
 
       if (attendanceForStudent.length > 0) {
-        // If attendance record exists, update it
         const response = await fetch(endpoint, {
           method: "PUT",
           headers: {
@@ -199,15 +193,6 @@ export function PrincipalAttendance() {
           }),
         });
 
-        console.log("PUT Request Data: ", {
-          date: selectedDate,
-          status: status,
-          teacher_id: userData[0].teacher_id,
-          lesson_number: selectedLessonNumber,
-          teacher_id: selectedTeacher
-
-        });
-
         if (response.ok) {
           console.log(`Zmiany w obecności ucznia ${studentId} zostały zapisane.`);
           const updatedAttendance = attendance.map((a) =>
@@ -218,7 +203,6 @@ export function PrincipalAttendance() {
           console.error(`Błąd podczas aktualizacji obecności ucznia ${studentId}.`);
         }
       } else {
-        // If attendance record doesn't exist, add new attendance
         const response = await fetch(`${backendServer}/add-attendance`, {
           method: "POST",
           headers: {
@@ -288,7 +272,7 @@ export function PrincipalAttendance() {
             <option
               className="teacher-marks-class-option"
               key={teacher.teacher_id}
-              value={teacher.teacher_id} // Ustawienie wartości nauczyciela na jego teacher_id
+              value={teacher.teacher_id} 
             >
               {`${teacher.first_name} ${teacher.second_name}`}
             </option>
@@ -333,11 +317,9 @@ export function PrincipalAttendance() {
           {generateLessonNumbers()}
         </select>
 
-        {/* Przypisanie wartości student_id, teacher_id i timetable_id do stanów komponentu */}
         {students.length > 0 && (
           <div>
             <table className="teacher-attendance-table">
-              {/* ... (other table code) */}
               <tbody>
                 {students.map((student, studentIndex) => (
                   <tr key={studentIndex}>
@@ -392,7 +374,6 @@ export function PrincipalAttendance() {
           </div>
         )}
 
-        {/* Jeżeli dane nie są dostępne, wyświetl informację */}
         {students.length === 0 && (
           <p>Wybierz klasę, datę i numer lekcji, aby wyświetlić obecność.</p>
         )}

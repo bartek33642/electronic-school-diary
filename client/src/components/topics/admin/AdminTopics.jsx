@@ -18,12 +18,9 @@ export function AdminTopics() {
   const [subjectData, setSubjectData] = useState([]);
   const [classId, setClassId] = useState("");
 
-  const [selectedSchool, setSelectedSchool] = useState(""); // Nowy state dla wybranej szkoły
-  const [selectedClass, setSelectedClass] = useState(""); // Nowy state dla wybranej klasy
-  const [selectedTeacher, setSelectedTeacher] = useState(""); // Nowy state dla wybranego nauczyciela
-  // const [selectedSubject, setSelectedSubject] = useState(''); // Nowy state dla wybranego przedmiotu
-
-  console.log("topicData: ", topicData);
+  const [selectedSchool, setSelectedSchool] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedTeacher, setSelectedTeacher] = useState("");
 
   useEffect(() => {
     fetch(`${backendServer}/topics-all`)
@@ -49,7 +46,6 @@ export function AdminTopics() {
 
   useEffect(() => {
     if (selectedSchool) {
-      console.log("selectedSchool: ", selectedSchool);
       fetch(`${backendServer}/classes/${selectedSchool}`)
         .then((response) => response.json())
         .then((data) => {
@@ -74,7 +70,6 @@ export function AdminTopics() {
 
   useEffect(() => {
     if (selectedSchool) {
-      console.log("selectedSchool: ", selectedSchool);
       fetch(`${backendServer}/all-teachers/${selectedSchool}`)
         .then((response) => response.json())
         .then((data) => {
@@ -86,12 +81,8 @@ export function AdminTopics() {
     }
   }, [selectedSchool]);
 
-  console.log("selectedSchool: ", selectedSchool);
-
   useEffect(() => {
-    // Fetch subjects based on selected class
     if (selectedClass) {
-      console.log("selectedClass: ", selectedClass);
       fetch(`${backendServer}/subjects/class/${parseInt(selectedClass, 10)}`)
         .then((response) => response.json())
         .then((data) => {
@@ -103,15 +94,7 @@ export function AdminTopics() {
     }
   }, [selectedClass]);
 
-  // console.log("selectedClass: ", selectedClass);
-
-  console.log("schoolData: ", schoolData);
-  console.log("classData: ", classData);
-  console.log("teacherData: ", teacherData);
-  console.log("subjectData: ", subjectData);
-
   const setTest = (data) => {
-    console.log("Test", data);
     setNewTopic(data);
   };
 
@@ -126,11 +109,8 @@ export function AdminTopics() {
   });
 
   const handleAddTopic = async () => {
-    console.log("TEEEEEST1", newTopic);
-  
-    // Pobieranie zaktualizowanego stanu
     const updatedTopic = newTopic;
-  
+
     const newTopicWithNumbers = {
       ...updatedTopic,
       teacher_id: parseInt(selectedTeacher, 10) || null,
@@ -138,12 +118,9 @@ export function AdminTopics() {
       subject_id: parseInt(updatedTopic.subject_id, 10) || null,
       school_id: parseInt(selectedSchool, 10) || null,
     };
-  
-    console.log("newTopicWithNumbers before fetch:", newTopicWithNumbers);
-  
+
     setNewTopic(newTopicWithNumbers);
-  
-    // Wysyłanie żądania POST do serwera
+
     fetch(`${backendServer}/add-topic`, {
       method: "POST",
       headers: {
@@ -153,7 +130,6 @@ export function AdminTopics() {
     })
       .then((response) => {
         if (response.status === 201) {
-          // Pobierz ponownie tematy po dodaniu nowego tematu
           fetch("/topics-all")
             .then((response) => response.json())
             .then((data) => {
@@ -170,7 +146,6 @@ export function AdminTopics() {
         console.error(error);
       });
   };
-  
 
   const style = {
     position: "absolute",
@@ -195,9 +170,6 @@ export function AdminTopics() {
 
   const handleDeleteTopic = (topicId) => {
     if (window.confirm("Czy na pewno chcesz usunąć tę temat?")) {
-      // Wysyłamy żądanie DELETE do serwera
-      console.log("Usuwanie szkoły o topic_id:", topicId);
-
       fetch(`${backendServer}/topics/${topicId}`, {
         method: "DELETE",
       })
@@ -212,7 +184,6 @@ export function AdminTopics() {
                 console.error(error);
               });
           } else {
-            // Obsłuż błąd usuwania klasy
             console.error("Błąd usuwania klasy");
           }
         })
@@ -305,7 +276,6 @@ export function AdminTopics() {
             name="add_topic_school"
             id=""
             onChange={(e) => {
-              console.log("Event ", e.target.value);
               setSelectedSchool(e.target.value);
               setSelectedClass("");
               setSelectedTeacher("");
@@ -323,9 +293,8 @@ export function AdminTopics() {
               name="add_topic_class"
               id=""
               onChange={(e) => {
-                console.log("selectedClass:", e.target.value);
                 setSelectedClass(parseInt(e.target.value, 10));
-                setSelectedTeacher(""); // Resetuje wybranego nauczyciela po zmianie klasy
+                setSelectedTeacher("");
               }}
             >
               <option value="select_class">Wybierz klasę</option>
@@ -340,22 +309,20 @@ export function AdminTopics() {
                 ))}
             </select>
           )}
-{selectedSchool && selectedClass && teacherData.length > 0 && (
-  <select
-    name="add_topic_teacher"
-    id=""
-    onChange={(e) => setSelectedTeacher(e.target.value)}
-  >
-    <option value="select_teacher">Wybierz nauczyciela</option>
-    {teacherData.map((teacher) => (
-      <option key={teacher.teacher_id} value={teacher.teacher_id}>
-        {`${teacher.first_name} ${teacher.second_name}`}
-      </option>
-    ))}
-  </select>
-)}
-
-
+          {selectedSchool && selectedClass && teacherData.length > 0 && (
+            <select
+              name="add_topic_teacher"
+              id=""
+              onChange={(e) => setSelectedTeacher(e.target.value)}
+            >
+              <option value="select_teacher">Wybierz nauczyciela</option>
+              {teacherData.map((teacher) => (
+                <option key={teacher.teacher_id} value={teacher.teacher_id}>
+                  {`${teacher.first_name} ${teacher.second_name}`}
+                </option>
+              ))}
+            </select>
+          )}
           {selectedSchool && selectedClass && selectedTeacher && (
             <select
               name="add_topic_subject"

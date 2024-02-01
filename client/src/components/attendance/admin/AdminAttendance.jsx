@@ -28,7 +28,6 @@ export function AdminAttendance() {
         const userQuery = `${backendServer}/users-school-student/${userEmail}`;
         const result = await fetch(userQuery);
         const userData = await result.json();
-        console.log("userData: ", userData);
 
         if (result.ok) {
           setUserData(userData);
@@ -61,11 +60,9 @@ const generateLessonNumbers = () => {
 
 const fetchSchools = async () => {
     try {
-        console.log("Fetching schools...");
         const schoolsQuery = `${backendServer}/schools`;  
         const result = await fetch(schoolsQuery);
         const schoolData = await result.json();
-        console.log("schoolData:", schoolData);
 
         if (result.ok) {
             setSchools(schoolData)
@@ -81,7 +78,6 @@ const fetchStudentsForClass = async (classId) => {
   try {
     const studentsData = await fetch(`${backendServer}/students-from-class/${classId}`);
     const students = await studentsData.json();
-    console.log("Students for class:", students);
     setStudents(students);
   } catch (error) {
     console.error("Błąd pobierania uczniów:", error);
@@ -91,10 +87,7 @@ const fetchStudentsForClass = async (classId) => {
 const fetchAttendanceForStudent = async (studentId, lessonNumber, date) => {
   try {
     const response = await fetch(`${backendServer}/attendance-all-for-class/${studentId}/${lessonNumber}/${date}`);
-    console.log("response fetchAttendanceForStudent: ", response);
     const attendanceForStudent = await response.json();
-    console.log(`Response text for student (id: ${studentId}, lesson: ${lessonNumber}, date: ${date}):`, response.statusText);
-    console.log(`Attendance for student (id: ${studentId}, lesson: ${lessonNumber}, date: ${date}):`, attendanceForStudent);
     return attendanceForStudent;
   } catch (error) {
     console.error("Error fetching attendance for student:", error);
@@ -105,7 +98,6 @@ const fetchAttendanceForStudent = async (studentId, lessonNumber, date) => {
 const fetchData = async () => {
   try {
     if (selectedSchool && selectedClass && selectedDate && selectedLessonNumber) {
-    //   await fetchSchools(selectedSchool);
       await fetchStudentsForClass(selectedClass);
       await fetchAttendanceForStudents();
     } else {
@@ -119,7 +111,6 @@ const fetchData = async () => {
 useEffect(() => {
   if (userData.length > 0) {
     const schoolId = selectedSchool;
-    // console.log("schoolId: ", schoolId);
     fetch(`${backendServer}/classes/${schoolId}`)
       .then((response) => response.json())
       .then((data) => setClasses(data))
@@ -128,18 +119,14 @@ useEffect(() => {
 }, [userData]);
 
 
-
-
 useEffect(() => {
   const fetchTeachers = async () => {
       try {
           if (userData.length > 0) {
               const schoolId = selectedSchool;
-
               const teachersQuery = `${backendServer}/all-teachers/${schoolId}`;
               const result = await fetch(teachersQuery);
               const teachersData = await result.json();
-              console.log("teachersData", teachersData);
 
               if (result.ok) {
                   setTeachers(teachersData);
@@ -169,7 +156,7 @@ const handleSelectChange = ({ target: { name, value } }) => {
         break;
       case "lessonNumber":
         setSelectedLessonNumber(value);
-        fetchAttendanceForStudents(); // Consider debouncing or delaying this call
+        fetchAttendanceForStudents(); 
         break;
       case "teacher":
         setSelectedTeacher(value);
@@ -180,12 +167,10 @@ const handleSelectChange = ({ target: { name, value } }) => {
   };
   
   useEffect(() => {
-    // Fetch schools on component mount
     fetchSchools();
   }, []);
   
   useEffect(() => {
-    // Fetch classes and teachers when the selected school changes
     if (selectedSchool) {
         fetchStudentsForClass(selectedSchool)
       
@@ -207,16 +192,11 @@ const handleAttendanceChange = (studentId, status) => {
 const saveAttendanceChanges = async (studentId, status) => {
   try {
     const existingAttendance = attendance.find((a) => a.student_id === studentId);
-
     const endpoint = `${backendServer}/attendance/${studentId}`;
-
-    console.log("Updating attendance for student: ", studentId);
-    console.log("Existing attendance: ", existingAttendance);
 
     const attendanceForStudent = await fetchAttendanceForStudent(studentId, selectedLessonNumber, selectedDate);
 
     if (attendanceForStudent.length > 0) {
-      // If attendance record exists, update it
       const response = await fetch(endpoint, {
         method: "PUT",
         headers: {
@@ -241,7 +221,6 @@ const saveAttendanceChanges = async (studentId, status) => {
       });
 
       if (response.ok) {
-        console.log(`Zmiany w obecności ucznia ${studentId} zostały zapisane.`);
         const updatedAttendance = attendance.map((a) =>
           a.student_id === studentId ? { ...a, status: status } : a
         );
@@ -250,7 +229,6 @@ const saveAttendanceChanges = async (studentId, status) => {
         console.error(`Błąd podczas aktualizacji obecności ucznia ${studentId}.`);
       }
     } else {
-      // If attendance record doesn't exist, add new attendance
       const response = await fetch(`${backendServer}/add-attendance`, {
         method: "POST",
         headers: {
@@ -265,15 +243,6 @@ const saveAttendanceChanges = async (studentId, status) => {
           teacher_id: selectedTeacher
 
         }),
-      });
-
-      console.log("POST Request Data: ", {
-        class_id: selectedClass,
-        date: selectedDate,
-        lesson_number: selectedLessonNumber,
-        status: status,
-        student_id: studentId,
-        teacher_id: selectedTeacher,
       });
 
       if (response.ok) {
@@ -314,11 +283,7 @@ const fetchAttendanceForStudents = async () => {
                 <h3>Frekewncja</h3>
 
                 <div className="admin-attendance-buttons">
-                    {/* <input type="button" value="Dodaj frekwencję" /> */}
-                    {/* <input type="button" value="Wyświetl frekwencję" /> */}
                 </div>
-
-
 
 Wybierz szkołę: {" "}
 <select name="school" id="" onChange={handleSelectChange}>
@@ -387,11 +352,9 @@ Wybierz numer lekcji:{" "}
   {generateLessonNumbers()}
 </select>
 
-{/* Przypisanie wartości student_id, teacher_id i timetable_id do stanów komponentu */}
 {students.length > 0 && (
   <div>
     <table className="teacher-attendance-table">
-      {/* ... (other table code) */}
       <tbody>
         {students.map((student, studentIndex) => (
           <tr key={studentIndex}>
@@ -446,7 +409,6 @@ Wybierz numer lekcji:{" "}
   </div>
 )}
 
-{/* Jeżeli dane nie są dostępne, wyświetl informację */}
 {students.length === 0 && (
   <p>Wybierz klasę, datę i numer lekcji, aby wyświetlić obecność.</p>
 )}

@@ -30,7 +30,6 @@ export function ParentTimetable() {
           const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
-          console.log("userData: ", userData);
           setUserData(userData);
 
           if (result.ok && userData.length > 0) {
@@ -39,15 +38,11 @@ export function ParentTimetable() {
             const studentParentQuery = `${backendServer}/student-parent/${studentId}`;
             const result2 = await fetch(studentParentQuery);
             const studentParentData = await result2.json();
-            console.log("studentParentData: ", studentParentData);
 
             if (result2.ok && studentParentData.length > 0) { 
               const timetableQuery = `${backendServer}/timetable/${studentParentData[0].school_id}/${studentParentData[0].class_id}`;
               const timetableResult = await fetch(timetableQuery);
               const timetableData = await timetableResult.json();
-              console.log('Timetable data: ', timetableData);
-
-              console.log('Setting scheduler data:', timetableData);
               setTimetableData(timetableData);
             }
           }
@@ -89,10 +84,7 @@ export function ParentTimetable() {
     });
   };
   
-  
   const schedulerData = convertToSchedulerData(timetableData);
-  console.log('Scheduler Data: ', schedulerData);
-
 
   return (
     <div className="partent-student-timetable-container">

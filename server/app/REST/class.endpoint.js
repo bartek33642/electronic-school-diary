@@ -62,7 +62,6 @@ const classEndpoint = (app) => {
     try{
         const addClass = `INSERT INTO gradebook.classes(class_name, school_id) VALUES ($1, $2)`;
         await pool.query(addClass, [class_name, school_id]);
-        console.log("dodano klasę do bazy danych");
 
         res.status(201).json({ message: 'Klasa dodana pomyślnie.' });
     }catch(error){
@@ -78,7 +77,6 @@ const classEndpoint = (app) => {
     try{
         const updateClass = `UPDATE gradebook.classes SET class_name=$1, school_id=$2 WHERE class_id=$3`;
         await pool.query(updateClass, [class_name, school_id, class_id]);
-        console.log("Edytowano klasę w bazie danych");
 
         res.status(201).json({ message: 'Klasa zedytowana pomyślnie.' });
     }catch(error){
@@ -94,7 +92,6 @@ const classEndpoint = (app) => {
       const deleteClassQuery = 'DELETE FROM gradebook.classes WHERE class_id = $1';
       await pool.query(deleteClassQuery, [classId]);
   
-      console.log('Usunięto klasę z bazy danych');
       res.status(204).end();
     } catch (error) {
       console.error('Błąd usuwania klasy:', error);

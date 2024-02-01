@@ -10,9 +10,21 @@
     padding-left: 10px;
     padding-top: 10px;
     width: 100%;
+    gap: 5px;
 }
 
 .teacher-topics-add-topic input, select {
     display: flex;
     flex-direction: row;
+}
+
+
+.teacher-topics-form input{
+    border: solid 1px;
+    border-radius: 10px;
+}
+
+.teacher-topics-form input, select, textarea {
+    width: 80%;
+    margin-bottom: 5px;
 }

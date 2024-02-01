@@ -70,7 +70,6 @@ export function AdminSettings() {
           const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
-          console.log("userData: ", userData);
 
           if (!result.ok) {
             setError("Błąd pobierania danych użytkownika.");
@@ -90,7 +89,6 @@ export function AdminSettings() {
               const settingsQuery = `${backendServer}/users/${userId}`;
               const settingsResult = await fetch(settingsQuery);
               const settingsData = await settingsResult.json();
-              console.log("settingsData: ", settingsData);
 
               if (!settingsResult.ok) {
                 setError("Błąd pobierania danych z ustawień.");
@@ -134,9 +132,6 @@ export function AdminSettings() {
     <div className="settings-container">
       <AdminMenu />
       <div className="settings-top">
-        {/* <button className={`tablink ${selectedTab === "Password" ? "active" : ""}`} onClick={() => handleTabClick('Password')}>
-          Hasło
-        </button> */}
         <button className={`tablink ${selectedTab === "UserData" ? "active" : ""}`} onClick={() => handleTabClick('UserData')}>
           Dane użytkownika
         </button>

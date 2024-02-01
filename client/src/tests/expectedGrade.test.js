@@ -2,7 +2,7 @@ import { expectedGrades } from "../dependenciesAndRequirements/expectedGrade";
 
 describe('expectedGrades', () => {
   test('returns the correct grade for a given weighted average', () => {
-    // Given: A set of weighted averages and their expected grades
+    // Given
     const testCases = [
       { weightedAverage: 1.25, expectedGrade: 1 },
       { weightedAverage: 2.25, expectedGrade: 2 },
@@ -14,10 +14,10 @@ describe('expectedGrades', () => {
     ];
 
     testCases.forEach(({ weightedAverage, expectedGrade }) => {
-      // When: expectedGrades is called
+      // When
       const result = expectedGrades(weightedAverage);
 
-      // Then: The result should be the expected grade
+      // Then
       expect(result).toBe(expectedGrade);
     });
   });

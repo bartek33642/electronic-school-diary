@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import './StudentSubjects.css';
-import { DataGrid } from '@mui/x-data-grid';
+import "./StudentSubjects.css";
+import { DataGrid } from "@mui/x-data-grid";
 import { ParentMenu } from "../../menu/parent/ParentMenu";
 import { backendServer } from "../../../config";
 
@@ -18,7 +18,6 @@ export function ParentSubjects() {
           const userQuery = `${backendServer}/users-school-student/${userEmail}`;
           const result = await fetch(userQuery);
           const userData = await result.json();
-          console.log("userData: ", userData);
 
           if (result.ok) {
             setUserData(userData);
@@ -28,19 +27,20 @@ export function ParentSubjects() {
               const subjectsQuery = `${backendServer}/subjects-parent/${studentId}`;
               const subjectsResult = await fetch(subjectsQuery);
               const subjectsData = await subjectsResult.json();
-              console.log("subjectsData: ", subjectsData);
 
+              if (subjectsResult.ok) {
+                const uniqueSubjects = Array.from(
+                  new Set(subjectsData.map((subject) => subject.subject_id))
+                ).map((subjectId) =>
+                  subjectsData.find(
+                    (subject) => subject.subject_id === subjectId
+                  )
+                );
 
-                if (subjectsResult.ok) {
-                  // Usuń duplikaty na podstawie subjectId
-                  const uniqueSubjects = Array.from(new Set(subjectsData.map(subject => subject.subject_id)))
-                    .map(subjectId => subjectsData.find(subject => subject.subject_id === subjectId));
-
-                  setSubjects(uniqueSubjects);
-                } else {
-                  setError("Błąd pobierania danych z przedmiotami.");
-                }
-
+                setSubjects(uniqueSubjects);
+              } else {
+                setError("Błąd pobierania danych z przedmiotami.");
+              }
             } else {
               setError("Błąd pobierania danych użytkownika: brak danych.");
             }
@@ -50,7 +50,6 @@ export function ParentSubjects() {
         } else {
           setError("Brak dostępu do adresu e-mail zalogowanego użytkownika.");
         }
-
       } catch (error) {
         console.error(error);
         setError("Wystąpił błąd podczas pobierania danych użytkownika.");
@@ -61,11 +60,11 @@ export function ParentSubjects() {
   }, []);
 
   const columns = [
-    { field: 'subjectId', headerName: 'ID', width: 100 },
-    { field: 'subject_name', headerName: 'Przedmiot', width: 130 },
+    { field: "subjectId", headerName: "ID", width: 100 },
+    { field: "subject_name", headerName: "Przedmiot", width: 130 },
   ];
 
-  const rows = subjects.map(subject => ({
+  const rows = subjects.map((subject) => ({
     subjectId: subject.subject_id,
     subject_name: subject.subject_name,
   }));
@@ -88,7 +87,6 @@ export function ParentSubjects() {
               },
             }}
             pageSizeOptions={[7, 15]}
-            // checkboxSelection
           />
         </div>
       </div>

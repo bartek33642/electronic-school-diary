@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import './PrincipalTopics.css';
-import { DataGrid } from '@mui/x-data-grid';
+import "./PrincipalTopics.css";
+import { DataGrid } from "@mui/x-data-grid";
 import { PrincipalMenu } from "../../menu/prncipal/PrincipalMenu";
 import { backendServer } from "../../../config";
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 export function PrincipalTopics() {
   const [userData, setUserData] = useState([]);
@@ -33,7 +33,7 @@ export function PrincipalTopics() {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: '60%',
+    width: "60%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -51,22 +51,17 @@ export function PrincipalTopics() {
     });
     setOpen(true);
   };
-  
 
   const handleClose = () => {
     setOpen(false);
-  }
+  };
 
   const handleSaveTopic = async () => {
     try {
       if (userData.length > 0) {
         if (selectedTeacher) {
-          console.log("Selected Class:", selectedClass);
-          console.log("Selected Subject:", selectedSubject);
-          console.log("Selected Teacher:", selectedTeacher);
-  
           const addTopicQuery = `${backendServer}/add-topic`;
-  
+
           const postData = {
             class_id: parseInt(selectedClass, 10),
             topic_text: formData.topic_text,
@@ -75,9 +70,7 @@ export function PrincipalTopics() {
             subject_id: parseInt(selectedSubject, 10),
             teacher_id: parseInt(selectedTeacher, 10),
           };
-  
-          console.log("Post Data:", postData);
-  
+
           const addTopicResult = await fetch(addTopicQuery, {
             method: "POST",
             headers: {
@@ -85,7 +78,7 @@ export function PrincipalTopics() {
             },
             body: JSON.stringify(postData),
           });
-  
+
           if (addTopicResult.ok) {
             fetchUserData();
             handleClose();
@@ -126,7 +119,6 @@ export function PrincipalTopics() {
         const userQuery = `${backendServer}/users-school-student/${userEmail}`;
         const result = await fetch(userQuery);
         const userData = await result.json();
-        console.log("userData: ", userData);
         if (result.ok) {
           setUserData(userData);
 
@@ -135,9 +127,7 @@ export function PrincipalTopics() {
 
             const topicsQuery = `${backendServer}/topics-all-classes/${schoolId}`;
             const topicsResult = await fetch(topicsQuery);
-            console.log("topicsResult: ", topicsResult);
             const topicsData = await topicsResult.json();
-            console.log("topicsData: ", topicsData);
 
             if (topicsResult.ok) {
               setTopics(topicsData);
@@ -160,9 +150,8 @@ export function PrincipalTopics() {
   };
 
   useEffect(() => {
-    // Call the fetchUserData function
     fetchUserData();
-  }, []);   
+  }, []);
 
   useEffect(() => {
     const fetchClassData = async () => {
@@ -228,18 +217,17 @@ export function PrincipalTopics() {
     fetchSubjects();
   }, [selectedClass]);
 
-
   const handleDeleteTopic = async (topicId) => {
-    if (window.confirm('Czy na pewno chcesz usunąć klasę?')) {
+    if (window.confirm("Czy na pewno chcesz usunąć klasę?")) {
       try {
         const response = await fetch(`${backendServer}/topics/${topicId}`, {
-          method: 'DELETE',
+          method: "DELETE",
         });
 
         if (response.status === 204) {
           fetchUserData();
         } else {
-          console.error('Błąd usuwania tematu');
+          console.error("Błąd usuwania tematu");
         }
       } catch (error) {
         console.error(error);
@@ -248,39 +236,41 @@ export function PrincipalTopics() {
   };
 
   const columns = [
-    { field: 'topicId', headerName: 'ID', width: 50 },
-    { field: 'date', headerName: 'Data', width: 90 },
-    { field: 'class', headerName: 'Klasa', width: 60 },
-    { field: 'subject', headerName: 'Przedmiot', width: 130 },
-    { field: 'topic', headerName: 'Temat', width: 130 },
-    { field: 'description', headerName: 'Opis tematu', width: 250 },
-    { field: 'teacher', headerName: 'Nauczyciel', width: 130 },
-    { field: 'action', headerName: ' - ', width: 60,
-    renderCell: (params) => (
-      <button
-        type="button"
-        onClick={() => handleDeleteTopic(params.row.topicId)}
-      >
-        Usuń
-      </button>
-      )}
+    { field: "topicId", headerName: "ID", width: 50 },
+    { field: "date", headerName: "Data", width: 90 },
+    { field: "class", headerName: "Klasa", width: 60 },
+    { field: "subject", headerName: "Przedmiot", width: 130 },
+    { field: "topic", headerName: "Temat", width: 130 },
+    { field: "description", headerName: "Opis tematu", width: 250 },
+    { field: "teacher", headerName: "Nauczyciel", width: 130 },
+    {
+      field: "action",
+      headerName: " - ",
+      width: 60,
+      renderCell: (params) => (
+        <button
+          type="button"
+          onClick={() => handleDeleteTopic(params.row.topicId)}
+        >
+          Usuń
+        </button>
+      ),
+    },
   ];
 
-  const rows = topics.map(topic => ({
+  const rows = topics.map((topic) => ({
     topicId: topic.topic_id,
     date: new Date(topic.date).toLocaleDateString(),
     class: topic.class_name,
     subject: topic.subject_name,
     topic: topic.topic_text,
     description: topic.description,
-    teacher: topic.first_name + ' ' + topic.second_name,
+    teacher: topic.first_name + " " + topic.second_name,
     action: (
-      <button
-        type="button"
-        onClick={() => handleDeleteTopic(topic.topic_id)}
-      >
+      <button type="button" onClick={() => handleDeleteTopic(topic.topic_id)}>
         Usuń
-      </button>)
+      </button>
+    ),
   }));
 
   return (
@@ -288,7 +278,9 @@ export function PrincipalTopics() {
       <PrincipalMenu />
       <div className="principal-topics-elements">
         <h2>Tematy</h2>
-        <button type="button" onClick={handleOpen}>Dodaj temat</button>
+        <button type="button" onClick={handleOpen}>
+          Dodaj temat
+        </button>
 
         <Modal
           open={open}
@@ -300,8 +292,7 @@ export function PrincipalTopics() {
           <Box sx={{ ...style }} className="modal-content">
             <h2 id="child-modal-title">Dodaj Temat </h2>
             <div className="principal-topic-modal-inputs">
-              {/* Update the inputs based on your requirements */}
-              Nauczyciel: {" "}
+              Nauczyciel:{" "}
               <select
                 name="teacher_name"
                 id=""
@@ -316,8 +307,7 @@ export function PrincipalTopics() {
                   </option>
                 ))}
               </select>
-
-              Klasa: {" "}
+              Klasa:{" "}
               <select
                 name="class_name"
                 id=""
@@ -332,8 +322,7 @@ export function PrincipalTopics() {
                   </option>
                 ))}
               </select>
-
-              Nazwa przedmiotu: {" "}
+              Nazwa przedmiotu:{" "}
               <select
                 name="subject_name"
                 id=""
@@ -348,33 +337,36 @@ export function PrincipalTopics() {
                   </option>
                 ))}
               </select>
-
-              Temat: {" "}
+              Temat:{" "}
               <input
                 type="text"
                 name="topic"
                 id=""
                 value={formData.topic_text}
-                onChange={(e) => setFormData({ ...formData, topic_text: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, topic_text: e.target.value })
+                }
                 required
               />
-
-              Opis tematu: {" "}
+              Opis tematu:{" "}
               <input
                 type="text"
                 name="description"
                 id=""
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 required
               />
-
               <label>Data: </label>
               <input
                 type="date"
                 name="date"
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
                 required
               />
             </div>

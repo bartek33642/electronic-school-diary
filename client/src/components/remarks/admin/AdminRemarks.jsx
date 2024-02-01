@@ -61,7 +61,7 @@ export function AdminRemarks() {
     remark_text: "",
     is_possitive: false,
     teacher_id: "",
-    school_id: ""
+    school_id: "",
   });
 
   const fetchUserData = async () => {
@@ -72,19 +72,15 @@ export function AdminRemarks() {
         const userQuery = `${backendServer}/users-school-student/${userEmail}`;
         const result = await fetch(userQuery);
         const userData = await result.json();
-        console.log("userData: ", userData);
         if (result.ok) {
           setUserData(userData);
 
           if (userData.length > 0) {
-            const schoolId = selectedSchool
+            const schoolId = selectedSchool;
 
-            // Pobierz uwagi dla danej szkoły
             const remarksQuery = `${backendServer}/remarks-all-school/${schoolId}`;
             const remarksResult = await fetch(remarksQuery);
-            console.log("remarksResult: ", remarksResult);
             const remarksData = await remarksResult.json();
-            console.log("remarksData: ", remarksData);
 
             if (remarksResult.ok) {
               setRemarks(remarksData);
@@ -107,7 +103,6 @@ export function AdminRemarks() {
   };
 
   useEffect(() => {
-    // Call the fetchUserData function
     fetchUserData();
   }, []);
 
@@ -119,7 +114,6 @@ export function AdminRemarks() {
         `${backendServer}/students-from-class/${selectedClass}`
       );
       const students = await studentsData.json();
-      console.log("Students for class:", students);
       setFilteredStudents(students);
     } catch (error) {
       console.error("Błąd pobierania uczniów:", error);
@@ -134,12 +128,10 @@ export function AdminRemarks() {
     const fetchTeachers = async () => {
       try {
         if (userData.length > 0) {
-        //   const schoolId = userData[0].school_id;
           const schoolId = selectedSchool;
           const teachersQuery = `${backendServer}/all-teachers/${schoolId}`;
           const result = await fetch(teachersQuery);
           const teachersData = await result.json();
-          console.log("teachersData", teachersData);
 
           if (result.ok) {
             setTeachers(teachersData);
@@ -176,7 +168,7 @@ export function AdminRemarks() {
     const fetchClassData = async () => {
       try {
         if (userData.length > 0) {
-          const schoolId = selectedSchool
+          const schoolId = selectedSchool;
 
           const classQuery = `${backendServer}/classes/${schoolId}`;
           const result = await fetch(classQuery);
@@ -196,11 +188,9 @@ export function AdminRemarks() {
 
   const handleAddRemark = async () => {
     try {
-      // Upewnij się, że są dane użytkownika
       if (userData.length > 0) {
-        // Użyj formData do wysłania zapytania POST w celu dodania nowej uwagi
         const addRemarkQuery = `${backendServer}/add-remarks`;
-  
+
         const postData = {
           remark_text: formData.remark_text,
           is_possitive: formData.is_possitive,
@@ -209,9 +199,7 @@ export function AdminRemarks() {
           teacher_id: formData.teacher_id,
           school_id: selectedSchool,
         };
-  
-        console.log("Dane wysyłane w zapytaniu:", postData);
-  
+
         const addRemarkResult = await fetch(addRemarkQuery, {
           method: "POST",
           headers: {
@@ -219,14 +207,12 @@ export function AdminRemarks() {
           },
           body: JSON.stringify(postData),
         });
-  
+
         if (addRemarkResult.ok) {
-          // Odśwież listę uwag po pomyślnym dodaniu
           fetchUserData();
-          handleClose(); // Zamknij modal po dodaniu uwagi
+          handleClose();
           setSuccessMessage("Pomyślnie dodano uwagę");
-  
-          // Clear the form data
+
           setFormData({
             date: "",
             student_id: "",
@@ -246,7 +232,6 @@ export function AdminRemarks() {
       setErrorMessage("Uwaga nie została dodana");
     }
   };
-  
 
   const handleDeleteRemark = async (remarkId) => {
     if (window.confirm("Czy na pewno chcesz usunąć uwagę?")) {
@@ -275,9 +260,7 @@ export function AdminRemarks() {
         break;
       case "class_id":
         setSelectedClass(value);
-        // Po zmianie klasy pobierz uczniów dla wybranej klasy
         fetchStudentsForClass(value);
-        // Zresetuj również wybranego ucznia po zmianie klasy
         setSelectedStudentId("");
         break;
       default:
@@ -292,11 +275,7 @@ export function AdminRemarks() {
         <h3>Uwagi:</h3>
 
         <div className="admin-remarks-buttons">
-          <input
-            type="button"
-            value="Przeglądaj uwagi"
-            onClick={handleOpen}
-          />
+          <input type="button" value="Przeglądaj uwagi" onClick={handleOpen} />
           <Modal
             open={open}
             onClose={handleClose}
@@ -321,19 +300,13 @@ export function AdminRemarks() {
               onChange={handleSelectChange}
               value={selectedSchool}
             >
-              <option value="admin-remark-school-option">
-                Wybierz szkołę
-              </option>
+              <option value="admin-remark-school-option">Wybierz szkołę</option>
               {schoolData.map((school) => (
-                <option
-                  key={school.school_id}
-                  value={school.school_id}
-                >
+                <option key={school.school_id} value={school.school_id}>
                   {school.school_name}
                 </option>
               ))}
             </select>
-
             Wybierz klasę:
             <select
               name="class_id"
@@ -341,19 +314,13 @@ export function AdminRemarks() {
               onChange={handleSelectChange}
               value={selectedClass}
             >
-              <option value="admin-remark-class-option">
-                Wybierz klasę
-              </option>
+              <option value="admin-remark-class-option">Wybierz klasę</option>
               {classData.map((classItem) => (
-                <option
-                  key={classItem.class_id}
-                  value={classItem.class_id}
-                >
+                <option key={classItem.class_id} value={classItem.class_id}>
                   {classItem.class_name}
                 </option>
               ))}
             </select>
-
             Wybierz ucznia:
             <select
               name="student_id"
@@ -365,15 +332,11 @@ export function AdminRemarks() {
                 Wybierz ucznia
               </option>
               {filteredStudents.map((student) => (
-                <option
-                  key={student.student_id}
-                  value={student.student_id}
-                >
+                <option key={student.student_id} value={student.student_id}>
                   {`${student.first_name} ${student.second_name}`}
                 </option>
               ))}
             </select>
-
             Wybierz nauczyciela:
             <select
               name="teacher_id"
@@ -385,15 +348,11 @@ export function AdminRemarks() {
                 Wybierz nauczyciela
               </option>
               {teachers.map((teacher) => (
-                <option
-                  key={teacher.teacher_id}
-                  value={teacher.teacher_id}
-                >
+                <option key={teacher.teacher_id} value={teacher.teacher_id}>
                   {`${teacher.first_name} ${teacher.second_name}`}
                 </option>
               ))}
             </select>
-
             Treść uwagi:
             <textarea
               name="remark_text"
@@ -402,7 +361,6 @@ export function AdminRemarks() {
               cols="30"
               rows="10"
             ></textarea>
-
             Czy pozytywna:
             <input
               type="checkbox"
@@ -411,7 +369,6 @@ export function AdminRemarks() {
               checked={formData.is_possitive}
               className="admin-remarks-checkbox"
             />
-
             Data :{" "}
             <input
               type="date"
@@ -427,32 +384,32 @@ export function AdminRemarks() {
         </div>
       </div>
       <Snackbar
-  open={successMessage !== ""}
-  autoHideDuration={6000}
-  onClose={() => setSuccessMessage("")}
->
-  <Alert
-    onClose={() => setSuccessMessage("")}
-    severity="success"
-    sx={{ width: "100%" }}
-  >
-    {successMessage}
-  </Alert>
-</Snackbar>
+        open={successMessage !== ""}
+        autoHideDuration={6000}
+        onClose={() => setSuccessMessage("")}
+      >
+        <Alert
+          onClose={() => setSuccessMessage("")}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
 
-<Snackbar
-  open={errorMessage !== ""}
-  autoHideDuration={6000}
-  onClose={() => setErrorMessage("")}
->
-  <Alert
-    onClose={() => setErrorMessage("")}
-    severity="warning"
-    sx={{ width: "100%" }}
-  >
-    {errorMessage}
-  </Alert>
-</Snackbar>
+      <Snackbar
+        open={errorMessage !== ""}
+        autoHideDuration={6000}
+        onClose={() => setErrorMessage("")}
+      >
+        <Alert
+          onClose={() => setErrorMessage("")}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

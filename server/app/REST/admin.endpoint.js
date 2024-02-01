@@ -16,8 +16,6 @@ const adminEndpoint = (app) => {
       const adminRegister = await pool.query(`INSERT INTO gradebook.users(email, password, role, active, status, first_name, second_name) VALUES($1, $2, 1, $3, $4, $5, $6) `,
         [email, bcryptPassword, active, 'admin', first_name, second_name]);
 
-      console.log("Dodano nowego admina do bazy danych:", adminRegister.first_name);
-
       res.status(201).json({ message: 'Admin zarejestrowany pomyślnie.' });
     } catch (error) {
       console.error('Błąd rejestracji:', error);

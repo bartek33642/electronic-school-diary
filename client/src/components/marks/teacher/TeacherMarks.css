@@ -150,3 +150,11 @@
     opacity: 1;
   }
   
+
+  .teacher-marks-form{
+    gap: 5px;
+  }
+
+  .teacher-marks-form input{
+    border-radius: 10px;
+  }
